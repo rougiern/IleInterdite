@@ -13,10 +13,11 @@ public class Messager extends Aventurier {
     
     Messager(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
+        this.setPion(Pion.BLANC);
     }
     
     @Override
-    public void seDeplacer() {
+    public void seDeplacer(Grille g) {
     }
 
     @Override

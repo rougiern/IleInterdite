@@ -13,10 +13,11 @@ public class Pilote extends Aventurier {
     
     Pilote(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
+        this.setPion(Pion.VERT);
     }
     
     @Override
-    public void seDeplacer() {
+    public void seDeplacer(Grille g) {
     }
 
     @Override

@@ -13,10 +13,11 @@ public class Ingenieur extends Aventurier {
     
     Ingenieur(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
+        this.setPion(Pion.ROUGE);
     }
     
     @Override
-    public void seDeplacer() {
+    public void seDeplacer(Grille g) {
     }
 
     @Override

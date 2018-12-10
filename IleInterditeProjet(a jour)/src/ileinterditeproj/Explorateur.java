@@ -13,10 +13,12 @@ public class Explorateur extends Aventurier {
     
     Explorateur(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
+        this.setPion(Pion.VERT);
     }
     
     @Override
-    public void seDeplacer() {
+    public void seDeplacer(Grille g) {
+        
     }
 
     @Override

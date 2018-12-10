@@ -76,6 +76,8 @@ public class appli {
         Controleur c = new Controleur(g1);
         c.afficherJoueurs();
         c.afficherGrille();
+        c.getJoueurs().get(0).seDeplacer(g1);
+        
     }
     
 }

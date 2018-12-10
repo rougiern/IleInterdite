@@ -5,6 +5,8 @@
  */
 package ileinterditeproj;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author kemplail
@@ -13,18 +15,21 @@ public abstract class Aventurier {
     
     private String nom ;
     private Tuile tuileCourante ;
+    private Pion pion ;
     
     public Aventurier(String nom, Tuile tuiledé) {
         this.setNom(nom);
         this.setTuileCourante(tuileCourante);
+        pion=null;
     }
 
     /**
+     * @param g
      * @return the role
      */
    
     
-    public abstract void seDeplacer();
+    public abstract void seDeplacer(Grille g);
     
     public abstract void assecher();
 
@@ -59,6 +64,20 @@ public abstract class Aventurier {
      */
     public void setTuileCourante(Tuile tuileCourante) {
         this.tuileCourante = tuileCourante;
+    }
+
+    /**
+     * @return the pion
+     */
+    public Pion getPion() {
+        return pion;
+    }
+
+    /**
+     * @param pion the pion to set
+     */
+    public void setPion(Pion pion) {
+        this.pion = pion;
     }
     
 }

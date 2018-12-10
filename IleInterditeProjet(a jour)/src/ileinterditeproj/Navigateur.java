@@ -13,10 +13,11 @@ public class Navigateur extends Aventurier {
     
     Navigateur(String nom, Tuile tuiledé) {
         super(nom,tuiledé);
+        this.setPion(Pion.JAUNE);
     }
     
     @Override
-    public void seDeplacer() {
+    public void seDeplacer(Grille g) {
         
     }
 

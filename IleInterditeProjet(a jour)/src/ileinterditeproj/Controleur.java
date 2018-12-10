@@ -32,6 +32,7 @@ public class Controleur implements Observer {
         
         
         
+        
     }
     
     @Override
@@ -98,7 +99,7 @@ public class Controleur implements Observer {
             String nom = sc.next();
             System.out.println("Entrez votre role");
             String role = sc.next();
-            while ( !role.equals("plongeur") || !role.equals("messager") || !role.equals("navigateur") || !role.equals("explorateur") || !role.equals("ingenieur") || !role.equals("pilote") ) {
+            while ( role.equals("plongeur")==false && role.equals("messager")==false && role.equals("navigateur")==false && role.equals("explorateur")==false && role.equals("ingenieur")==false && role.equals("pilote")==false ) {
                System.out.println("Le role n'existe pas veuillez choisir un role valide ");
                role = sc.nextLine();
             }
