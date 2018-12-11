@@ -14,12 +14,14 @@ import java.util.ArrayList;
 public abstract class Aventurier {
     
     private String nom ;
+    private int ptsaction  ;
     private Tuile tuileCourante ;
     private Pion pion ;
     
-    public Aventurier(String nom, Tuile tuiledé) {
+    public Aventurier(String nom, Tuile tuilede) {
         this.setNom(nom);
-        this.setTuileCourante(tuileCourante);
+        this.setTuileCourante(tuilede);
+        this.ptsaction=3;
         pion=null;
     }
 
@@ -31,7 +33,7 @@ public abstract class Aventurier {
     
     public abstract void seDeplacer(Grille g);
     
-    public abstract void assecher();
+    public abstract void assecher(Grille g);
 
     /**
      * @return the tuileDepart
@@ -78,6 +80,20 @@ public abstract class Aventurier {
      */
     public void setPion(Pion pion) {
         this.pion = pion;
+    }
+
+    /**
+     * @return the ptsaction
+     */
+    public int getPtsaction() {
+        return ptsaction;
+    }
+
+    /**
+     * @param ptsaction the ptsaction to set
+     */
+    public void setPtsaction(int ptsaction) {
+        this.ptsaction = ptsaction;
     }
     
 }
