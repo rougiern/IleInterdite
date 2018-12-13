@@ -31,7 +31,7 @@ public abstract class Aventurier {
      */
    
     
-    public abstract void seDeplacer(Grille g);
+    public abstract ArrayList<Tuile> seDeplacer(Grille g);
     
     public abstract void assecher(Grille g);
 
@@ -95,5 +95,8 @@ public abstract class Aventurier {
     public void setPtsaction(int ptsaction) {
         this.ptsaction = ptsaction;
     }
-    
+
+    public abstract void changerTuileCourante(Tuile nouvelletuile);
+    //To change body of generated methods, choose Tools | Templates.
+
 }

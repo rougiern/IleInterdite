@@ -22,12 +22,12 @@ public class appli {
         
         
         Controleur c = new Controleur();
-        c.afficherJoueurs();
+//        c.afficherJoueurs();
 //        c.afficherGrille();
-        c.getJoueurs().get(0).seDeplacer(c.getGrille());
-        c.getJoueurs().get(1).seDeplacer(c.getGrille());
-        
-        
+//        c.getJoueurs().get(0).seDeplacer(c.getGrille());
+//        c.getJoueurs().get(1).seDeplacer(c.getGrille());
+          VueAventurier vueAventurier = new VueAventurier("jean", "Ingenieur",Pion.ROUGE.getCouleur() );
+          vueAventurier.addObserver(c);
         
     }
     

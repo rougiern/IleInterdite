@@ -5,6 +5,8 @@
  */
 package ileinterditeproj;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author kemplail
@@ -17,12 +19,12 @@ public class Navigateur extends Aventurier {
     }
     
     @Override
-    public void seDeplacer(Grille g) {
-        
+    public ArrayList<Tuile> seDeplacer(Grille g) {
+        return null;
     }
 
     @Override
-    public void assecher() {
+    public void assecher(Grille g) {
         
     }
     
@@ -30,4 +32,11 @@ public class Navigateur extends Aventurier {
         
     }
     
+    public void changerTuileCourante(Tuile nouvelleTuile){
+        this.getTuileCourante().retirerAventurierTuile(this);
+        this.setTuileCourante(nouvelleTuile);
+        this.getTuileCourante().addAventurierTuile(this);
+        this.setPtsaction(this.getPtsaction()-1);
+        
+    }
 }

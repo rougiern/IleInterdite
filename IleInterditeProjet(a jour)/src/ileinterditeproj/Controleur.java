@@ -102,6 +102,31 @@ public class Controleur implements Observer {
     @Override
     public void update(Observable arg0, Object arg1) {
         
+        if(arg1 instanceof Message){
+            Message message = (Message) arg1 ;
+            if(message.getAction()==Action.BOUGER){
+                int i = 0;
+                while(i<joueurs.size() && joueurs.get(i).getNom().equals(message.getNomJ())==false){
+                    i++;
+                }
+ 
+                 for(Tuile t : joueurs.get(i).seDeplacer(grille)){
+                     System.out.println(t.getNom());
+                 }
+                 System.out.println("Ou se déplacer ?");
+                 Scanner sc = new Scanner(System.in) ;
+                 String nomtuile = sc.nextLine();
+                 Tuile nouvelletuile = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
+                 if(nouvelletuile.getNom().equals("null")==false){
+                     joueurs.get(i).changerTuileCourante(nouvelletuile);
+                 }
+                 System.out.println("Nouvelle tuile:"+joueurs.get(i).getTuileCourante().getNom());
+                 
+            }
+            
+        
+        }
+        
     }
     
     public void addAventurier(Aventurier aventurier) {
@@ -189,6 +214,20 @@ public class Controleur implements Observer {
             }
             
         }
+        
+    }
+
+    private Tuile chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
+        int i =0;
+        Tuile tvoulu = new Tuile("null");
+        while(i<tuilesatteignable.size() && tuilesatteignable.get(i).getNom().equals(nomtuile)==false){
+           i++;
+        }
+         if(i<tuilesatteignable.size() && tuilesatteignable.get(i).getNom().equals(nomtuile) ){
+             tvoulu = tuilesatteignable.get(i) ;
+         }
+         
+         return tvoulu;
         
     }
     

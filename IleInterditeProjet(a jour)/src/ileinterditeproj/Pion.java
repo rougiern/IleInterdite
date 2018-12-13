@@ -33,9 +33,9 @@ public enum Pion {
             return this.libelle;
         }
         
-        public Color getcouleur(){
+        public Color getCouleur(){
             
-            return this.getcouleur();
+            return this.couleur;
         }
 
 }
