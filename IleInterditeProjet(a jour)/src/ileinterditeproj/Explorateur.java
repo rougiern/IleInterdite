@@ -31,18 +31,19 @@ public class Explorateur extends Aventurier {
     }
 
     @Override
-    public void assecher(Grille g) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Tuile> assecher(Grille g) {
+        
+        ArrayList<Tuile> tuilesassechables = new ArrayList();
+        
+        if (this.getPtsaction() > 0) {
+            Tuile tuileactuelle = this.getTuileCourante();
+            tuilesassechables = g.getTuilesAdjacentesCarreInondees(tuileactuelle);
+            
+        }
+        
+        return tuilesassechables;
+        
     }
-
-    @Override
-    public void changerTuileCourante(Tuile nouvelletuile) {
-        this.getTuileCourante().retirerAventurierTuile(this);
-        this.setTuileCourante(nouvelletuile);
-        this.getTuileCourante().addAventurierTuile(this);
-        this.setPtsaction(this.getPtsaction()-1);
-    }
-       
        
        
     }

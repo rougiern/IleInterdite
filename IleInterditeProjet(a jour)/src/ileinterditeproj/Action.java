@@ -10,8 +10,8 @@ package ileinterditeproj;
  * @author Haruka
  */
 public enum Action {
-   ASSECHER,
+    ASSECHER,
     BOUGER,
     TERMINERTOUR,
-    
+    BOUGERJOUEUR
 }

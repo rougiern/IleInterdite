@@ -31,10 +31,51 @@ public abstract class Aventurier {
      */
    
     
-    public abstract ArrayList<Tuile> seDeplacer(Grille g);
-    
-    public abstract void assecher(Grille g);
+    public ArrayList<Tuile> seDeplacer(Grille g) {
 
+       ArrayList<Tuile> tuilesatteignable = new ArrayList();
+       
+       if(this.getPtsaction()>0){
+           Tuile tuileactuelle = this.getTuileCourante();
+           tuilesatteignable=g.getTuilesAdjacentesCroixNonCoulees(tuileactuelle);      
+    }
+       return  tuilesatteignable;
+    }
+    
+    public ArrayList<Tuile> assecher(Grille g) {
+       
+        ArrayList<Tuile> tuilesassechables = new ArrayList();
+        
+        if (this.getPtsaction() > 0) {
+            Tuile tuileactuelle = this.getTuileCourante();
+            tuilesassechables = g.getTuilesAdjacentesCroixInondees(tuileactuelle);   
+        }
+        return tuilesassechables;
+        }
+    
+        public void changerTuileCourante(Tuile nouvelletuile) {
+        this.getTuileCourante().retirerAventurierTuile(this);
+        this.setTuileCourante(nouvelletuile);
+        this.getTuileCourante().addAventurierTuile(this);
+        this.setPtsaction(this.getPtsaction()-1);
+        }
+        
+        public void assechertuile(Tuile t) {
+        t.setEtat(EtatTuile.Normal);
+        this.enleveUneAction();
+        }
+
+        public ArrayList<Tuile> deplacementParNavigateur(Grille g) {
+
+       ArrayList<Tuile> tuilesatteignable = new ArrayList();
+       
+       if(this.getPtsaction()>0){
+           Tuile tuileactuelle = this.getTuileCourante();
+           tuilesatteignable=g.getTuilesAdjacentes2CasesNonCoulees(tuileactuelle);      
+    }
+       return  tuilesatteignable;
+    }
+        
     /**
      * @return the tuileDepart
      */
@@ -95,8 +136,9 @@ public abstract class Aventurier {
     public void setPtsaction(int ptsaction) {
         this.ptsaction = ptsaction;
     }
-
-    public abstract void changerTuileCourante(Tuile nouvelletuile);
-    //To change body of generated methods, choose Tools | Templates.
+    
+    public void enleveUneAction() {
+        this.ptsaction = this.getPtsaction()-1;
+    }
 
 }

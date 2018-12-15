@@ -22,17 +22,9 @@ public class Plongeur extends Aventurier {
     @Override
     public ArrayList<Tuile> seDeplacer(Grille g) {
        
-      return null; 
+      return null;  //A DEFINIR *_*
     }
        
-       
-    
-
-    @Override
-    public void assecher(Grille g) {
-
-    }
-    
     public void changerTuileCourante(Tuile nouvelleTuile){
         this.getTuileCourante().retirerAventurierTuile(this);
         this.setTuileCourante(nouvelleTuile);

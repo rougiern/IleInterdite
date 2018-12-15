@@ -85,7 +85,27 @@ public class VueAventurier extends Observable {
         
         
         this.btnAssecher = new JButton( "Assecher");
+        
+            btnAssecher.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Action.ASSECHER,nomJoueur));
+                clearChanged();
+            }
+        });
+        
         this.btnAutreAction = new JButton("AutreAction") ;
+        
+        btnAutreAction.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Action.BOUGERJOUEUR,nomJoueur));
+                clearChanged();
+            }
+        });
+        
         this.btnTerminerTour = new JButton("Terminer Tour") ;
         
         this.panelBoutons.add(btnBouger);

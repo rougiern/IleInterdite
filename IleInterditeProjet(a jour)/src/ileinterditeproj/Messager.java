@@ -18,28 +18,6 @@ public class Messager extends Aventurier {
         super(nom, tuiledé);
         this.setPion(Pion.BLANC);
     }
-    
-    @Override
-    public ArrayList<Tuile> seDeplacer(Grille g) {
-       ArrayList<Tuile> tuilesatteignable = new ArrayList();
-       
-       if(this.getPtsaction()>0){
-           Tuile tuileactuel= this.getTuileCourante();
-           tuilesatteignable=g.getTuilesAdjacentesCroix(this.getTuileCourante());      
-    }
-       return  tuilesatteignable;
-    }
 
-    @Override
-    public void assecher(Grille g) {
-    }
-    
-    public void changerTuileCourante(Tuile nouvelleTuile){
-        this.getTuileCourante().retirerAventurierTuile(this);
-        this.setTuileCourante(nouvelleTuile);
-        this.getTuileCourante().addAventurierTuile(this);
-        this.setPtsaction(this.getPtsaction()-1);
-        
-    }
     
 }

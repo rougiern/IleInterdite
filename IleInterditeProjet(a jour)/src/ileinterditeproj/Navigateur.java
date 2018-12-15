@@ -18,25 +18,5 @@ public class Navigateur extends Aventurier {
         this.setPion(Pion.JAUNE);
     }
     
-    @Override
-    public ArrayList<Tuile> seDeplacer(Grille g) {
-        return null;
-    }
 
-    @Override
-    public void assecher(Grille g) {
-        
-    }
-    
-    public void deplacerJoueur(Aventurier aventurier) {
-        
-    }
-    
-    public void changerTuileCourante(Tuile nouvelleTuile){
-        this.getTuileCourante().retirerAventurierTuile(this);
-        this.setTuileCourante(nouvelleTuile);
-        this.getTuileCourante().addAventurierTuile(this);
-        this.setPtsaction(this.getPtsaction()-1);
-        
-    }
 }

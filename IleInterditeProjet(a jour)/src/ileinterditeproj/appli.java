@@ -26,9 +26,11 @@ public class appli {
 //        c.afficherGrille();
 //        c.getJoueurs().get(0).seDeplacer(c.getGrille());
 //        c.getJoueurs().get(1).seDeplacer(c.getGrille());
-          VueAventurier vueAventurier = new VueAventurier("jean", "Ingenieur",Pion.ROUGE.getCouleur() );
+          VueAventurier vueAventurier = new VueAventurier(c.getJoueurs().get(0).getNom(),c.getJoueurs().get(0).getClass().getSimpleName() ,Pion.ROUGE.getCouleur() );
+          VueAventurier vueA = new VueAventurier(c.getJoueurs().get(1).getNom(),c.getJoueurs().get(1).getClass().getSimpleName() ,Pion.ROUGE.getCouleur() );
           vueAventurier.addObserver(c);
-        
+          vueA.addObserver(c);
+      
     }
     
 }

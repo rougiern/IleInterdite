@@ -24,22 +24,22 @@ public class Controleur implements Observer {
         
         grille = new Grille();
         ArrayList<Tuile> lestuiles = new ArrayList();
-        Tuile t1 = new Tuile("Le Pont des Abimes");
+        Tuile t1 = new Tuile("Le Pont des Abimes");t1.setEtat(EtatTuile.Inondee);
         Tuile t2 = new Tuile("La Porte de Bronze");  // Pion.ROUGE
-        Tuile t3 = new Tuile("La Caverne des Ombres");//t3.setEtat(EtatTuile.Coulee);
-        Tuile t4 = new Tuile("La Porte de Fer" );    //Pion.VIOLET
-        Tuile t5 = new Tuile("La Porte d’Or");    //Pion.JAUNE
-        Tuile t6 = new Tuile("Les Falaises de l’Oubli");
-        Tuile t7 = new Tuile("Le Palais de Corail");
-        Tuile t8 = new Tuile("La Porte d’Argent");  //Pion.ORANGE
+        Tuile t3 = new Tuile("La Caverne des Ombres");t3.setEtat(EtatTuile.Inondee);
+        Tuile t4 = new Tuile("La Porte de Fer" );t4.setEtat(EtatTuile.Inondee);    //Pion.VIOLET
+        Tuile t5 = new Tuile("La Porte d'Or");t5.setEtat(EtatTuile.Inondee);    //Pion.JAUNE
+        Tuile t6 = new Tuile("Les Falaises de l'Oubli");t6.setEtat(EtatTuile.Inondee); 
+        Tuile t7 = new Tuile("Le Palais de Corail");t7.setEtat(EtatTuile.Inondee); 
+        Tuile t8 = new Tuile("La Porte d'Argent");t8.setEtat(EtatTuile.Inondee);   //Pion.ORANGE
         Tuile t9 = new Tuile("Les Dunes de l’Illusion");
         Tuile t10 = new Tuile("Heliport");      //Pion.BLEU 
         Tuile t11= new Tuile("La Porte de Cuivre");  // Pion.VERT
-        Tuile t12 = new Tuile("Le Jardin des Hurlements");
-        Tuile t13 = new Tuile("La Foret Pourpre");
-        Tuile t14 = new Tuile("Le Lagon Perdu");
-        Tuile t15 = new Tuile("Le Marais Brumeux");
-        Tuile t16 = new Tuile("Observatoire");
+        Tuile t12 = new Tuile("Le Jardin des Hurlements");t12.setEtat(EtatTuile.Inondee); 
+        Tuile t13 = new Tuile("La Foret Pourpre");t13.setEtat(EtatTuile.Inondee); 
+        Tuile t14 = new Tuile("Le Lagon Perdu");t14.setEtat(EtatTuile.Inondee); 
+        Tuile t15 = new Tuile("Le Marais Brumeux");t15.setEtat(EtatTuile.Inondee); 
+        Tuile t16 = new Tuile("Observatoire");t16.setEtat(EtatTuile.Inondee); 
         Tuile t17 = new Tuile("Le Rocher Fantome");
         Tuile t18 = new Tuile("La Caverne du Brasier");
         Tuile t19 = new Tuile("Le Temple du Soleil");
@@ -105,28 +105,159 @@ public class Controleur implements Observer {
         if(arg1 instanceof Message){
             Message message = (Message) arg1 ;
             if(message.getAction()==Action.BOUGER){
+                
                 int i = 0;
-                while(i<joueurs.size() && joueurs.get(i).getNom().equals(message.getNomJ())==false){
+                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
                     i++;
                 }
- 
-                 for(Tuile t : joueurs.get(i).seDeplacer(grille)){
-                     System.out.println(t.getNom());
-                 }
-                 System.out.println("Ou se déplacer ?");
-                 Scanner sc = new Scanner(System.in) ;
-                 String nomtuile = sc.nextLine();
-                 Tuile nouvelletuile = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
-                 if(nouvelletuile.getNom().equals("null")==false){
-                     joueurs.get(i).changerTuileCourante(nouvelletuile);
-                 }
-                 System.out.println("Nouvelle tuile:"+joueurs.get(i).getTuileCourante().getNom());
+                
+                Grille g = this.getGrille();
+                Scanner sc = new Scanner(System.in) ;
+                ArrayList<Tuile> tuilesatteignables;
+                
+                if (!(joueurs.get(i) instanceof Pilote)) {
+                
+                tuilesatteignables = joueurs.get(i).seDeplacer(grille);
+                
+                }
+                
+                else {
+                    
+                    System.out.println("Voulez-vous utiliser votre vol ?");
+                    String rep = sc.nextLine();
+                    if (rep.equals("oui")) {
+                        tuilesatteignables = ((Pilote)joueurs.get(i)).seDeplacerVol(grille);
+                    } else {
+                        tuilesatteignables = joueurs.get(i).seDeplacer(grille);
+                    }
+                    
+                }
                  
+                if (tuilesatteignables.isEmpty() == false) {
+                
+                affichernomtuiles(tuilesatteignables);
+                 
+                 System.out.println("Ou se déplacer ?");
+                 String nomtuile = sc.nextLine();
+                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
+                 
+                 if(nouvelletuile != null){
+                     joueurs.get(i).changerTuileCourante(nouvelletuile);
+                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                 }
+                 
+                }else {
+                    System.out.println("Action impossible");
+                }
+                
             }
             
+            else if(message.getAction() == Action.ASSECHER) {
+                
+                int i = 0;
+                while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
+                    i++; 
+                }
+                
+                    Grille g = this.getGrille();
+                    ArrayList<Tuile> tuilesassechables = joueurs.get(i).assecher(grille);
+                    
+                    if (tuilesassechables.isEmpty() == false) {
+                   
+                    affichernomtuiles(tuilesassechables);
+                        
+                    System.out.println("Quelle case assécher ?");
+                    Scanner sc = new Scanner(System.in) ;
+                    String nomtuile = sc.nextLine();
+                    Tuile tuileassecher = chercherTuile(nomtuile,tuilesassechables);
+                    
+                    if (tuileassecher != null) {
+                       joueurs.get(i).assechertuile(tuileassecher);
+                       System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                    } 
+                    
+                    if (joueurs.get(i) instanceof Ingenieur) {
+                    
+                    System.out.println("Voulez-vous assécher une autre case ?");
+                    String rep = sc.nextLine();
+                    
+                    if(rep.equals("oui") ) {
+                     
+                    tuilesassechables = joueurs.get(i).assecher(grille);
+                    
+                   
+                    if (tuilesassechables.isEmpty() == false) {
+                    
+                    affichernomtuiles(tuilesassechables);
+                    
+                    System.out.println("Quelle case assécher ?");
+                    sc = new Scanner(System.in) ;
+                    nomtuile = sc.nextLine();
+                    tuileassecher = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
+                        if (!(tuileassecher.getNom().equals("null"))) {
+                            ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
+                            System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                            }else{
+                            System.out.println("Assechement impossible");
+                            }
+                    }else {
+                        System.out.println("Assechement impossible");
+                    }
+                    }
+          
+                    }
+                    
+                 } else {
+                        System.out.println("Assechement impossible");
+                    }
         
+             }
+        
+            else if ((message.getAction() ==Action.BOUGERJOUEUR)) {
+                
+                 int i = 0;
+                while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
+                    i++; 
+                }
+                
+                int nbActions = joueurs.get(i).getPtsaction();
+                
+                if (joueurs.get(i) instanceof Navigateur && nbActions > 0) {
+                    
+                    Scanner sc = new Scanner(System.in);
+                    System.out.println("Entrez le nom du joueur");
+                    String nomjoueuradeplacer = sc.nextLine();
+                    
+                    Aventurier av = chercherAventurier(nomjoueuradeplacer);
+                    
+                    if (av != null) {   
+                        Grille g = this.getGrille();
+                        ArrayList<Tuile> tuilesatteignables = av.deplacementParNavigateur(g);
+                            if (tuilesatteignables.isEmpty() == false) {
+                
+                                affichernomtuiles(tuilesatteignables);
+                 
+                                System.out.println("Ou le déplacer ?");
+                                String nomtuile = sc.nextLine();
+                                Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
+                 
+                                 if(nouvelletuile != null){
+                                 joueurs.get(i).changerTuileCourante(nouvelletuile);
+                                 System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                                 }
+                            }else {
+                               System.out.println("Action impossible");
+                            }
+                        
+                        
+                    }
+                    
+                }
+                
+            }
+            
         }
-        
+            
     }
     
     public void addAventurier(Aventurier aventurier) {
@@ -217,9 +348,9 @@ public class Controleur implements Observer {
         
     }
 
-    private Tuile chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
+    public Tuile chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
         int i =0;
-        Tuile tvoulu = new Tuile("null");
+        Tuile tvoulu = null;
         while(i<tuilesatteignable.size() && tuilesatteignable.get(i).getNom().equals(nomtuile)==false){
            i++;
         }
@@ -229,6 +360,26 @@ public class Controleur implements Observer {
          
          return tvoulu;
         
+    }
+    
+    public Aventurier chercherAventurier(String nomjoueurcherche) {
+        int i =0;
+        Aventurier jvoulu = null;
+        while(i<joueurs.size() && joueurs.get(i).getNom().equals(nomjoueurcherche)==false){
+           i++;
+        }
+         if(i<joueurs.size() && joueurs.get(i).getNom().equals(nomjoueurcherche) ){
+             jvoulu = joueurs.get(i) ;
+         }
+         
+         return jvoulu;
+        
+    }
+    
+    private void affichernomtuiles(ArrayList<Tuile> listetuiles) {
+        for (Tuile t : listetuiles) {
+            System.out.println(t.getNom());
+        }
     }
     
 }
