@@ -15,12 +15,10 @@ public class Tuile {
     
     private String nom;
     private ArrayList<Aventurier> aventuriers;
-    private EtatTuile etat ;
     
     Tuile(String nom) {
         this.setNom(nom);
         aventuriers = new ArrayList<>();
-        etat=etat.Normal;
     }
 
     /**
@@ -35,49 +33,6 @@ public class Tuile {
      */
     public void setNom(String nom) {
         this.nom = nom;
-    }
-    
-    public void retirerAventurierTuile(Aventurier a){
-        int i =0;
-         while(i<getAventuriers().size()&& getAventuriers().get(i).getNom().equals(a.getNom())){
-                i++;
-            }
-            if(i!=getAventuriers().size()){
-            getAventuriers().remove(i);
-            }
-    }
-    
-    public void addAventurierTuile(Aventurier a){
-        
-        getAventuriers().add(a);
-    }
-
-    /**
-     * @return the aventuriers
-     */
-    public ArrayList<Aventurier> getAventuriers() {
-        return aventuriers;
-    }
-
-    /**
-     * @param aventuriers the aventuriers to set
-     */
-    public void setAventuriers(ArrayList<Aventurier> aventuriers) {
-        this.aventuriers = aventuriers;
-    }
-
-    /**
-     * @return the etat
-     */
-    public EtatTuile getEtat() {
-        return etat;
-    }
-
-    /**
-     * @param etat the etat to set
-     */
-    public void setEtat(EtatTuile etat) {
-        this.etat = etat;
     }
     
 }

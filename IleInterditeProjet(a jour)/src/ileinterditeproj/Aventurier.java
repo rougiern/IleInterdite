@@ -5,8 +5,6 @@
  */
 package ileinterditeproj;
 
-import java.util.ArrayList;
-
 /**
  *
  * @author kemplail
@@ -14,72 +12,36 @@ import java.util.ArrayList;
 public abstract class Aventurier {
     
     private String nom ;
-    private int ptsaction  ;
+    private Tuile tuileDepart;
     private Tuile tuileCourante ;
-    private Pion pion ;
     
-    public Aventurier(String nom, Tuile tuilede) {
+    public Aventurier(String nom, Tuile tuiledé) {
         this.setNom(nom);
-        this.setTuileCourante(tuilede);
-        this.ptsaction=3;
-        pion=null;
+        this.setTuileDepart(tuiledé);
     }
 
     /**
-     * @param g
      * @return the role
      */
    
     
-    public ArrayList<Tuile> seDeplacer(Grille g) {
-
-       ArrayList<Tuile> tuilesatteignable = new ArrayList();
-       
-       if(this.getPtsaction()>0){
-           Tuile tuileactuelle = this.getTuileCourante();
-           tuilesatteignable=g.getTuilesAdjacentesCroixNonCoulees(tuileactuelle);      
-    }
-       return  tuilesatteignable;
-    }
+    public abstract void seDeplacer();
     
-    public ArrayList<Tuile> assecher(Grille g) {
-       
-        ArrayList<Tuile> tuilesassechables = new ArrayList();
-        
-        if (this.getPtsaction() > 0) {
-            Tuile tuileactuelle = this.getTuileCourante();
-            tuilesassechables = g.getTuilesAdjacentesCroixInondees(tuileactuelle);   
-        }
-        return tuilesassechables;
-        }
-    
-        public void changerTuileCourante(Tuile nouvelletuile) {
-        this.getTuileCourante().retirerAventurierTuile(this);
-        this.setTuileCourante(nouvelletuile);
-        this.getTuileCourante().addAventurierTuile(this);
-        this.setPtsaction(this.getPtsaction()-1);
-        }
-        
-        public void assechertuile(Tuile t) {
-        t.setEtat(EtatTuile.Normal);
-        this.enleveUneAction();
-        }
+    public abstract void assecher();
 
-        public ArrayList<Tuile> deplacementParNavigateur(Grille g) {
-
-       ArrayList<Tuile> tuilesatteignable = new ArrayList();
-       
-       if(this.getPtsaction()>0){
-           Tuile tuileactuelle = this.getTuileCourante();
-           tuilesatteignable=g.getTuilesAdjacentes2CasesNonCoulees(tuileactuelle);      
-    }
-       return  tuilesatteignable;
-    }
-        
     /**
      * @return the tuileDepart
      */
-    
+    public Tuile getTuileDepart() {
+        return tuileDepart;
+    }
+
+    /**
+     * @param tuileDepart the tuileDepart to set
+     */
+    public void setTuileDepart(Tuile tuileDepart) {
+        this.tuileDepart = tuileDepart;
+    }
 
     /**
      * @return the tuileCourante
@@ -101,44 +63,5 @@ public abstract class Aventurier {
     public void setNom(String nom) {
         this.nom = nom;
     }
-
-    /**
-     * @param tuileCourante the tuileCourante to set
-     */
-    public void setTuileCourante(Tuile tuileCourante) {
-        this.tuileCourante = tuileCourante;
-    }
-
-    /**
-     * @return the pion
-     */
-    public Pion getPion() {
-        return pion;
-    }
-
-    /**
-     * @param pion the pion to set
-     */
-    public void setPion(Pion pion) {
-        this.pion = pion;
-    }
-
-    /**
-     * @return the ptsaction
-     */
-    public int getPtsaction() {
-        return ptsaction;
-    }
-
-    /**
-     * @param ptsaction the ptsaction to set
-     */
-    public void setPtsaction(int ptsaction) {
-        this.ptsaction = ptsaction;
-    }
     
-    public void enleveUneAction() {
-        this.ptsaction = this.getPtsaction()-1;
-    }
-
 }

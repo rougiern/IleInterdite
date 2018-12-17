@@ -5,9 +5,6 @@
  */
 package ileinterditeproj;
 
-import java.util.ArrayList;
-import java.util.Scanner;
-
 /**
  *
  * @author kemplail
@@ -16,12 +13,14 @@ public class Ingenieur extends Aventurier {
     
     Ingenieur(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
-        this.setPion(Pion.ROUGE);
-    }
-        
-    public void assechertuile2efois(Tuile t) {
-        t.setEtat(EtatTuile.Normal);
     }
     
+    @Override
+    public void seDeplacer() {
+    }
+
+    @Override
+    public void assecher() {
+    }
     
 }

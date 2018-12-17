@@ -12,5 +12,5 @@ package ileinterditeproj;
 public enum EtatTuile {
     Normal,
     Inondee,
-    Coulee
+    Cochee
 }
