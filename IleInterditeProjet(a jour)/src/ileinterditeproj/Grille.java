@@ -67,19 +67,19 @@ public class Grille {
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
         if(posX!=0){
-            if(tableau[posX-1][posY].getNom().equals("null")==false && tableau[posX-1][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX-1][posY].getNom().equals("null")) && tableau[posX-1][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
         if(posX!=5){
-            if(tableau[posX+1][posY].getNom().equals("null")==false && tableau[posX+1][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX+1][posY].getNom().equals("null")) && tableau[posX+1][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
         if(posY!=5){
-            if(tableau[posX][posY+1].getNom().equals("null")==false && tableau[posX][posY+1].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY+1].getNom().equals("null")) && tableau[posX][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
         if(posY!=0){
-            if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY-1].getNom().equals("null")) && tableau[posX][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
         return tuilesadj ;
@@ -102,19 +102,19 @@ public class Grille {
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
         if(posX!=0){
-            if(tableau[posX-1][posY].getNom().equals("null")==false && tableau[posX-1][posY].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX-1][posY].getNom().equals("null")) && tableau[posX-1][posY].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
         if(posX!=5){
-            if(tableau[posX+1][posY].getNom().equals("null")==false && tableau[posX+1][posY].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX+1][posY].getNom().equals("null")) && tableau[posX+1][posY].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
         if(posY!=5){
-            if(tableau[posX][posY+1].getNom().equals("null")==false && tableau[posX][posY+1].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX][posY+1].getNom().equals("null")) && tableau[posX][posY+1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
         if(posY!=0){
-            if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX][posY-1].getNom().equals("null")) && tableau[posX][posY-1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
         return tuilesadj ;
@@ -137,35 +137,35 @@ public class Grille {
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
         if(posX!=0){
-            if(tableau[posX-1][posY].getNom().equals("null")==false && tableau[posX-1][posY].getEtat()!=EtatTuile.Coulee ){
+            if(!(tableau[posX-1][posY].getNom().equals("null")) && tableau[posX-1][posY].getEtat()!=EtatTuile.Coulee ){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
         if(posX!=5){
-            if(tableau[posX+1][posY].getNom().equals("null")==false && tableau[posX+1][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX+1][posY].getNom().equals("null")) && tableau[posX+1][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
         if(posY!=5){
-            if(tableau[posX][posY+1].getNom().equals("null")==false && tableau[posX][posY+1].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY+1].getNom().equals("null")) && tableau[posX][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
         if(posY!=0){
-            if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY-1].getNom().equals("null")) && tableau[posX][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
-            if(tableau[posX-1][posY-1].getNom().equals("null")==false && tableau[posX-1][posY-1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=5 && posY!=0){
+            if(!(tableau[posX-1][posY-1].getNom().equals("null")) && tableau[posX-1][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-1][posY-1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
-            if(tableau[posX+1][posY+1].getNom().equals("null")==false && tableau[posX+1][posY+1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=0 && posY!=5 ){
+            if(!(tableau[posX+1][posY+1].getNom().equals("null")) && tableau[posX+1][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY+1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
-            if(tableau[posX-1][posY+1].getNom().equals("null")==false && tableau[posX-1][posY+1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=0 && posY!=5 ){
+            if(!(tableau[posX-1][posY+1].getNom().equals("null")) && tableau[posX-1][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-1][posY+1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
-            if(tableau[posX+1][posY-1].getNom().equals("null")==false && tableau[posX+1][posY-1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=5 && posY!=0){
+            if(!(tableau[posX+1][posY-1].getNom().equals("null")) && tableau[posX+1][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY-1]);}}
         
         
@@ -190,35 +190,35 @@ public class Grille {
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
         if(posX!=0){
-            if(tableau[posX-1][posY].getNom().equals("null")==false && tableau[posX-1][posY].getEtat()==EtatTuile.Inondee ){
+            if(!(tableau[posX-1][posY].getNom().equals("null")) && tableau[posX-1][posY].getEtat()==EtatTuile.Inondee ){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
         if(posX!=5){
-            if(tableau[posX+1][posY].getNom().equals("null")==false && tableau[posX+1][posY].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX+1][posY].getNom().equals("null")) && tableau[posX+1][posY].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
         if(posY!=5){
-            if(tableau[posX][posY+1].getNom().equals("null")==false && tableau[posX][posY+1].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX][posY+1].getNom().equals("null")) && tableau[posX][posY+1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
         if(posY!=0){
-            if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()==EtatTuile.Inondee){
+            if(!(tableau[posX][posY-1].getNom().equals("null")) && tableau[posX][posY-1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
-            if(tableau[posX-1][posY-1].getNom().equals("null")==false && tableau[posX-1][posY-1].getEtat()==EtatTuile.Inondee){
+        if(posX!=5 && posY!=0){
+            if(!(tableau[posX-1][posY-1].getNom().equals("null")) && tableau[posX-1][posY-1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX-1][posY-1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
-            if(tableau[posX+1][posY+1].getNom().equals("null")==false && tableau[posX+1][posY+1].getEtat()==EtatTuile.Inondee){
+        if(posX!=0 && posY!=5 ){
+            if(!(tableau[posX+1][posY+1].getNom().equals("null")) && tableau[posX+1][posY+1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX+1][posY+1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
-            if(tableau[posX-1][posY+1].getNom().equals("null")==false && tableau[posX-1][posY+1].getEtat()==EtatTuile.Inondee){
+        if(posX!=0 && posY!=5 ){
+            if(!(tableau[posX-1][posY+1].getNom().equals("null")) && tableau[posX-1][posY+1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX-1][posY+1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
-            if(tableau[posX+1][posY-1].getNom().equals("null")==false && tableau[posX+1][posY-1].getEtat()==EtatTuile.Inondee){
+        if(posX!=5 && posY!=0){
+            if(!(tableau[posX+1][posY-1].getNom().equals("null")) && tableau[posX+1][posY-1].getEtat()==EtatTuile.Inondee){
                 tuilesadj.add(tableau[posX+1][posY-1]);}}
         
         
@@ -260,51 +260,51 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
          if(posX!=0){
-            if(tableau[posX-1][posY].getNom().equals("null")==false && tableau[posX-1][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX-1][posY].getNom().equals("null")) && tableau[posX-1][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
         if(posX!=5){
-            if(tableau[posX+1][posY].getNom().equals("null")==false && tableau[posX+1][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX+1][posY].getNom().equals("null")) && tableau[posX+1][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
         if(posY!=5){
-            if(tableau[posX][posY+1].getNom().equals("null")==false && tableau[posX][posY+1].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY+1].getNom().equals("null")) && tableau[posX][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
         if(posY!=0){
-            if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY-1].getNom().equals("null")) && tableau[posX][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
          if(posX>1){
-            if(tableau[posX-2][posY].getNom().equals("null")==false && tableau[posX-2][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX-2][posY].getNom().equals("null")) && tableau[posX-2][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-2][posY]);}}
         
         if(posX<4){
-            if(tableau[posX+2][posY].getNom().equals("null")==false && tableau[posX+2][posY].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX+2][posY].getNom().equals("null")) && tableau[posX+2][posY].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+2][posY]);}}
         
         if(posY<4){
-            if(tableau[posX][posY+2].getNom().equals("null")==false && tableau[posX][posY+2].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY+2].getNom().equals("null")) && tableau[posX][posY+2].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY+2]);}}
         
         if(posY>1){
-            if(tableau[posX][posY-2].getNom().equals("null")==false && tableau[posX][posY-2].getEtat()!=EtatTuile.Coulee){
+            if(!(tableau[posX][posY-2].getNom().equals("null")) && tableau[posX][posY-2].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX][posY-2]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
-            if(tableau[posX-1][posY-1].getNom().equals("null")==false && tableau[posX-1][posY-1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=5 && posY!=0){
+            if(!(tableau[posX-1][posY-1].getNom().equals("null")) && tableau[posX-1][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-1][posY-1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
-            if(tableau[posX+1][posY+1].getNom().equals("null")==false && tableau[posX+1][posY+1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=0 && posY!=5 ){
+            if(!(tableau[posX+1][posY+1].getNom().equals("null")) && tableau[posX+1][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY+1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
-            if(tableau[posX-1][posY+1].getNom().equals("null")==false && tableau[posX-1][posY+1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=0 && posY!=5 ){
+            if(!(tableau[posX-1][posY+1].getNom().equals("null")) && tableau[posX-1][posY+1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX-1][posY+1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
-            if(tableau[posX+1][posY-1].getNom().equals("null")==false && tableau[posX+1][posY-1].getEtat()!=EtatTuile.Coulee){
+        if(posX!=5 && posY!=0){
+            if(!(tableau[posX+1][posY-1].getNom().equals("null")) && tableau[posX+1][posY-1].getEtat()!=EtatTuile.Coulee){
                 tuilesadj.add(tableau[posX+1][posY-1]);}}
         
         
@@ -366,19 +366,19 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
         if(posX!=0){
-            if(tableau[posX-1][posY].getNom().equals("null")==false ){
+            if(!(tableau[posX-1][posY].getNom().equals("null")) ){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
         if(posX!=5){
-            if(tableau[posX+1][posY].getNom().equals("null")==false ){
+            if(!(tableau[posX+1][posY].getNom().equals("null")) ){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
         if(posY!=5){
-            if(tableau[posX][posY+1].getNom().equals("null")==false ){
+            if(!(tableau[posX][posY+1].getNom().equals("null")) ){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
         if(posY!=0){
-            if(tableau[posX][posY-1].getNom().equals("null")==false ){
+            if(!(tableau[posX][posY-1].getNom().equals("null")) ){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
         return tuilesadj ;
