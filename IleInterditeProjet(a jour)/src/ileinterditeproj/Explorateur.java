@@ -5,6 +5,9 @@
  */
 package ileinterditeproj;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author kemplail
@@ -13,14 +16,39 @@ public class Explorateur extends Aventurier {
     
     Explorateur(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
+        this.setPion(Pion.VERT);
     }
     
     @Override
-    public void seDeplacer() {
+    public ArrayList<Tuile> seDeplacer(Grille g) {
+       ArrayList<Tuile> tuilesatteignable = new ArrayList();
+       
+       if(this.getPtsaction()>0){
+           Tuile tuileactuelle= this.getTuileCourante();
+           tuilesatteignable=g.getTuilesAdjacentesCarreNonCoulees(tuileactuelle);      
+    }
+       return  tuilesatteignable;
     }
 
     @Override
-    public void assecher() {
+    public ArrayList<Tuile> assecher(Grille g) {
+        
+        ArrayList<Tuile> tuilesassechables = new ArrayList();
+        
+        if (this.getPtsaction() > 0) {
+            Tuile tuileactuelle = this.getTuileCourante();
+            tuilesassechables = g.getTuilesAdjacentesCarreInondees(tuileactuelle);
+            
+        }
+        
+        return tuilesassechables;
+        
+    }
+       
+       
     }
     
-}
+       
+    
+  
+

@@ -5,6 +5,8 @@
  */
 package ileinterditeproj;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author kemplail
@@ -13,20 +15,8 @@ public class Navigateur extends Aventurier {
     
     Navigateur(String nom, Tuile tuiledé) {
         super(nom,tuiledé);
+        this.setPion(Pion.JAUNE);
     }
     
-    @Override
-    public void seDeplacer() {
-        
-    }
 
-    @Override
-    public void assecher() {
-        
-    }
-    
-    public void deplacerJoueur(Aventurier aventurier) {
-        
-    }
-    
 }

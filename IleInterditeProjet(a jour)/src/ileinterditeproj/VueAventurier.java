@@ -78,7 +78,7 @@ public class VueAventurier extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Action.BOUGER,nomJoueur));
+                notifyObservers(new Message(Action.DEPLACER,nomJoueur));
                 clearChanged();
             }
         });
@@ -107,6 +107,15 @@ public class VueAventurier extends Observable {
         });
         
         this.btnTerminerTour = new JButton("Terminer Tour") ;
+        
+        btnTerminerTour.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Action.TERMINERTOUR,nomJoueur));
+                clearChanged();
+            }
+        });
         
         this.panelBoutons.add(btnBouger);
         this.panelBoutons.add(btnAssecher);
@@ -144,6 +153,11 @@ public class VueAventurier extends Observable {
         // Instanciation de la fenêtre 
         VueAventurier vueAventurier = new VueAventurier("Manon", "Explorateur",Pion.ROUGE.getCouleur() );
     }
+     
+     public void close() {
+         this.window.dispose();
+     }
+     
 }
 
  

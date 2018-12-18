@@ -11,7 +11,7 @@ package ileinterditeproj;
  */
 public enum Action {
     ASSECHER,
-    BOUGER,
+    DEPLACER,
     TERMINERTOUR,
     BOUGERJOUEUR
 }

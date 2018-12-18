@@ -5,22 +5,49 @@
  */
 package ileinterditeproj;
 
+import java.util.ArrayList;
+
 /**
  *
  * @author kemplail
  */
 public class Pilote extends Aventurier {
     
+    private int nbvol = 1;
+    
     Pilote(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
+        this.setPion(Pion.VERT);
     }
     
-    @Override
-    public void seDeplacer() {
+    public ArrayList<Tuile> seDeplacerVol(Grille g) {
+
+       ArrayList<Tuile> tuilesatteignable = new ArrayList();
+       
+       if(this.getPtsaction()>0 && this.getNbvol() == 1){
+           Tuile tuileactuelle = this.getTuileCourante();
+           tuilesatteignable=g.getTuilesNonCoulees();
+           enleveUnVol();
+    }
+       return  tuilesatteignable;
     }
 
-    @Override
-    public void assecher() {
+    /**
+     * @return the nbvol
+     */
+    public int getNbvol() {
+        return nbvol;
+    }
+
+    /**
+     * @param nbvol the nbvol to set
+     */
+    public void setNbvol(int nbvol) {
+        this.nbvol = nbvol;
+    }
+    
+    public void enleveUnVol() {
+        this.setNbvol(0);
     }
     
 }

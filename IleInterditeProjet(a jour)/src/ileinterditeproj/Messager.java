@@ -5,6 +5,9 @@
  */
 package ileinterditeproj;
 
+import java.util.ArrayList;
+import java.util.Scanner;
+
 /**
  *
  * @author kemplail
@@ -13,14 +16,8 @@ public class Messager extends Aventurier {
     
     Messager(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
-    }
-    
-    @Override
-    public void seDeplacer() {
+        this.setPion(Pion.BLANC);
     }
 
-    @Override
-    public void assecher() {
-    }
     
 }
