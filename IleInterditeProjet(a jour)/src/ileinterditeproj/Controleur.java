@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
+import javax.swing.JOptionPane;
 
 /**
  *
@@ -147,12 +148,13 @@ public class Controleur implements Observer {
                  if(nouvelletuile != null){
                      joueurs.get(i).changerTuileCourante(nouvelletuile);
                      grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                     afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                 
                      vueaventurier.rafraichirPositon(joueurs.get(i));
                  }
                  
                 }else {
-                    System.out.println("Action impossible");
+                    afficherInformation("Action impossible");
                 }
                 
                
@@ -182,7 +184,7 @@ public class Controleur implements Observer {
                     if (tuileassecher != null) {
                        joueurs.get(i).assechertuile(tuileassecher);
                         grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                       System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                        afficherInformation("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
                     } 
                     
                     if (joueurs.get(i) instanceof Ingenieur) {
@@ -205,19 +207,19 @@ public class Controleur implements Observer {
                     tuileassecher = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
                         if (tuileassecher != null) {
                             ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
-                            System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                            afficherInformation("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
                             }else{
-                            System.out.println("Assechement impossible");
+                            afficherInformation("Assechement impossible");
                             }
                     }else {
-                        System.out.println("Assechement impossible");
+                        afficherInformation("Assechement impossible");
                     }
                     }
           
                     }
                     
                  } else {
-                        System.out.println("Assechement impossible");
+                        afficherInformation("Assechement impossible");
                     }
         
              }
@@ -254,10 +256,10 @@ public class Controleur implements Observer {
                                  joueurs.get(i).changerTuileCourante(nouvelletuile);
                                  joueurs.get(i).enleveUneAction();
                                  grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                                 System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                                afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
                                  }
                             }else {
-                               System.out.println("Action impossible");
+                               afficherInformation("Action impossible");
                             }
                         
                         
@@ -415,6 +417,10 @@ public class Controleur implements Observer {
             ((VueAventurier)av).getBtnAutreAction().setEnabled(false);
         }
         
+    }
+    
+    public static void afficherInformation(String message) {
+        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.OK_OPTION);
     }
     
 }
