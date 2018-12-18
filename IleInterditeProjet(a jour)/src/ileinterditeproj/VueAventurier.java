@@ -2,7 +2,9 @@ package ileinterditeproj;
 
 import java.awt.BorderLayout;
 import java.awt.Color;
+import java.awt.Dimension;
 import java.awt.GridLayout;
+import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
@@ -33,35 +35,38 @@ public class VueAventurier extends Observable {
    
    
     
-    public VueAventurier(String nomJoueur, String nomAventurier, Color couleur){
+    public VueAventurier(Aventurier a){
 
         this.window = new JFrame();
         window.setSize(350, 200);
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         //le titre = nom du joueur 
-        window.setTitle(nomJoueur);
+        window.setTitle(a.getNom());
         mainPanel = new JPanel(new BorderLayout());
         this.window.add(mainPanel);
 
         mainPanel.setBackground(new Color(230, 230, 230));
-        mainPanel.setBorder(BorderFactory.createLineBorder(couleur, 2)) ;
+        mainPanel.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
 
         // =================================================================================
         // NORD : le titre = nom de l'aventurier sur la couleurActive du pion
 
         this.panelAventurier = new JPanel();
-        panelAventurier.setBackground(couleur);
-        panelAventurier.add(new JLabel(nomAventurier,SwingConstants.CENTER ));
+        panelAventurier.setBackground(a.getPion().getCouleur());
+        panelAventurier.add(new JLabel(a.getClass().getSimpleName(),SwingConstants.CENTER ));
         mainPanel.add(panelAventurier, BorderLayout.NORTH);
    
         // =================================================================================
         // CENTRE : 1 ligne pour position courante
         this.panelCentre = new JPanel(new GridLayout(2, 1));
         this.panelCentre.setOpaque(false);
-        this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, couleur));
+        this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, a.getPion().getCouleur()));
         mainPanel.add(this.panelCentre, BorderLayout.CENTER);
         
         panelCentre.add(new JLabel ("Position", SwingConstants.CENTER));
         position = new  JTextField(30);
+        position.setText(a.getTuileCourante().getNom());
         position.setHorizontalAlignment(CENTER);
         panelCentre.add(position);
 
@@ -78,7 +83,7 @@ public class VueAventurier extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Action.DEPLACER,nomJoueur));
+                notifyObservers(new Message(Action.DEPLACER,a.getNom()));
                 clearChanged();
             }
         });
@@ -90,7 +95,7 @@ public class VueAventurier extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Action.ASSECHER,nomJoueur));
+                notifyObservers(new Message(Action.ASSECHER,a.getNom()));
                 clearChanged();
             }
         });
@@ -101,7 +106,7 @@ public class VueAventurier extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Action.BOUGERJOUEUR,nomJoueur));
+                notifyObservers(new Message(Action.BOUGERJOUEUR,a.getNom()));
                 clearChanged();
             }
         });
@@ -112,7 +117,7 @@ public class VueAventurier extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Action.TERMINERTOUR,nomJoueur));
+                notifyObservers(new Message(Action.TERMINERTOUR,a.getNom()));
                 clearChanged();
             }
         });
@@ -151,11 +156,19 @@ public class VueAventurier extends Observable {
  
      public static void main(String [] args) {
         // Instanciation de la fenêtre 
-        VueAventurier vueAventurier = new VueAventurier("Manon", "Explorateur",Pion.ROUGE.getCouleur() );
+
     }
      
      public void close() {
          this.window.dispose();
+     }
+     
+     public void afficher(){
+         this.window.setVisible(true);
+     }
+     
+     public void rafraichirPositon(Aventurier a){
+         this.position.setText(a.getTuileCourante().getNom());
      }
      
 }

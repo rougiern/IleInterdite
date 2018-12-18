@@ -20,6 +20,7 @@ public class Controleur implements Observer {
     private ArrayList<Aventurier> joueurs;
     private ArrayList<Tuile> tuilesdepart;
     private VueAventurier vueaventurier;
+    private VueInitialisation vueIni;
     private int compteurtour = 0;
    
     Controleur() {
@@ -88,11 +89,15 @@ public class Controleur implements Observer {
         grille.setTableau(lestuiles);
         
         joueurs = new ArrayList();
-        setJoueurs();
+        
+        vueIni = new VueInitialisation();
+        
+        
+        setJoueurs(vueIni);
         
         
           
-               vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour).getNom(),this.getJoueurs().get(compteurtour).getClass().getSimpleName() ,this.getJoueurs().get(compteurtour).getPion().getCouleur() );
+               vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                vueaventurier.addObserver(this);
         
     }
@@ -141,12 +146,16 @@ public class Controleur implements Observer {
                  
                  if(nouvelletuile != null){
                      joueurs.get(i).changerTuileCourante(nouvelletuile);
+                     grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
                      System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                     vueaventurier.rafraichirPositon(joueurs.get(i));
                  }
                  
                 }else {
                     System.out.println("Action impossible");
                 }
+                
+               
                 
             }
             
@@ -158,6 +167,7 @@ public class Controleur implements Observer {
                 }
                 
                     Grille g = this.getGrille();
+                    
                     ArrayList<Tuile> tuilesassechables = joueurs.get(i).assecher(grille);
                     
                     if (tuilesassechables.isEmpty() == false) {
@@ -171,6 +181,7 @@ public class Controleur implements Observer {
                     
                     if (tuileassecher != null) {
                        joueurs.get(i).assechertuile(tuileassecher);
+                        grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
                        System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
                     } 
                     
@@ -242,6 +253,7 @@ public class Controleur implements Observer {
                                  if(nouvelletuile != null){
                                  joueurs.get(i).changerTuileCourante(nouvelletuile);
                                  joueurs.get(i).enleveUneAction();
+                                 grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
                                  System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
                                  }
                             }else {
@@ -257,7 +269,7 @@ public class Controleur implements Observer {
                compteurtour++;
                 if (compteurtour < joueurs.size()) {
                     vueaventurier.close();
-                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour).getNom(),this.getJoueurs().get(compteurtour).getClass().getSimpleName() ,this.getJoueurs().get(compteurtour).getPion().getCouleur() );
+                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                     vueaventurier.addObserver(this);
                 } else {
                     System.out.println("Le tour est terminé");
@@ -270,7 +282,7 @@ public class Controleur implements Observer {
                         }
                     }
                     
-                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour).getNom(),this.getJoueurs().get(compteurtour).getClass().getSimpleName() ,this.getJoueurs().get(compteurtour).getPion().getCouleur() );
+                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour) );
                     vueaventurier.addObserver(this);
                     
                 }
@@ -325,48 +337,40 @@ public class Controleur implements Observer {
     /**
      * @param joueurs the joueurs to set
      */
-    public void setJoueurs() {
-        System.out.println("Combien y a t'il de joueurs ?");
-        Scanner sc = new Scanner(System.in) ;
-        int nbJ = sc.nextInt();
-        while (nbJ >4 || nbJ < 2 ) {
-             
-             System.out.println("Le nombre de joueurs doit être compris entre 2 et 4 inclus");
-             nbJ = sc.nextInt();
-        }
-        for(int i = 0 ; i<nbJ ; i++){
-            System.out.println("Entrez votre nom");
-            String nom = sc.next();
-            System.out.println("Entrez votre role");
-            String role = sc.next();
-            while ( role.equals("plongeur")==false && role.equals("messager")==false && role.equals("navigateur")==false && role.equals("explorateur")==false && role.equals("ingenieur")==false && role.equals("pilote")==false ) {
-               System.out.println("Le role n'existe pas veuillez choisir un role valide ");
-               role = sc.nextLine();
-            }
-            if(role.equals("plongeur")){
-                Plongeur p = new Plongeur(nom,tuilesdepart.get(1)); //Noir
+    public void setJoueurs(VueInitialisation v) {
+        
+            ArrayList<String> noms = v.getNoms();
+            ArrayList<String> roles = v.getRoles();
+            
+            int i = 0;
+            while(i<roles.size()){
+            
+            if(roles.get(i).equals("plongeur")){
+                Plongeur p = new Plongeur(noms.get(i),tuilesdepart.get(1)); //Noir
                 joueurs.add(p);
-            }else if(role.equals("messager")){
-                Messager m = new Messager(nom,tuilesdepart.get(3));  //Blanc
+            }else if(roles.get(i).equals("messager")){
+                Messager m = new Messager(noms.get(i),tuilesdepart.get(3));  //Blanc
                 joueurs.add(m);
-            }else if(role.equals("navigateur")){
-                Navigateur n = new Navigateur(nom,tuilesdepart.get(2)); // Jaune
+            }else if(roles.get(i).equals("navigateur")){
+                Navigateur n = new Navigateur(noms.get(i),tuilesdepart.get(2)); // Jaune
                 joueurs.add(n);
-            }else if(role.equals("pilote")){
-                Pilote pilote = new Pilote(nom,tuilesdepart.get(4)); // Bleu
+            }else if(roles.get(i).equals("pilote")){
+                Pilote pilote = new Pilote(noms.get(i),tuilesdepart.get(4)); // Bleu
                 joueurs.add(pilote);
-            }else if(role.equals("ingenieur")){
+            }else if(roles.get(i).equals("ingenieur")){
                   // Pion.ROUGE
-                Ingenieur ing = new Ingenieur(nom,tuilesdepart.get(0)); //Rouge
+                Ingenieur ing = new Ingenieur(noms.get(i),tuilesdepart.get(0)); //Rouge
                 joueurs.add(ing);
-            }else if(role.equals("explorateur")){
-                Explorateur exp = new Explorateur(nom,tuilesdepart.get(5)); //Vert
+            }else if(roles.get(i).equals("explorateur")){
+                Explorateur exp = new Explorateur(noms.get(i),tuilesdepart.get(5)); //Vert
                 joueurs.add(exp);
+            }
+            i++;
             }
             
         }
         
-    }
+    
 
     public Tuile chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
         int i =0;
@@ -400,6 +404,17 @@ public class Controleur implements Observer {
         for (Tuile t : listetuiles) {
             System.out.println(t.getNom());
         }
+    }
+    
+    public void grisebouton(Observable av, int nbaction) {
+        
+        if(nbaction==0){
+            
+            ((VueAventurier)av).getBtnAssecher().setEnabled(false);
+            ((VueAventurier)av).getBtnBouger().setEnabled(false);
+            ((VueAventurier)av).getBtnAutreAction().setEnabled(false);
+        }
+        
     }
     
 }
