@@ -22,6 +22,7 @@ public class Controleur implements Observer {
     private ArrayList<Tuile> tuilesdepart;
     private VueAventurier vueaventurier;
     private VueInitialisation vueIni;
+    private VueGrille vueG;
     private int compteurtour = 0;
    
     Controleur() {
@@ -92,9 +93,10 @@ public class Controleur implements Observer {
         joueurs = new ArrayList();
         
         vueIni = new VueInitialisation();
-        
+        vueG = new VueGrille();
         
         setJoueurs(vueIni);
+        
         
         
           
@@ -127,9 +129,8 @@ public class Controleur implements Observer {
                 
                 else {
                     
-                    System.out.println("Voulez-vous utiliser votre vol ?");
-                    String rep = sc.nextLine();
-                    if (rep.equals("oui")) {
+                    
+                    if (vueG.questionOuiNon("Voulez vous utilisez votre vol ? (1 par tour)")) {
                         tuilesatteignables = ((Pilote)joueurs.get(i)).seDeplacerVol(grille);
                     } else {
                         tuilesatteignables = joueurs.get(i).seDeplacer(grille);
@@ -139,22 +140,22 @@ public class Controleur implements Observer {
                  
                 if (tuilesatteignables.isEmpty() == false) {
                 
-                affichernomtuiles(tuilesatteignables);
-                 
-                 System.out.println("Ou se déplacer ?");
-                 String nomtuile = sc.nextLine();
+                vueG.afficherTuiles(tuilesatteignables);
+                vueG.poserQuestion("Ou voulez vous déplacez  ?");
+                
+                 String nomtuile = vueG.saisirNomTuile();
                  Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
                  
                  if(nouvelletuile != null){
                      joueurs.get(i).changerTuileCourante(nouvelletuile);
                      grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                     afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                     vueG.afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
                  
                      vueaventurier.rafraichirPositon(joueurs.get(i));
                  }
                  
                 }else {
-                    afficherInformation("Action impossible");
+                    vueG.afficherInformation("Action impossible");
                 }
                 
                
@@ -172,56 +173,53 @@ public class Controleur implements Observer {
                     
                     ArrayList<Tuile> tuilesassechables = joueurs.get(i).assecher(grille);
                     
-                    if (tuilesassechables.isEmpty() == false) {
+                    if (!(tuilesassechables.isEmpty())) {
                    
-                    affichernomtuiles(tuilesassechables);
+                    vueG.afficherTuiles(tuilesassechables);
                         
-                    System.out.println("Quelle case assécher ?");
-                    Scanner sc = new Scanner(System.in) ;
-                    String nomtuile = sc.nextLine();
+                    
+                    String nomtuile = vueG.saisirCaseAassecher();
                     Tuile tuileassecher = chercherTuile(nomtuile,tuilesassechables);
                     
                     if (tuileassecher != null) {
                        joueurs.get(i).assechertuile(tuileassecher);
                         grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                        afficherInformation("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                        vueG.afficherInformation("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                    }else{
+                     vueG.afficherInformation("Assechement impossible:La tuile n'as pas été trouvée ");   
                     } 
                     
                     if (joueurs.get(i) instanceof Ingenieur) {
                     
-                    System.out.println("Voulez-vous assécher une autre case ?");
-                    String rep = sc.nextLine();
                     
-                    if(rep.equals("oui") ) {
+                    
+                    if(vueG.questionOuiNon("Voulez vous asséchez une autre case ?") ) {
                      
                     tuilesassechables = joueurs.get(i).assecher(grille);
                     
                    
                     if (tuilesassechables.isEmpty() == false) {
                     
-                    affichernomtuiles(tuilesassechables);
-                    
-                    System.out.println("Quelle case assécher ?");
-                    sc = new Scanner(System.in) ;
-                    nomtuile = sc.nextLine();
+                    vueG.afficherTuiles(tuilesassechables);
+            
+                    nomtuile = vueG.saisirCaseAassecher();
                     tuileassecher = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
                         if (tuileassecher != null) {
                             ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
-                            afficherInformation("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                            vueG.afficherInformation("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
                             }else{
-                            afficherInformation("Assechement impossible");
+                            vueG.afficherInformation("Assechement impossible:La tuile n'as pas été trouvée ");
                             }
                     }else {
-                        afficherInformation("Assechement impossible");
+                        vueG.afficherInformation("Assechement impossible:Aucune tuile à assécher à proximité");
                     }
                     }
           
                     }
                     
                  } else {
-                        afficherInformation("Assechement impossible");
+                        vueG.afficherInformation("Assechement impossible:Aucune tuile à assécher à proximité");
                     }
-        
              }
         
             else if ((message.getAction() ==Action.BOUGERJOUEUR)) {
@@ -236,9 +234,7 @@ public class Controleur implements Observer {
                 
                 if (joueurs.get(i) instanceof Navigateur && nbActions > 0) {
                     
-                    Scanner sc = new Scanner(System.in);
-                    System.out.println("Entrez le nom du joueur");
-                    String nomjoueuradeplacer = sc.nextLine();
+                    String nomjoueuradeplacer = vueG.saisirJoueur();
                     
                     Aventurier av = chercherAventurier(nomjoueuradeplacer);
                     
@@ -246,20 +242,20 @@ public class Controleur implements Observer {
                         ArrayList<Tuile> tuilesatteignables = av.deplacementParNavigateur(g);
                             if (tuilesatteignables.isEmpty() == false) {
                 
-                                affichernomtuiles(tuilesatteignables);
+                                vueG.afficherTuiles(tuilesatteignables);
                  
-                                System.out.println("Ou le déplacer ?");
-                                String nomtuile = sc.nextLine();
+                                vueG.poserQuestion("Ou voulez vous déplacez le joueur ?");
+                                String nomtuile = vueG.saisirNomTuile();
                                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
                  
                                  if(nouvelletuile != null){
                                  joueurs.get(i).changerTuileCourante(nouvelletuile);
                                  joueurs.get(i).enleveUneAction();
                                  grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                                afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                                vueG.afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
                                  }
                             }else {
-                               afficherInformation("Action impossible");
+                               vueG.afficherInformation("Action impossible");
                             }
                         
                         
@@ -274,7 +270,7 @@ public class Controleur implements Observer {
                     vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                     vueaventurier.addObserver(this);
                 } else {
-                    System.out.println("Le tour est terminé");
+                    vueG.fintour();
                     compteurtour = 0;
                     
                     for (Aventurier j : joueurs) {
@@ -402,11 +398,7 @@ public class Controleur implements Observer {
         
     }
     
-    private void affichernomtuiles(ArrayList<Tuile> listetuiles) {
-        for (Tuile t : listetuiles) {
-            System.out.println(t.getNom());
-        }
-    }
+    
     
     public void grisebouton(Observable av, int nbaction) {
         
@@ -419,8 +411,6 @@ public class Controleur implements Observer {
         
     }
     
-    public static void afficherInformation(String message) {
-        JOptionPane.showMessageDialog(null, message, "Information", JOptionPane.OK_OPTION);
-    }
+    
     
 }
