@@ -38,7 +38,7 @@ public class Controleur implements Observer {
         Tuile t7 = new Tuile("Le Palais de Corail");
         Tuile t8 = new Tuile("La Porte d'Argent");  //Pion.ORANGE
         Tuile t9 = new Tuile("Les Dunes de l’Illusion"); t9.setEtat(EtatTuile.Coulee);
-        Tuile t10 = new Tuile("Heliport");      //Pion.BLEU 
+        Tuile t10 = new Tuile("Heliport"); t10.setEtat(EtatTuile.Inondee);
         Tuile t11= new Tuile("La Porte de Cuivre");  // Pion.VERT
         Tuile t12 = new Tuile("Le Jardin des Hurlements"); 
         Tuile t13 = new Tuile("La Foret Pourpre");
@@ -249,10 +249,10 @@ public class Controleur implements Observer {
                                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
                  
                                  if(nouvelletuile != null){
-                                 joueurs.get(i).changerTuileCourante(nouvelletuile);
+                                 av.changerTuileCourante(nouvelletuile);
                                  joueurs.get(i).enleveUneAction();
                                  grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                                vueG.afficherInformation("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+                                vueG.afficherInformation("Action effectuée : Nouvelle tuile :"+av.getTuileCourante().getNom());
                                  }
                             }else {
                                vueG.afficherInformation("Action impossible");

@@ -32,6 +32,8 @@ public class VueGrille extends Observable{
     }
     
     public void afficherTuiles(ArrayList<Tuile> listetuiles) {
+        System.out.println("");
+        System.out.println("Tuiles disponibles : ");
         for (Tuile t : listetuiles) {
             System.out.println(t.getNom());
         }
