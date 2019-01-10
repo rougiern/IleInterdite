@@ -4,11 +4,18 @@
  * and open the template in the editor.
  */
 package ileinterditeproj;
-
 /**
  *
  * @author duttod
  */
 public class CarteTresor extends CarteTirage{
+    private Utils.Tresor type;
     
+    public CarteTresor(Utils.Tresor type){
+        this.type=type;
+    }
+    
+    public Utils.Tresor getTypeTresor(){
+        return type;
+    }
 }
