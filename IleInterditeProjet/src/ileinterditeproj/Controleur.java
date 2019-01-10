@@ -134,7 +134,6 @@ public class Controleur implements Observer {
         //vueIni = new VueInitialisation();
         //setJoueurs(vueIni);
         
-               Commandes.
                vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                vueaventurier.addObserver(this);
         
