@@ -19,7 +19,7 @@ public class Messager extends Aventurier {
     
     public Messager(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
-        this.setPion(Pion.VIOLET);
+        this.setPion(Pion.ORANGE);
     }
 
     
