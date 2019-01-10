@@ -22,6 +22,8 @@ public class Message {
         
     }
 
+    
+
     /**
      * @return the action
      */

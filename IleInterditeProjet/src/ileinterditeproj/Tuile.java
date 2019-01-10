@@ -22,7 +22,7 @@ public class Tuile extends ObjetIdentifie{
         super();
         this.setNom(nom);
         aventuriers = new ArrayList<>();
-        etat=etat.Normal;
+        etat=EtatTuile.Normal;
     }
 
     /**

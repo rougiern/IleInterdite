@@ -21,6 +21,8 @@ import LesJoueurs.Pilote;
 import LesJoueurs.Plongeur;
 import Vues.VueInitialisation;
 import Vues.VueAventurier;
+import Vues.VueInscription;
+import Vues.VuePlateau;
 import ileinterditeproj.EtatTuile;
 import ileinterditeproj.Grille;
 import ileinterditeproj.Message;
@@ -40,7 +42,11 @@ public class Controleur implements Observer {
     private Grille grille;
     private ArrayList<Aventurier> joueurs;
     private ArrayList<Tuile> tuilesdepart;
+    private ArrayList<CarteInondation> piocheInondation ;
+    private ArrayList<CarteInondation> defausseInondation ;
     private VueAventurier vueaventurier;
+    private VueInscription vueinsc; 
+    private VuePlateau vplateau ;
     private VueInitialisation vueIni;
     private int compteurtour = 0;
    
@@ -106,9 +112,12 @@ public class Controleur implements Observer {
         lestuiles.add(t22);
         lestuiles.add(t23);
         lestuiles.add(t24);
-     
-        grille.setTableau(lestuiles);
         
+        
+        piocheInondation = new ArrayList();
+        defausseInondation = new ArrayList();
+        grille.setTableau(lestuiles);
+        setpiocheInondation(lestuiles);
         joueurs = new ArrayList();
         
         vueIni = new VueInitialisation();
@@ -435,6 +444,15 @@ public class Controleur implements Observer {
             ((VueAventurier)av).getBtnBouger().setEnabled(false);
             ((VueAventurier)av).getBtnAutreAction().setEnabled(false);
         }
+        
+    }
+    
+    public void setpiocheInondation(ArrayList<Tuile> listeT){
+        for(Tuile t : listeT){
+            CarteInondation carte = new CarteInondation(t);
+            piocheInondation.add(carte);
+        }
+        
         
     }
     

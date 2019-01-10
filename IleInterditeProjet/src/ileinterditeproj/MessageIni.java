@@ -11,41 +11,30 @@ package ileinterditeproj;
  */
 public class MessageIni {
     
-    private String role;
-    private String nom;
+    private Action action;
+    private String[] noms;
+    private int nbj;
     
-    public MessageIni(String role ,String nom){
-        this.role=role;
-        this.nom=nom;
+    public MessageIni(Action a ,String[] n){
+        this.action=a;
+        this.noms=n;
         
     }
+    
+    public MessageIni(Action a ,int n){
+        this.action=a;
+        this.nbj=n;
+        
+    }
+    
 
     /**
      * @return the role
      */
-    public String getRole() {
-        return role;
-    }
-
-    /**
-     * @param role the role to set
-     */
-    public void setRole(String role) {
-        this.role = role;
-    }
-
-    /**
-     * @return the nom
-     */
-    public String getNom() {
-        return nom;
-    }
-
+    
     /**
      * @param nom the nom to set
      */
-    public void setNom(String nom) {
-        this.nom = nom;
-    }
+    
     
 }

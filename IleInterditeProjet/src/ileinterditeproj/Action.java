@@ -9,18 +9,8 @@ package ileinterditeproj;
  *
  * @author duttod
  */
-public class CarteTresor extends CarteTirage{
-    private Utils.Tresor type;
-    
-    public CarteTresor(Utils.Tresor type){
-        this.type=type;
-    }
-    
-    public Utils.Tresor getTypeTresor(){
-        return type;
-    }
-
-    
-    
+public enum Action {
+    INSCRIRE_JOUEURS,
+    NB_JOUEURS
     
 }

@@ -5,7 +5,10 @@
  */
 package ileinterditeproj;
 
+import Vues.VuePlateau;
+import Vues.VueTuile;
 import java.util.ArrayList;
+import javax.swing.JFrame;
 
 /**
  *
@@ -20,9 +23,8 @@ public class appli {
         
         
         
-        
         Controleur c = new Controleur();
-
+        VuePlateau v = new VuePlateau(c.getGrille());
           
       
     }
