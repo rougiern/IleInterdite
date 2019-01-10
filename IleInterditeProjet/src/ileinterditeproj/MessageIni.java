@@ -10,10 +10,18 @@ package ileinterditeproj;
  * @author duttod
  */
 public class MessageIni {
+
+    /**
+     * @return the nbj
+     */
+    public int getNbj() {
+        return nbj;
+    }
     
     private Action action;
     private String[] noms;
     private int nbj;
+    
     
     public MessageIni(Action a ,String[] n){
         this.action=a;
@@ -26,15 +34,26 @@ public class MessageIni {
         this.nbj=n;
         
     }
-    
 
     /**
-     * @return the role
+     * @return the action
      */
-    
+    public Action getAction() {
+        return action;
+    }
+
     /**
-     * @param nom the nom to set
+     * @return the noms
      */
+    public String[] getNoms() {
+        return noms;
+    }
+    
+   
+    
+    
+
+    
     
     
 }

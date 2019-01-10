@@ -24,8 +24,8 @@ public class appli {
         
         
         Controleur c = new Controleur();
-        VuePlateau v = new VuePlateau(c.getGrille());
-          
+//        VuePlateau v = new VuePlateau(c.getGrille());
+        
       
     }
     

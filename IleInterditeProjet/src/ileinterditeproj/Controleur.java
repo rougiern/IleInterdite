@@ -28,10 +28,12 @@ import ileinterditeproj.Grille;
 import ileinterditeproj.Message;
 import ileinterditeproj.Tuile;
 import ileinterditeproj.Utils.Commandes;
+import static java.lang.Math.random;
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
+import java.util.Random;
 import java.util.Scanner;
 
 /**
@@ -50,7 +52,6 @@ public class Controleur implements Observer {
     private VueAventurier vueaventurier;
     private VueInscription vueinsc; 
     private VuePlateau vplateau ;
-    private VueInitialisation vueIni;
     private int compteurtour = 0;
    
     Controleur() {
@@ -132,18 +133,32 @@ public class Controleur implements Observer {
         setpiocheInondation(lestuiles);
         
         joueurs = new ArrayList();
-       
-        //vueIni = new VueInitialisation();
-        //setJoueurs(vueIni);
         
-               vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
-               vueaventurier.addObserver(this);
+        vueinsc = new VueInscription();
+        vueinsc.addObserver(this);
+        vueinsc.afficher();
+       
+        
+        
+        
         
     }
     
     @Override
     public void update(Observable arg0, Object arg1) {
         
+        if(arg1 instanceof MessageIni){
+            MessageIni message = (MessageIni) arg1;
+            if(message.getAction()==Action.NB_JOUEURS){
+                vueinsc.formulaire(message.getNbj());
+            }else if (message.getAction()==Action.INSCRIRE_JOUEURS){
+                AttribuerRole(message.getNoms());
+                vueinsc.close();
+                vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
+                vueaventurier.addObserver(this);
+                afficherJoueurs();
+        }  
+        }
         if(arg1 instanceof Message){
             Message message = (Message) arg1 ;
             if(message.getAction()==Commandes.BOUGER){
@@ -526,5 +541,64 @@ public class Controleur implements Observer {
     public ArrayList<CarteTirage> getDefausseTirage() {
         return defausseTirage;
     }
+
+    private void AttribuerRole(String[] noms) {
+            ArrayList<String> roles ;
+            roles = new ArrayList();
+            roles.add("plongeur");
+            roles.add("explorateur");
+            roles.add("navigateur");
+            roles.add("messager");
+            roles.add("ingenieur");
+            roles.add("pilote");
+        for(int i=0;i<noms.length;i++){
+            Random r = new Random();
+            int valeur =r.nextInt(roles.size());
+            if(roles.get(valeur).equals("plongeur")){
+                Plongeur p = new Plongeur(noms[i],tuilesdepart.get(1)); //Noir
+                roles = retirerRole(roles,"plongeur");
+                joueurs.add(p);
+            }else if(roles.get(valeur).equals("explorateur")){
+                Explorateur exp = new Explorateur(noms[i],tuilesdepart.get(5));
+                roles = retirerRole(roles,"explorateur");//Blanc
+                joueurs.add(exp);
+            }else if(roles.get(valeur).equals("navigateur")){
+                Navigateur n = new Navigateur(noms[i],tuilesdepart.get(2));
+                roles = retirerRole(roles,"navigateur");
+                joueurs.add(n);
+            }else if(roles.get(valeur).equals("messager")){
+                 Messager m = new Messager(noms[i],tuilesdepart.get(3));
+                 roles = retirerRole(roles,"messager");
+                 joueurs.add(m);
+            }else if(roles.get(valeur).equals("ingenieur")){
+                Ingenieur ing = new Ingenieur(noms[i],tuilesdepart.get(0));
+                roles = retirerRole(roles,"ingenieur");
+                joueurs.add(ing);
+            }else if(roles.get(valeur).equals("pilote")){
+                Pilote pilote = new Pilote(noms[i],tuilesdepart.get(4));
+                roles = retirerRole(roles,"pilote");// Bleu
+                joueurs.add(pilote);
+            }
+            
+           
+            
+        }
+    }
+    
+
+    private ArrayList<String> retirerRole(ArrayList<String> roles, String r) {
+       
+        int i = 0;
+        while(i<roles.size()&& !(roles.get(i).equals(r))){
+                i++;
+            }
+            if(i!=roles.size()){
+            roles.remove(i);
+            }
+            return roles;
+    }
+           
+
     
 }
+    
