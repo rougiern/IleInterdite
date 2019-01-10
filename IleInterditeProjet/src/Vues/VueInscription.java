@@ -37,10 +37,10 @@ import javax.swing.SwingConstants;
 public class VueInscription extends Observable {
 
     private JFrame window;
-    private JPanel panelmilieu,panelbas,panelhaut,mainPanel;
+    private JPanel panelmilieu, panelbas, panelhaut, mainPanel;
     private JComboBox l;
     private JButton btnvalider;
-    private Integer[] nb = {2,3,4};
+    private Integer[] nb = {2, 3, 4};
 
     VueInscription() {
 
@@ -55,23 +55,22 @@ public class VueInscription extends Observable {
 
         panelhaut = new JPanel();
         panelhaut.add(new JLabel("~ Inscription des joueurs ~"));
-        mainPanel.add(panelhaut,BorderLayout.NORTH);
-        
-        panelbas = new JPanel(new GridLayout(1,3));
+        mainPanel.add(panelhaut, BorderLayout.NORTH);
+
+        panelbas = new JPanel(new GridLayout(1, 3));
         panelbas.add(new JLabel(""));
         btnvalider = new JButton("Valider");
         panelbas.add(btnvalider);
         panelbas.add(new JLabel(""));
-        mainPanel.add(panelbas,BorderLayout.SOUTH);
-        
+        mainPanel.add(panelbas, BorderLayout.SOUTH);
+
         demarrer();
-       
-        
+
     }
 
     public void demarrer() {
 
-        panelmilieu = new JPanel(new GridLayout(3,2));
+        panelmilieu = new JPanel(new GridLayout(3, 2));
         JLabel casevide = new JLabel("");
 
         for (int i = 1; i <= 6; i++) {
@@ -79,75 +78,71 @@ public class VueInscription extends Observable {
             if (i == 3) {
                 JLabel demande = new JLabel("Combien de joueurs participent ?");
                 panelmilieu.add(demande);
-            }
-            
-            else if (i == 4) {
+            } else if (i == 4) {
                 l = new JComboBox(nb);
                 panelmilieu.add(l);
-            }
-            else {
+            } else {
                 panelmilieu.add(casevide);
             }
-            
-        }
-        
-        btnvalider.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        setChanged();
-                        notifyObservers(new MessageIni(Action.NB_JOUEURS,nb[l.getSelectedIndex()]));
-                        clearChanged();
-                    }
-                });
 
-        mainPanel.add(panelmilieu,BorderLayout.CENTER);
+        }
+
+        btnvalider.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new MessageIni(Action.NB_JOUEURS, nb[l.getSelectedIndex()]));
+                clearChanged();
+            }
+        });
+
+        mainPanel.add(panelmilieu, BorderLayout.CENTER);
         mainPanel.revalidate();
-        
-        
+
     }
-    
+
     public void formulaire(int nbj) {
-        
+
         String[] noms = new String[nbj];
         JTextField[] champs = new JTextField[nbj];
-        
+
         btnvalider.removeAll();
         panelmilieu.removeAll();
-        panelmilieu.setLayout(new GridLayout(nbj,2));
+        panelmilieu.setLayout(new GridLayout(nbj, 2));
         int nbc = 0;
-        
-        for (int k = 1; k <=(nbj*2); k++) {
-            
-            if (k%2 != 0) {
+
+        for (int k = 1; k <= (nbj * 2); k++) {
+
+            if (k % 2 != 0) {
                 panelmilieu.add(new JLabel("Nom : "));
             } else {
                 champs[nbc] = new JTextField();
                 panelmilieu.add(champs[nbc]);
                 nbc++;
             }
-            
+
         }
-        
+
         for (int z = 0; z < nbj; z++) {
             noms[z] = champs[z].getText();
         }
-        
+
         panelmilieu.revalidate();
-        
-         btnvalider.addActionListener(new ActionListener() {
-                    @Override
-                    public void actionPerformed(ActionEvent e) {
-                        setChanged();
-                        notifyObservers(new MessageIni(Action.INSCRIRE_JOUEURS,noms));
-                        clearChanged();
-                    }
-                });
-        
-         btnvalider.revalidate();
-         
+
+        btnvalider.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new MessageIni(Action.INSCRIRE_JOUEURS, noms));
+                clearChanged();
+            }
+        });
+
+        btnvalider.revalidate();
+
     }
 
-        public void afficher() {
+    public void afficher() {
         this.window.setVisible(true);
     }
 
@@ -155,5 +150,4 @@ public class VueInscription extends Observable {
         this.window.dispose();
     }
 
-    
 }

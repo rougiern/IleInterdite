@@ -14,8 +14,8 @@ public class CarteInondation extends ObjetIdentifie{
     private Tuile tuile ;
     
     public CarteInondation(Tuile t){
+        super();
         this.tuile=t;
-   
     }   
 
     /**
@@ -31,7 +31,5 @@ public class CarteInondation extends ObjetIdentifie{
     public void setTuile(Tuile tuile) {
         this.tuile = tuile;
     }
-    
-    
     
 }

@@ -11,4 +11,8 @@ package ileinterditeproj;
  */
 public class CarteTirage extends ObjetIdentifie{
     
+    CarteTirage() {
+        super();
+    }
+    
 }

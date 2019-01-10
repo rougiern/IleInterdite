@@ -29,6 +29,7 @@ import ileinterditeproj.Message;
 import ileinterditeproj.Tuile;
 import ileinterditeproj.Utils.Commandes;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
 import java.util.Scanner;
@@ -52,33 +53,37 @@ public class Controleur implements Observer {
    
     Controleur() {
         
+        //Création de la Grille
         grille = new Grille();
         ArrayList<Tuile> lestuiles = new ArrayList();
+        
+        //Création des tuiles
         Tuile t1 = new Tuile("Le Pont des Abimes");
-        Tuile t2 = new Tuile("La Porte de Bronze"); t2.setEtat(EtatTuile.Inondee); // Pion.ROUGE
+        Tuile t2 = new Tuile("La Porte de Bronze"); t2.setEtat(Utils.EtatTuile.INONDEE); // Pion.ROUGE
         Tuile t3 = new Tuile("La Caverne des Ombres");
         Tuile t4 = new Tuile("La Porte de Fer" );    //Pion.VIOLET
         Tuile t5 = new Tuile("La Porte d'Or");   //Pion.JAUNE
         Tuile t6 = new Tuile("Les Falaises de l'Oubli");
         Tuile t7 = new Tuile("Le Palais de Corail");
         Tuile t8 = new Tuile("La Porte d'Argent");  //Pion.ORANGE
-        Tuile t9 = new Tuile("Les Dunes de l’Illusion"); t9.setEtat(EtatTuile.Coulee);
+        Tuile t9 = new Tuile("Les Dunes de l’Illusion"); t9.setEtat(Utils.EtatTuile.COULEE);
         Tuile t10 = new Tuile("Heliport");      //Pion.BLEU 
         Tuile t11= new Tuile("La Porte de Cuivre");  // Pion.VERT
         Tuile t12 = new Tuile("Le Jardin des Hurlements"); 
         Tuile t13 = new Tuile("La Foret Pourpre");
-        Tuile t14 = new Tuile("Le Lagon Perdu"); t14.setEtat(EtatTuile.Inondee);
-        Tuile t15 = new Tuile("Le Marais Brumeux"); t15.setEtat(EtatTuile.Coulee);
-        Tuile t16 = new Tuile("Observatoire"); t16.setEtat(EtatTuile.Inondee);
-        Tuile t17 = new Tuile("Le Rocher Fantome"); t17.setEtat(EtatTuile.Coulee);
-        Tuile t18 = new Tuile("La Caverne du Brasier"); t18.setEtat(EtatTuile.Inondee);
+        Tuile t14 = new Tuile("Le Lagon Perdu"); t14.setEtat(Utils.EtatTuile.INONDEE);
+        Tuile t15 = new Tuile("Le Marais Brumeux"); t15.setEtat(Utils.EtatTuile.COULEE);
+        Tuile t16 = new Tuile("Observatoire"); t16.setEtat(Utils.EtatTuile.INONDEE);
+        Tuile t17 = new Tuile("Le Rocher Fantome"); t17.setEtat(Utils.EtatTuile.COULEE);
+        Tuile t18 = new Tuile("La Caverne du Brasier"); t18.setEtat(Utils.EtatTuile.INONDEE);
         Tuile t19 = new Tuile("Le Temple du Soleil");
-        Tuile t20 = new Tuile("Le Temple de La Lune"); t20.setEtat(EtatTuile.Coulee);
+        Tuile t20 = new Tuile("Le Temple de La Lune"); t20.setEtat(Utils.EtatTuile.COULEE);
         Tuile t21 = new Tuile("Le Palais des Marees");
         Tuile t22 = new Tuile("Le Val du Crepuscule");
         Tuile t23 = new Tuile("La Tour du Guet");
-        Tuile t24 = new Tuile("Le Jardin des Murmures"); t24.setEtat(EtatTuile.Inondee);
+        Tuile t24 = new Tuile("Le Jardin des Murmures"); t24.setEtat(Utils.EtatTuile.INONDEE);
         
+        //Affectation des tuiles de départ
         tuilesdepart = new ArrayList();
         
         tuilesdepart.add(t2);
@@ -88,6 +93,7 @@ public class Controleur implements Observer {
         tuilesdepart.add(t10);
         tuilesdepart.add(t11);
         
+        //Ajout des tuiles dans la liste des tuiles
         lestuiles.add(t1);
         lestuiles.add(t2);
         lestuiles.add(t3);
@@ -113,20 +119,22 @@ public class Controleur implements Observer {
         lestuiles.add(t23);
         lestuiles.add(t24);
         
-        
+        // Création des collections pioche/défausse Inondation
         piocheInondation = new ArrayList();
         defausseInondation = new ArrayList();
+        
+        //Initialisation de la grille
         grille.setTableau(lestuiles);
+        
+        //Création de la liste des cartes inondations, en fonction des tuiles inondées
         setpiocheInondation(lestuiles);
+        
         joueurs = new ArrayList();
+       
+        //vueIni = new VueInitialisation();
+        //setJoueurs(vueIni);
         
-        vueIni = new VueInitialisation();
-        
-        
-        setJoueurs(vueIni);
-        
-        
-          
+               Commandes.
                vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                vueaventurier.addObserver(this);
         
@@ -444,16 +452,34 @@ public class Controleur implements Observer {
             ((VueAventurier)av).getBtnBouger().setEnabled(false);
             ((VueAventurier)av).getBtnAutreAction().setEnabled(false);
         }
-        
     }
     
     public void setpiocheInondation(ArrayList<Tuile> listeT){
         for(Tuile t : listeT){
             CarteInondation carte = new CarteInondation(t);
-            piocheInondation.add(carte);
-        }
-        
-        
+            getPiocheInondation().add(carte);
+        }       
+    }
+    
+            
+    public void melangeDefausseCarteInondation() {
+        Collections.shuffle(this.getDefausseInondation());
+        this.getPiocheInondation().addAll(this.getDefausseInondation());
+        this.getDefausseInondation().clear();
+    }
+
+    /**
+     * @return the piocheInondation
+     */
+    public ArrayList<CarteInondation> getPiocheInondation() {
+        return piocheInondation;
+    }
+
+    /**
+     * @return the defausseInondation
+     */
+    public ArrayList<CarteInondation> getDefausseInondation() {
+        return defausseInondation;
     }
     
 }

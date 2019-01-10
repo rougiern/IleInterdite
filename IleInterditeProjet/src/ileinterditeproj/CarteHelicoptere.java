@@ -11,4 +11,8 @@ package ileinterditeproj;
  */
 public class CarteHelicoptere extends CarteTirage{
     
+    CarteHelicoptere() {
+        super();
+    }
+    
 }

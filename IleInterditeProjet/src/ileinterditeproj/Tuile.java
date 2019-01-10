@@ -16,13 +16,13 @@ public class Tuile extends ObjetIdentifie{
     
     private String nom;
     private ArrayList<Aventurier> aventuriers;
-    private EtatTuile etat ;
+    private Utils.EtatTuile etat ;
     
     Tuile(String nom) {
         super();
         this.setNom(nom);
         aventuriers = new ArrayList<>();
-        etat=EtatTuile.Normal;
+        etat=Utils.EtatTuile.ASSECHEE;
     }
 
     /**
@@ -71,14 +71,14 @@ public class Tuile extends ObjetIdentifie{
     /**
      * @return the etat
      */
-    public EtatTuile getEtat() {
+    public Utils.EtatTuile getEtat() {
         return etat;
     }
 
     /**
      * @param etat the etat to set
      */
-    public void setEtat(EtatTuile etat) {
+    public void setEtat(Utils.EtatTuile etat) {
         this.etat = etat;
     }
     

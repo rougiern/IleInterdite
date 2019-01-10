@@ -49,12 +49,6 @@ public class VueInitialisation extends Observable{
             }
             
         }
-        
-        
-        
-        
-        
-    
 
     /**
      * @return the nbj

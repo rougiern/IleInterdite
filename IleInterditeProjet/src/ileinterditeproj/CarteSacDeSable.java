@@ -11,4 +11,8 @@ package ileinterditeproj;
  */
 public class CarteSacDeSable extends CarteTirage{
     
+    CarteSacDeSable() {
+        super();
+    }
+    
 }

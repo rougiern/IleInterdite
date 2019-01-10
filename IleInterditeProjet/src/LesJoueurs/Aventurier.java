@@ -69,7 +69,7 @@ public abstract class Aventurier extends ObjetIdentifie{
         
         public void assechertuile(Tuile t) {
         
-        t.setEtat(EtatTuile.Normal);
+        t.setEtat(ileinterditeproj.Utils.EtatTuile.ASSECHEE);
         this.enleveUneAction();
         
         }

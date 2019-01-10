@@ -24,7 +24,7 @@ public class Ingenieur extends Aventurier {
     }
         
     public void assechertuile2efois(Tuile t) {
-        t.setEtat(EtatTuile.Normal);
+        t.setEtat(ileinterditeproj.Utils.EtatTuile.ASSECHEE);
     }
     
     

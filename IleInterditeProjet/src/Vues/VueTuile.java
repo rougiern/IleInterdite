@@ -2,6 +2,7 @@ package Vues;
  
 import ileinterditeproj.EtatTuile;
 import ileinterditeproj.Tuile;
+import ileinterditeproj.Utils;
 import java.awt.Color;
 
 import javax.swing.JButton;
@@ -17,11 +18,11 @@ public class VueTuile extends JPanel {
         this.tuile=t;
         bouton = new JButton(tuile.getNom());
         this.add(bouton);
-        if(tuile.getEtat()==EtatTuile.Normal){
+        if(tuile.getEtat()==Utils.EtatTuile.ASSECHEE){
             bouton.setBackground(Color.LIGHT_GRAY);
-        }else if(tuile.getEtat()==EtatTuile.Inondee){
+        }else if(tuile.getEtat()==Utils.EtatTuile.INONDEE){
             bouton.setBackground(Color.cyan);
-        }else if(tuile.getEtat()==EtatTuile.Coulee){
+        }else if(tuile.getEtat()==Utils.EtatTuile.COULEE){
            
         }
         
