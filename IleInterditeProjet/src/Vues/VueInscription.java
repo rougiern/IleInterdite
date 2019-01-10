@@ -42,7 +42,7 @@ public class VueInscription extends Observable {
     private JButton btnvalider;
     private Integer[] nb = {2, 3, 4};
 
-    VueInscription() {
+    public VueInscription() {
 
         window = new JFrame();
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
@@ -123,9 +123,7 @@ public class VueInscription extends Observable {
 
         }
 
-        for (int z = 0; z < nbj; z++) {
-            noms[z] = champs[z].getText();
-        }
+        
 
         panelmilieu.revalidate();
 
@@ -133,6 +131,9 @@ public class VueInscription extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
+                for (int z = 0; z < nbj; z++) {
+                noms[z] = champs[z].getText();
+                }
                 notifyObservers(new MessageIni(Action.INSCRIRE_JOUEURS, noms));
                 clearChanged();
             }
@@ -146,7 +147,7 @@ public class VueInscription extends Observable {
         this.window.setVisible(true);
     }
 
-    void close() {
+    public void close() {
         this.window.dispose();
     }
 
