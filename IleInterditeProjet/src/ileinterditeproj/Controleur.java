@@ -45,6 +45,8 @@ public class Controleur implements Observer {
     private ArrayList<Tuile> tuilesdepart;
     private ArrayList<CarteInondation> piocheInondation ;
     private ArrayList<CarteInondation> defausseInondation ;
+    private ArrayList<CarteTirage> piocheTirage;
+    private ArrayList<CarteTirage> defausseTirage;
     private VueAventurier vueaventurier;
     private VueInscription vueinsc; 
     private VuePlateau vplateau ;
@@ -460,6 +462,36 @@ public class Controleur implements Observer {
         }       
     }
     
+    public void setPiocheTirage() {
+        
+        //Création des cartes trésor
+        for (int i = 1; i <= 20; i++) {
+            if (i <= 5) {
+                this.getPiocheTirage().add(new CarteTresor(Utils.Tresor.CALICE));
+            } else if (i > 5 && i <= 10) {
+                this.getPiocheTirage().add(new CarteTresor(Utils.Tresor.CRISTAL));
+            } else if (i > 10 && i <= 15) {
+                this.getPiocheTirage().add(new CarteTresor(Utils.Tresor.PIERRE));
+            } else {
+                this.getPiocheTirage().add(new CarteTresor(Utils.Tresor.ZEPHYR));
+            }
+        }
+        
+        //Création des cartes hélicos
+        for (int j = 1; j <= 3; j++) {
+            this.getPiocheTirage().add(new CarteHelicoptere());
+        }
+        
+        for (int k = 1; k <= 2; k++) {
+            this.getPiocheTirage().add(new CarteSacDeSable());
+        }
+        
+        for (int l = 1; l <= 2; l++) {
+            this.getPiocheTirage().add(new CarteMonteedesEaux());
+        }
+        
+    }
+    
             
     public void melangeDefausseCarteInondation() {
         Collections.shuffle(this.getDefausseInondation());
@@ -479,6 +511,20 @@ public class Controleur implements Observer {
      */
     public ArrayList<CarteInondation> getDefausseInondation() {
         return defausseInondation;
+    }
+
+    /**
+     * @return the piocheTirage
+     */
+    public ArrayList<CarteTirage> getPiocheTirage() {
+        return piocheTirage;
+    }
+
+    /**
+     * @return the defausseTirage
+     */
+    public ArrayList<CarteTirage> getDefausseTirage() {
+        return defausseTirage;
     }
     
 }
