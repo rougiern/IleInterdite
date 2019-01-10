@@ -3,8 +3,11 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package ileinterditeproj;
+package Vues;
 
+import ileinterditeproj.Action;
+import ileinterditeproj.Message;
+import ileinterditeproj.MessageIni;
 import java.awt.Dimension;
 import java.awt.Toolkit;
 import java.util.Observable;
@@ -92,7 +95,7 @@ public class VueInscription extends Observable {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         setChanged();
-                        notifyObservers(new Message(Action.NB_JOUEURS,nb[l.getSelectedIndex()]));
+                        notifyObservers(new MessageIni(Action.NB_JOUEURS,nb[l.getSelectedIndex()]));
                         clearChanged();
                     }
                 });
@@ -135,7 +138,7 @@ public class VueInscription extends Observable {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         setChanged();
-                        notifyObservers(new Message(Action.INSCRIRE_JOUEURS,noms));
+                        notifyObservers(new MessageIni(Action.INSCRIRE_JOUEURS,noms));
                         clearChanged();
                     }
                 });
