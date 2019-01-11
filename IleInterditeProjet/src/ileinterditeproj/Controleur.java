@@ -22,6 +22,7 @@ import LesJoueurs.Plongeur;
 import Vues.VueInitialisation;
 import Vues.VueAventurier;
 import Vues.VueInscription;
+import Vues.VueNiveau;
 import Vues.VuePlateau;
 import ileinterditeproj.EtatTuile;
 import ileinterditeproj.Grille;
@@ -51,6 +52,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteTirage> defausseTirage;
     private VueAventurier vueaventurier;
     private VueInscription vueinsc; 
+    private VueNiveau vueniv ;
     private VuePlateau vplateau ;
     private int compteurtour = 0;
    
@@ -62,29 +64,29 @@ public class Controleur implements Observer {
         
         //Création des tuiles
         Tuile t1 = new Tuile("Le Pont des Abimes");
-        Tuile t2 = new Tuile("La Porte de Bronze"); t2.setEtat(Utils.EtatTuile.INONDEE); // Pion.ROUGE
+        Tuile t2 = new Tuile("La Porte de Bronze");  // Pion.ROUGE
         Tuile t3 = new Tuile("La Caverne des Ombres", Utils.Tresor.CRISTAL);
         Tuile t4 = new Tuile("La Porte de Fer" );    //Pion.VIOLET
         Tuile t5 = new Tuile("La Porte d'Or");   //Pion.JAUNE
         Tuile t6 = new Tuile("Les Falaises de l'Oubli");
         Tuile t7 = new Tuile("Le Palais de Corail" , Utils.Tresor.CALICE);
         Tuile t8 = new Tuile("La Porte d'Argent");  //Pion.ORANGE
-        Tuile t9 = new Tuile("Les Dunes de l’Illusion"); t9.setEtat(Utils.EtatTuile.COULEE);
+        Tuile t9 = new Tuile("Les Dunes de l’Illusion"); 
         Tuile t10 = new Tuile("Heliport");      //Pion.BLEU 
         Tuile t11= new Tuile("La Porte de Cuivre");  // Pion.VERT
-        Tuile t12 = new Tuile("Le Jardin des Hurlements",Utils.Tresor.ZEPHYR); 
+        Tuile t12 = new Tuile("Le Jardin des Hurlements",Utils.Tresor.ZEPHYR);  
         Tuile t13 = new Tuile("La Foret Pourpre");
-        Tuile t14 = new Tuile("Le Lagon Perdu"); t14.setEtat(Utils.EtatTuile.INONDEE);
-        Tuile t15 = new Tuile("Le Marais Brumeux"); t15.setEtat(Utils.EtatTuile.COULEE);
-        Tuile t16 = new Tuile("Observatoire"); t16.setEtat(Utils.EtatTuile.INONDEE);
-        Tuile t17 = new Tuile("Le Rocher Fantome"); t17.setEtat(Utils.EtatTuile.COULEE);
-        Tuile t18 = new Tuile("La Caverne du Brasier", Utils.Tresor.CRISTAL); t18.setEtat(Utils.EtatTuile.INONDEE);
+        Tuile t14 = new Tuile("Le Lagon Perdu"); 
+        Tuile t15 = new Tuile("Le Marais Brumeux"); 
+        Tuile t16 = new Tuile("Observatoire"); 
+        Tuile t17 = new Tuile("Le Rocher Fantome"); 
+        Tuile t18 = new Tuile("La Caverne du Brasier", Utils.Tresor.CRISTAL); 
         Tuile t19 = new Tuile("Le Temple du Soleil", Utils.Tresor.PIERRE);
-        Tuile t20 = new Tuile("Le Temple de La Lune", Utils.Tresor.PIERRE); t20.setEtat(Utils.EtatTuile.COULEE);
+        Tuile t20 = new Tuile("Le Temple de La Lune", Utils.Tresor.PIERRE); 
         Tuile t21 = new Tuile("Le Palais des Marees", Utils.Tresor.CALICE);
         Tuile t22 = new Tuile("Le Val du Crepuscule");
         Tuile t23 = new Tuile("La Tour du Guet");
-        Tuile t24 = new Tuile("Le Jardin des Murmures", Utils.Tresor.ZEPHYR); t24.setEtat(Utils.EtatTuile.INONDEE);
+        Tuile t24 = new Tuile("Le Jardin des Murmures", Utils.Tresor.ZEPHYR);
         
         //Affectation des tuiles de départ
         tuilesdepart = new ArrayList();
@@ -125,13 +127,25 @@ public class Controleur implements Observer {
         // Création des collections pioche/défausse Inondation
         piocheInondation = new ArrayList();
         defausseInondation = new ArrayList();
+        piocheTirage = new ArrayList();
+        defausseTirage = new ArrayList();
         
+        //Création de la vue niveau
+        vueniv = new VueNiveau(1);
         //Initialisation de la grille
         grille.setTableau(lestuiles);
         
         //Création de la liste des cartes inondations, en fonction des tuiles inondées
         setpiocheInondation(lestuiles);
+        Collections.shuffle(piocheInondation);
+        for(int i =0 ;i<6 ;i++){
+            tirerCarteInondation();
+        }
         
+        //Création de la liste des cartes tirages
+        setPiocheTirage();
+                
+        //Lancement du jeu      
         joueurs = new ArrayList();
         
         vueinsc = new VueInscription();
@@ -320,6 +334,15 @@ public class Controleur implements Observer {
                 }
                 
             } else if(message.getAction() == Commandes.TERMINER) {
+               for(int x =0 ; x<vueniv.getNiveau();x++){
+                   tirerCarteInondation();
+               }
+                int i = 0;
+                while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
+                    i++; 
+                }
+               tirerCartetirage(this.getJoueurs().get(i));
+               tirerCartetirage(this.getJoueurs().get(i));
                compteurtour++;
                 if (compteurtour < joueurs.size()) {
                     vueaventurier.close();
@@ -370,8 +393,7 @@ public class Controleur implements Observer {
         
         for (Aventurier j: joueurs){
             
-            System.out.println("Nom :"+j.getNom()+" Role:"+j.getClass().getSimpleName());
-            
+            System.out.println("Nom :"+j.getNom()+" Role:"+j.getClass().getSimpleName());  
         }
        
     }
@@ -510,9 +532,11 @@ public class Controleur implements Observer {
             
     public void melangeDefausseCarteInondation() {
         Collections.shuffle(this.getDefausseInondation());
-        this.getPiocheInondation().addAll(this.getDefausseInondation());
-        this.getDefausseInondation().clear();
+        piocheInondation.addAll(this.getDefausseInondation());
+        defausseInondation.clear();
     }
+    
+    
 
     /**
      * @return the piocheInondation
@@ -598,7 +622,43 @@ public class Controleur implements Observer {
             return roles;
     }
            
+    public void tirerCarteInondation(){
+        if(piocheInondation.isEmpty()){
+            melangeDefausseCarteInondation();
+        }
+        CarteInondation cInon = piocheInondation.get(0);
+        Tuile ttire = cInon.getTuile();
+        grille.inonderTuile(ttire);
+        if(ttire.getEtat()==Utils.EtatTuile.INONDEE){
+            defausserCarteInondation(0);
+        }else if(ttire.getEtat()==Utils.EtatTuile.COULEE){
+            piocheInondation.remove(0);
+        }
+    }
+    
+    public void defausserCarteInondation(int i){
+        defausseInondation.add(piocheInondation.get(i));
+        piocheInondation.remove(i);
+        
+    }
 
+    private void tirerCartetirage(Aventurier j) {
+       if(piocheTirage.isEmpty()){
+            melangeDefausseCarteTirage();
+        }
+       if(j.getMains().size()<9){
+         j.getMains().add(piocheTirage.get(0));  
+       }
+       
+    }
+
+    private void melangeDefausseCarteTirage() {
+        Collections.shuffle(this.getDefausseTirage());
+        piocheTirage.addAll(this.getDefausseTirage());
+        defausseTirage.clear();
+    }
+    
+    
     
 }
     

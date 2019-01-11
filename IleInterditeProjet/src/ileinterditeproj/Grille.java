@@ -384,5 +384,13 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
         return tuilesadj ;
         
     }
+
+    public void inonderTuile(Tuile t) {
+        if(t.getEtat()==Utils.EtatTuile.ASSECHEE){
+            t.setEtat(Utils.EtatTuile.INONDEE);
+        }else if(t.getEtat()==Utils.EtatTuile.INONDEE){
+            t.setEtat(Utils.EtatTuile.COULEE);
+        }
+    }
     
 }
