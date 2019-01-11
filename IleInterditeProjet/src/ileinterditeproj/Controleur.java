@@ -562,15 +562,6 @@ public class Controleur implements Observer {
         }
         
     }
-    
-            
-    public void melangeDefausseCarteInondation() {
-        Collections.shuffle(this.getDefausseInondation());
-        piocheInondation.addAll(this.getDefausseInondation());
-        defausseInondation.clear();
-    }
-    
-    
 
     /**
      * @return the piocheInondation
@@ -675,15 +666,45 @@ public class Controleur implements Observer {
         piocheInondation.remove(i);
         
     }
+    
+     public void defausserCarteMonteedesEaux(int i){
+        
+        defausseTirage.add(piocheTirage.get(i));
+        piocheTirage.remove(i);
+        
+    }
 
     private void tirerCartetirage(Aventurier j) {
-       if(piocheTirage.isEmpty()){
+       
+        if(piocheTirage.isEmpty()){
             melangeDefausseCarteTirage();
         }
-       if(j.getMains().size()<9){
-         j.getMains().add(piocheTirage.get(0));  
+        
+        if(j.getMains().size()<9){
+            // Si la carte tirée est une carte montée des eaux
+            if (piocheTirage.get(0) instanceof CarteMonteedesEaux) {
+                this.tireCarteMonteeDesEaux(0);
+            } else {
+           j.getMains().add(piocheTirage.get(0)); 
+           piocheTirage.remove(piocheTirage.get(0));
+            }
+         
        }
        
+    }
+        
+    public void tireCarteMonteeDesEaux(int i) {
+        
+        // On augmente le niveau de l'eau
+        this.vueniv.setNiveau(vueniv.getNiveau()+1);
+        
+        // Si la défausse inondation n'est pas vide on mélange les cartes inondations défaussées et on les remet dans la pioche
+        if (!(this.getDefausseInondation().isEmpty())) {
+            this.melangeDefausseCarteInondation();
+        }
+        
+        // On défausse la carte Montée des eaux qui vient d'être tirée
+        this.defausserCarteMonteedesEaux(i);
     }
 
     private void melangeDefausseCarteTirage() {
@@ -692,6 +713,11 @@ public class Controleur implements Observer {
         defausseTirage.clear();
     }
     
+    public void melangeDefausseCarteInondation() {
+        Collections.shuffle(this.getDefausseInondation());
+        piocheInondation.addAll(this.getDefausseInondation());
+        defausseInondation.clear();
+    }
     
-    
+
 }
