@@ -28,6 +28,8 @@ public class Message {
         this.nomJ=null;
         this.tuile=tuile;
     }
+    
+   
 
     
 
@@ -57,6 +59,13 @@ public class Message {
      */
     public void setNomJ(String nomJ) {
         this.nomJ = nomJ;
+    }
+
+    /**
+     * @return the tuile
+     */
+    public Tuile getTuile() {
+        return tuile;
     }
     
 }

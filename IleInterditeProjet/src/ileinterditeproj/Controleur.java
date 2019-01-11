@@ -157,6 +157,8 @@ public class Controleur implements Observer {
         vueinsc.addObserver(this);
         vueinsc.afficher();
        
+        //Création du plateau
+        this.vplateau = new VuePlateau(this.grille);
         
         
         
@@ -175,6 +177,7 @@ public class Controleur implements Observer {
                 vueinsc.close();
                 vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                 vueaventurier.addObserver(this);
+                vplateau.afficher();
                 afficherJoueurs();
         }  
         }
@@ -214,18 +217,18 @@ public class Controleur implements Observer {
                  
                 if (tuilesatteignables.isEmpty() == false) {
                 
-                affichernomtuiles(tuilesatteignables);
-                 
-                 System.out.println("Ou se déplacer ?");
-                 String nomtuile = sc.nextLine();
-                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
-                 
-                 if(nouvelletuile != null){
-                     joueurs.get(i).changerTuileCourante(nouvelletuile);
-                     grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
-                     vueaventurier.rafraichirPositon(joueurs.get(i));
-                 }
+//                affichernomtuiles(tuilesatteignables);
+//                 
+                  System.out.println("Ou se déplacer ?");
+//                 String nomtuile = sc.nextLine();
+//                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
+//                 
+//                 if(nouvelletuile != null){
+//                     joueurs.get(i).changerTuileCourante(nouvelletuile);
+//                     grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
+//                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
+//                     vueaventurier.rafraichirPositon(joueurs.get(i));
+//                 }
                  
                 }else {
                     System.out.println("Action impossible");
@@ -235,6 +238,24 @@ public class Controleur implements Observer {
                 
             }else if((arg0 instanceof VuePlateau) && message.getAction()==Commandes.BOUGER){
                 
+                int i=0;
+                
+                do{                    
+                    i++;
+                }while(i<tuilesatteignables.size()&&tuilesatteignables.get(i)==message.getTuile());
+                
+                if(i<tuilesatteignables.size()){
+                    joueurcourant.setTuileCourante(tuilesatteignables.get(i));
+                    joueurcourant.enleveUneAction();
+                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
+                    System.out.println("Action effectuée : Nouvelle tuile :"+joueurcourant.getTuileCourante().getNom());
+                    vueaventurier.rafraichirPositon(joueurcourant);
+                }else{
+                    System.out.println("la case n'est pas valide");
+                }
+                
+                
+
             }
             
             else if(message.getAction() == Commandes.ASSECHER) {
@@ -260,6 +281,7 @@ public class Controleur implements Observer {
                     if (tuileassecher != null) {
                        joueurs.get(i).assechertuile(tuileassecher);
                         grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
+                        vplateau.raffraichir(this.grille);
                        System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
                     } 
                     
@@ -284,6 +306,7 @@ public class Controleur implements Observer {
                         if (tuileassecher != null) {
                             ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
                             System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+                            vplateau.raffraichir(this.grille);
                             }else{
                             System.out.println("Assechement impossible");
                             }
@@ -347,6 +370,7 @@ public class Controleur implements Observer {
                for(int x =0 ; x<vueniv.getNiveau();x++){
                    tirerCarteInondation();
                }
+               vplateau.raffraichir(this.grille);
                 int i = 0;
                 while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
                     i++; 
