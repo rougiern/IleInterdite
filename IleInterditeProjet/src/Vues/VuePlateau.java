@@ -1,10 +1,16 @@
 package Vues;
 
+import ileinterditeproj.Message;
+import LesJoueurs.Aventurier;
+import ileinterditeproj.Utils;
 import ileinterditeproj.Grille;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.Observable;
+import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
@@ -16,7 +22,6 @@ import javax.swing.JPanel;
 public class VuePlateau extends Observable {
     
     private JFrame window ;
-    
 
 
 public VuePlateau(Grille g){
@@ -35,6 +40,15 @@ public VuePlateau(Grille g){
                 if (!(g.getTableau()[x][y].getNom().equals("null"))){
                     VueTuile vT = new VueTuile(g.getTableau()[x][y]);
                     mainpanel.add(vT);
+                    JButton btnValider = new JButton("Valider");
+        vT.getBouton().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Utils.Commandes.BOUGER,vT.getTuile()));
+                clearChanged();
+            }
+        });
                 }else{
                     JLabel vide = new JLabel(" ");
                     mainpanel.add(vide);
@@ -45,7 +59,5 @@ public VuePlateau(Grille g){
 
 
 }
-
-
 
 }

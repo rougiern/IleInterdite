@@ -16,16 +16,30 @@ public class VueTuile extends JPanel {
     public VueTuile(Tuile t){
         super();
         this.tuile=t;
-        bouton = new JButton(tuile.getNom());
+        bouton = new JButton(getTuile().getNom());
         this.add(bouton);
         if(tuile.getEtat()==Utils.EtatTuile.ASSECHEE){
             bouton.setBackground(Color.LIGHT_GRAY);
         }else if(tuile.getEtat()==Utils.EtatTuile.INONDEE){
             bouton.setBackground(Color.cyan);
         }else if(tuile.getEtat()==Utils.EtatTuile.COULEE){
-           bouton.setEnabled(false);
+           
         }
         
+    }
+
+    /**
+     * @return the bouton
+     */
+    public JButton getBouton() {
+        return bouton;
+    }
+
+    /**
+     * @return the tuile
+     */
+    public Tuile getTuile() {
+        return tuile;
     }
     
 }
