@@ -44,7 +44,7 @@ public class VueInscription extends Observable {
 
     public VueInscription() {
 
-        window = new JFrame();
+        window = new JFrame("Inscriptions des joueurs");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(600, 300);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();

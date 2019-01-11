@@ -1,8 +1,10 @@
 package Vues;
  
 import ileinterditeproj.EtatTuile;
+import ileinterditeproj.Parameters;
 import ileinterditeproj.Tuile;
 import ileinterditeproj.Utils;
+import java.awt.BorderLayout;
 import java.awt.Color;
 
 import javax.swing.JButton;
@@ -14,14 +16,14 @@ public class VueTuile extends JPanel {
     private Tuile tuile ;
     
     public VueTuile(Tuile t){
-        super();
+        super(new BorderLayout());
         this.tuile=t;
         bouton = new JButton(getTuile().getNom());
-        this.add(bouton);
+        this.add(bouton,BorderLayout.CENTER);
         if(tuile.getEtat()==Utils.EtatTuile.ASSECHEE){
-            bouton.setBackground(Color.LIGHT_GRAY);
+            bouton.setBackground(Parameters.TUILE_ASSECHEE_BG);
         }else if(tuile.getEtat()==Utils.EtatTuile.INONDEE){
-            bouton.setBackground(Color.cyan);
+            bouton.setBackground(Parameters.TUILE_INONDEE_BG);
         }else if(tuile.getEtat()==Utils.EtatTuile.COULEE){
            
         }
