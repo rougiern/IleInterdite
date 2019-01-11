@@ -6,6 +6,7 @@
 package ileinterditeproj;
 
 import LesJoueurs.Aventurier;
+import ileinterditeproj.Utils.Tresor;
 import java.util.ArrayList;
 
 /**
@@ -17,6 +18,7 @@ public class Tuile extends ObjetIdentifie{
     private String nom;
     private ArrayList<Aventurier> aventuriers;
     private Utils.EtatTuile etat ;
+    private Tresor tresor=null;
     
     Tuile(String nom) {
         super();
@@ -24,6 +26,15 @@ public class Tuile extends ObjetIdentifie{
         aventuriers = new ArrayList<>();
         etat=Utils.EtatTuile.ASSECHEE;
     }
+    
+     Tuile(String nom, Tresor tresor) {
+        super();
+        this.setNom(nom);
+        this.setTresor(tresor);
+        aventuriers = new ArrayList<>();
+        etat=Utils.EtatTuile.ASSECHEE;
+    }
+
 
     /**
      * @return the nom
@@ -80,6 +91,20 @@ public class Tuile extends ObjetIdentifie{
      */
     public void setEtat(Utils.EtatTuile etat) {
         this.etat = etat;
+    }
+
+    /**
+     * @return the tresor
+     */
+    public Tresor getTresor() {
+        return tresor;
+    }
+
+    /**
+     * @param tresor the tresor to set
+     */
+    public void setTresor(Tresor tresor) {
+        this.tresor = tresor;
     }
     
 }

@@ -63,28 +63,28 @@ public class Controleur implements Observer {
         //Création des tuiles
         Tuile t1 = new Tuile("Le Pont des Abimes");
         Tuile t2 = new Tuile("La Porte de Bronze"); t2.setEtat(Utils.EtatTuile.INONDEE); // Pion.ROUGE
-        Tuile t3 = new Tuile("La Caverne des Ombres");
+        Tuile t3 = new Tuile("La Caverne des Ombres", Utils.Tresor.CRISTAL);
         Tuile t4 = new Tuile("La Porte de Fer" );    //Pion.VIOLET
         Tuile t5 = new Tuile("La Porte d'Or");   //Pion.JAUNE
         Tuile t6 = new Tuile("Les Falaises de l'Oubli");
-        Tuile t7 = new Tuile("Le Palais de Corail");
+        Tuile t7 = new Tuile("Le Palais de Corail" , Utils.Tresor.CALICE);
         Tuile t8 = new Tuile("La Porte d'Argent");  //Pion.ORANGE
         Tuile t9 = new Tuile("Les Dunes de l’Illusion"); t9.setEtat(Utils.EtatTuile.COULEE);
         Tuile t10 = new Tuile("Heliport");      //Pion.BLEU 
         Tuile t11= new Tuile("La Porte de Cuivre");  // Pion.VERT
-        Tuile t12 = new Tuile("Le Jardin des Hurlements"); 
+        Tuile t12 = new Tuile("Le Jardin des Hurlements",Utils.Tresor.ZEPHYR); 
         Tuile t13 = new Tuile("La Foret Pourpre");
         Tuile t14 = new Tuile("Le Lagon Perdu"); t14.setEtat(Utils.EtatTuile.INONDEE);
         Tuile t15 = new Tuile("Le Marais Brumeux"); t15.setEtat(Utils.EtatTuile.COULEE);
         Tuile t16 = new Tuile("Observatoire"); t16.setEtat(Utils.EtatTuile.INONDEE);
         Tuile t17 = new Tuile("Le Rocher Fantome"); t17.setEtat(Utils.EtatTuile.COULEE);
-        Tuile t18 = new Tuile("La Caverne du Brasier"); t18.setEtat(Utils.EtatTuile.INONDEE);
-        Tuile t19 = new Tuile("Le Temple du Soleil");
-        Tuile t20 = new Tuile("Le Temple de La Lune"); t20.setEtat(Utils.EtatTuile.COULEE);
-        Tuile t21 = new Tuile("Le Palais des Marees");
+        Tuile t18 = new Tuile("La Caverne du Brasier", Utils.Tresor.CRISTAL); t18.setEtat(Utils.EtatTuile.INONDEE);
+        Tuile t19 = new Tuile("Le Temple du Soleil", Utils.Tresor.PIERRE);
+        Tuile t20 = new Tuile("Le Temple de La Lune", Utils.Tresor.PIERRE); t20.setEtat(Utils.EtatTuile.COULEE);
+        Tuile t21 = new Tuile("Le Palais des Marees", Utils.Tresor.CALICE);
         Tuile t22 = new Tuile("Le Val du Crepuscule");
         Tuile t23 = new Tuile("La Tour du Guet");
-        Tuile t24 = new Tuile("Le Jardin des Murmures"); t24.setEtat(Utils.EtatTuile.INONDEE);
+        Tuile t24 = new Tuile("Le Jardin des Murmures", Utils.Tresor.ZEPHYR); t24.setEtat(Utils.EtatTuile.INONDEE);
         
         //Affectation des tuiles de départ
         tuilesdepart = new ArrayList();
