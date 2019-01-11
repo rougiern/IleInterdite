@@ -1,0 +1,75 @@
+    public void defausserCarteInondation(int i) {
+        defausseInondation.add(piocheInondation.get(i));
+        piocheInondation.remove(i);
+
+    }
+
+    public void defausserCarteMonteedesEaux(int i) {
+
+        defausseTirage.add(piocheTirage.get(i));
+        piocheTirage.remove(i);
+
+    }
+
+    private void tirerCartetirage(Aventurier j) {
+
+        CarteTirage carte1 = null, carte2 = null;
+
+        for (int t = 0; t < 2; t++) {
+
+            if (piocheTirage.isEmpty()) {
+                melangeDefausseCarteTirage();
+            }
+
+            if (j.getMains().size() < 9) {
+
+                if (t == 0) {
+                    carte1 = piocheTirage.get(0);
+                } else {
+                    carte2 = piocheTirage.get(0);
+                }
+
+                if (piocheTirage.get(0) instanceof CarteMonteedesEaux) {
+                    this.tireCarteMonteeDesEaux(0);
+                } else {
+                    j.getMains().add(piocheTirage.get(0));
+                    piocheTirage.remove(piocheTirage.get(0));
+                }
+
+            }
+
+        }
+
+        if (carte1 instanceof CarteMonteedesEaux || carte2 instanceof CarteMonteedesEaux) {
+            this.melangeDefausseCarteInondation();
+        }
+
+    }
+
+    public void tirerCarteInondation() {
+
+        for (int x = 0; x < vueniv.getNiveau(); x++) {
+
+            if (piocheInondation.isEmpty()) {
+                melangeDefausseCarteInondation();
+            }
+            CarteInondation cInon = piocheInondation.get(0);
+            Tuile ttire = cInon.getTuile();
+            grille.inonderTuile(ttire);
+            if (ttire.getEtat() == Utils.EtatTuile.INONDEE) {
+                defausserCarteInondation(0);
+            } else if (ttire.getEtat() == Utils.EtatTuile.COULEE) {
+                piocheInondation.remove(0);
+            }
+        }
+
+    }
+
+    public void tireCarteMonteeDesEaux(int i) {
+
+        // On augmente le niveau de l'eau
+        this.vueniv.setNiveau(vueniv.getNiveau() + 1);
+
+        // On défausse la carte Montée des eaux qui vient d'être tirée
+        this.defausserCarteMonteedesEaux(i);
+    }
