@@ -141,7 +141,7 @@ public class VueAventurier extends Observable {
         this.panelBoutons.add(btnAutreAction);
         this.panelBoutons.add(btnTerminerTour);
 
-        this.window.setVisible(true);
+ 
         
         int taille = a.getMains().size();
         int nbcarteSacDeSable = 0;
@@ -173,6 +173,7 @@ public class VueAventurier extends Observable {
             panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")"));
             panelHeader.add(panelFooter);
         
+            this.window.setVisible(true);
     } 
     
     public void setPosition(String pos) {
