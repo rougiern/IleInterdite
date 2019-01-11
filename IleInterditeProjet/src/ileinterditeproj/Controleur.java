@@ -19,7 +19,6 @@ import LesJoueurs.Messager;
 import LesJoueurs.Navigateur;
 import LesJoueurs.Pilote;
 import LesJoueurs.Plongeur;
-import Vues.VueInitialisation;
 import Vues.VueAventurier;
 import Vues.VueInscription;
 import Vues.VueNiveau;
@@ -31,6 +30,7 @@ import ileinterditeproj.Tuile;
 import ileinterditeproj.Utils.Commandes;
 import static java.lang.Math.random;
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Collections;
 import java.util.Observable;
 import java.util.Observer;
@@ -249,8 +249,6 @@ public class Controleur implements Observer {
                 }else{
                     System.out.println("la case n'est pas valide");
                 }
-                
-                
 
             }
             
@@ -268,23 +266,12 @@ public class Controleur implements Observer {
                     Grille g = this.getGrille();
                     
                     tuilesassechables = joueurcourant.assecher(grille);
-                    
+                    tuilesassechables.add(joueurcourant.getTuileCourante());
                     if (tuilesassechables.isEmpty() == false) {
                    
                     affichernomtuiles(tuilesassechables);
                        
                     System.out.println("cliquez sur une case à assecher");
-                    
-//                    Scanner sc = new Scanner(System.in) ;
-//                    String nomtuile = sc.nextLine();
-//                    Tuile tuileassecher = chercherTuile(nomtuile,tuilesassechables);
-                    
-//                    if (tuileassecher != null) {
-//                       joueurs.get(i).assechertuile(tuileassecher);
-//                        grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                       
-//                       System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
-//                    } 
                     
                     if (joueurcourant instanceof Ingenieur) {
                     
@@ -295,23 +282,14 @@ public class Controleur implements Observer {
                     if(rep.equals("oui") ) {
                      
                     tuilesassechables = joueurcourant.assecher(grille);
-                    
+                    tuilesassechables.add(joueurcourant.getTuileCourante());
                    
                     if (tuilesassechables.isEmpty() == false) {
                     
-//                    affichernomtuiles(tuilesassechables);
+                    affichernomtuiles(tuilesassechables);
                     
                     System.out.println("Quelle case assécher ?");
-//                    sc = new Scanner(System.in) ;
-//                    nomtuile = sc.nextLine();
-//                    tuileassecher = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
-//                        if (tuileassecher != null) {
-//                            ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
-//                            System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
-//                            vplateau.raffraichir(this.grille);
-//                            }else{
-//                            System.out.println("Assechement impossible");
-//                            }
+
                     }else {
                         System.out.println("Assechement impossible");
                     }
@@ -391,15 +369,13 @@ public class Controleur implements Observer {
                 }
                 
             } else if(message.getAction() == Commandes.TERMINER) {
-               for(int x =0 ; x<vueniv.getNiveau();x++){
                    tirerCarteInondation();
-               }
+              
                vplateau.raffraichir(this.grille);
                 int i = 0;
                 while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
                     i++; 
                 }
-               tirerCartetirage(this.getJoueurs().get(i));
                tirerCartetirage(this.getJoueurs().get(i));
                compteurtour++;
                 if (compteurtour < joueurs.size()) {
@@ -531,6 +507,8 @@ public class Controleur implements Observer {
         for (int l = 1; l <= 2; l++) {
             this.getPiocheTirage().add(new CarteMonteedesEaux());
         }
+        
+        Collections.shuffle(piocheTirage);
         
     }
 
