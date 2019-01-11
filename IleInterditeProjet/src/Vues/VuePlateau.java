@@ -31,7 +31,7 @@ public VuePlateau(Grille g){
     window = new JFrame("Plateau de jeu");
     window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         // Définit la taille de la fenêtre en pixels
-    window.setSize(1500, 700);
+    window.setSize(1200, 600);
     
     Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
     window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
@@ -76,7 +76,7 @@ public void raffraichir(Grille g){
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Utils.Commandes.BOUGER,vT.getTuile()));
+                notifyObservers(new Message(derniereaction,vT.getTuile()));
                 clearChanged();
             }
         });

@@ -18,17 +18,10 @@ import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTextField;
-import javax.swing.JComboBox;
 import javax.swing.SwingConstants;
 import static javax.swing.SwingConstants.CENTER;
 import javax.swing.border.MatteBorder;
-import ileinterditeproj.CarteTirage;
-import ileinterditeproj.CarteSacDeSable;
-import ileinterditeproj.CarteMonteedesEaux;
-import ileinterditeproj.CarteHelicoptere;
-import ileinterditeproj.CarteTresor;
-import ileinterditeproj.Utils;
-import java.util.ArrayList;
+
  
 public class VueAventurier extends Observable {
      
@@ -37,8 +30,6 @@ public class VueAventurier extends Observable {
     private final JFrame window;
     private final JPanel panelAventurier;
     private final JPanel mainPanel;
-    private final JPanel panelHeader;
-    private final JPanel panelFooter;
     private final JButton btnBouger  ;
     private final JButton btnAssecher;
     private final JButton btnAutreAction;
@@ -50,17 +41,14 @@ public class VueAventurier extends Observable {
     
     public VueAventurier(Aventurier a){
 
-        this.window = new JFrame();
+        this.window = new JFrame("Vue aventurier");
         window.setSize(350, 200);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         //le titre = nom du joueur 
         window.setTitle(a.getNom());
-        panelHeader = new JPanel(new GridLayout(2,1));
         mainPanel = new JPanel(new BorderLayout());
-                
-        panelHeader.add(mainPanel);
-        this.window.add(panelHeader);
+        this.window.add(mainPanel);
 
         mainPanel.setBackground(new Color(230, 230, 230));
         mainPanel.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
@@ -143,74 +131,7 @@ public class VueAventurier extends Observable {
         this.panelBoutons.add(btnAutreAction);
         this.panelBoutons.add(btnTerminerTour);
 
- 
-        
-        int taille = a.getMains().size();
-        int nbcarteSacDeSable = 0;
-        int nbcarteMonteedesEaux = 0;
-        int nbcarteHelicoptere = 0;
-        int nbcarteTresor = 0;
-        int nbcarteTresorPierre = 0;
-        int nbcarteTresorZephyr = 0;
-        int nbcarteTresorCrystal = 0;
-        int nbcarteTresorCalice = 0;
-        ArrayList<CarteTresor> les_tresors = new ArrayList<>();
-
-        this.panelFooter = new JPanel(new GridLayout(5,1));
-        panelFooter.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
-        if (taille != 0 ){
-            for (CarteTirage carteTirage : a.getMains())
-                if (carteTirage instanceof CarteSacDeSable){
-                    nbcarteSacDeSable++;
-                }
-                else if (carteTirage instanceof CarteMonteedesEaux){
-                    nbcarteMonteedesEaux++;
-                }
-
-                else if (carteTirage instanceof CarteHelicoptere){
-                    nbcarteHelicoptere++;
-                }
-                else if (carteTirage instanceof CarteTresor){
-                    nbcarteTresor++;
-                    les_tresors.add((CarteTresor) carteTirage);
-                }    
-                if (les_tresors.size() !=0){
-                    for (CarteTresor carteTresor :les_tresors){
-                        if (carteTresor.getTypeTresor() == Utils.Tresor.PIERRE){
-                            nbcarteTresorPierre++;
-                        }
-                        else if (carteTresor.getTypeTresor() == Utils.Tresor.ZEPHYR){
-                            nbcarteTresorZephyr++;
-                        }
-                        else if (carteTresor.getTypeTresor() == Utils.Tresor.CRISTAL){
-                            nbcarteTresorCrystal++;
-                        }
-                        else if (carteTresor.getTypeTresor() == Utils.Tresor.CALICE){
-                            nbcarteTresorCalice++;
-                        }
-                    
-                    }
-                }
-        }
-            panelFooter.add(new JLabel("Carte Sac De Sable ("+nbcarteSacDeSable+")"));
-            panelFooter.add(new JLabel("Carte Montée des Eaux ("+nbcarteMonteedesEaux+")"));
-            panelFooter.add(new JLabel("Carte Hélicoptère ("+nbcarteHelicoptere+")"));
-            panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")"));
-            
-            String[] tresorList = { "Carte Tresor : La Pierre Sacrée (" + nbcarteTresorPierre+")",
-                "Carte Tresor : La statue du Zéphyr (" + nbcarteTresorZephyr+")",
-                "Carte Tresor : Le Cristal Ardent (" + nbcarteTresorCrystal+")",
-                "Carte Tresor : Le Calice de l'Onde (" + nbcarteTresorCalice+")",
-            };
-            JComboBox listeTresor = new JComboBox(tresorList);
-            listeTresor.setBackground(a.getPion().getCouleur());
-            
-            
-            panelFooter.add(listeTresor);
-            
-            panelHeader.add(panelFooter);
-        
-            this.window.setVisible(true);
+        this.window.setVisible(true);
     } 
     
     public void setPosition(String pos) {
