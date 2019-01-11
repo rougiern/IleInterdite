@@ -42,6 +42,8 @@ public class VueAventurier extends Observable {
     private final JButton btnBouger  ;
     private final JButton btnAssecher;
     private final JButton btnAutreAction;
+    private final JButton btnRecupererTresor;
+    private final JButton btnUtiliserCarte;
     private final JButton btnTerminerTour;
     private JTextField position;
    
@@ -51,7 +53,7 @@ public class VueAventurier extends Observable {
     public VueAventurier(Aventurier a){
 
         this.window = new JFrame();
-        window.setSize(350, 200);
+        window.setSize(350, 500);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
         //le titre = nom du joueur 
@@ -65,6 +67,12 @@ public class VueAventurier extends Observable {
         mainPanel.setBackground(new Color(230, 230, 230));
         mainPanel.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
 
+        // =================================================================================
+        // =Première partie de la fenêtre                                                  =
+        // =Affichage du  nom de l'aventurier, sa position et les 6 boutons d'actions      =
+        // =================================================================================
+        
+        
         // =================================================================================
         // NORD : le titre = nom de l'aventurier sur la couleurActive du pion
 
@@ -89,7 +97,7 @@ public class VueAventurier extends Observable {
 
         // =================================================================================
         // SUD : les boutons
-        this.panelBoutons = new JPanel(new GridLayout(2,2));
+        this.panelBoutons = new JPanel(new GridLayout(3,2));
         this.panelBoutons.setOpaque(false);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
@@ -136,14 +144,45 @@ public class VueAventurier extends Observable {
                 notifyObservers(new Message(Commandes.TERMINER,a.getNom()));
                 clearChanged();
             }
+            
         });
         
+        this.btnRecupererTresor = new JButton("Récuperer un trésor") ;
+        
+        btnRecupererTresor.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.RECUPERER_TRESOR,a.getNom()));
+                clearChanged();
+            }
+            
+        });
+        
+        this.btnUtiliserCarte = new JButton("Utiliser une carte spéciale") ;
+        
+        btnUtiliserCarte.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.CHOISIR_CARTE,a.getNom()));
+                clearChanged();
+            }
+            
+        });
+        
+
         this.panelBoutons.add(btnBouger);
         this.panelBoutons.add(btnAssecher);
         this.panelBoutons.add(btnAutreAction);
         this.panelBoutons.add(btnTerminerTour);
-
+        this.panelBoutons.add(btnRecupererTresor);
+        this.panelBoutons.add(btnUtiliserCarte);
  
+        // =================================================================================
+        // =Deuxième partie de la fenêtre                                                  =
+        // =Affichage des cartes en mains                                                  =
+        // =================================================================================
         
         int taille = a.getMains().size();
         int nbcarteSacDeSable = 0;
@@ -295,7 +334,7 @@ public class VueAventurier extends Observable {
         }
             panelFooter.add(new JLabel("Carte Sac De Sable ("+nbcarteSacDeSable+")"));
             panelFooter.add(new JLabel("Carte Hélicoptère ("+nbcarteHelicoptere+")"));
-            panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")"));
+            panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")  :"));
             
             String[] tresorList = { "Carte Tresor : La Pierre Sacrée (" + nbcarteTresorPierre+")",
                 "Carte Tresor : La statue du Zéphyr (" + nbcarteTresorZephyr+")",
