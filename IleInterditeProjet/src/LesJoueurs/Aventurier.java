@@ -5,6 +5,7 @@
  */
 package LesJoueurs;
 
+import ileinterditeproj.CarteTirage;
 import ileinterditeproj.EtatTuile;
 import ileinterditeproj.Grille;
 import ileinterditeproj.ObjetIdentifie;
@@ -22,6 +23,7 @@ public abstract class Aventurier extends ObjetIdentifie{
     private int ptsaction  ;
     private Tuile tuileCourante ;
     private Pion pion ;
+    private ArrayList<CarteTirage> mains ;
     
     public Aventurier(String nom, Tuile tuilede) {
         super();
@@ -29,7 +31,7 @@ public abstract class Aventurier extends ObjetIdentifie{
         this.setTuileCourante(tuilede);
         this.ptsaction=3;
         pion=null;
-        
+        mains = new ArrayList();
     }
 
     /**
@@ -147,6 +149,13 @@ public abstract class Aventurier extends ObjetIdentifie{
     
     public void enleveUneAction() {
         this.ptsaction = this.getPtsaction()-1;
+    }
+
+    /**
+     * @return the mains
+     */
+    public ArrayList<CarteTirage> getMains() {
+        return mains;
     }
 
 }

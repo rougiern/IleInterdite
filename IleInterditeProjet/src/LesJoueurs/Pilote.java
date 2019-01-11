@@ -21,7 +21,7 @@ public class Pilote extends Aventurier {
     
     public Pilote(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
-        this.setPion(Pion.VERT);
+        this.setPion(Pion.BLEU);
     }
     
     public ArrayList<Tuile> seDeplacerVol(Grille g) {
