@@ -1,0 +1,1 @@
+rafraichissement de la vue aventurier pour les cartes en mains, j'ai pas touché le controleur
