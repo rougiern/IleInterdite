@@ -178,6 +178,10 @@ public class Controleur implements Observer {
             }else if (message.getAction()==Action.INSCRIRE_JOUEURS){
                 AttribuerRole(message.getNoms());
                 vueinsc.close();
+                
+                //Distribution des cartes
+                DistributionDébut();
+                
                 vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                 vueaventurier.addObserver(this);
                 vplateau.afficher();
@@ -685,6 +689,17 @@ public class Controleur implements Observer {
         Collections.shuffle(this.getDefausseInondation());
         piocheInondation.addAll(this.getDefausseInondation());
         defausseInondation.clear();
+    }
+    
+    public void DistributionDébut() {
+        
+        for (Aventurier a : this.getJoueurs()) {
+            for (int r = 0; r < 2;r++) {
+                a.getMains().add(this.getPiocheTirage().get(r));
+                this.getPiocheTirage().remove(r);
+            }
+        }
+        
     }
     
 
