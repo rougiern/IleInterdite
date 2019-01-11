@@ -147,7 +147,6 @@ public class VueAventurier extends Observable {
         
         int taille = a.getMains().size();
         int nbcarteSacDeSable = 0;
-        int nbcarteMonteedesEaux = 0;
         int nbcarteHelicoptere = 0;
         int nbcarteTresor = 0;
         int nbcarteTresorPierre = 0;
@@ -156,15 +155,12 @@ public class VueAventurier extends Observable {
         int nbcarteTresorCalice = 0;
         ArrayList<CarteTresor> les_tresors = new ArrayList<>();
 
-        this.panelFooter = new JPanel(new GridLayout(5,1));
+        this.panelFooter = new JPanel(new GridLayout(4,1));
         panelFooter.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
-        if (taille != 0 ){
+        if (a.getMains().size() != 0 ){
             for (CarteTirage carteTirage : a.getMains())
                 if (carteTirage instanceof CarteSacDeSable){
                     nbcarteSacDeSable++;
-                }
-                else if (carteTirage instanceof CarteMonteedesEaux){
-                    nbcarteMonteedesEaux++;
                 }
 
                 else if (carteTirage instanceof CarteHelicoptere){
@@ -189,11 +185,11 @@ public class VueAventurier extends Observable {
                             nbcarteTresorCalice++;
                         }
                     
-                    }
+                   }
                 }
         }
+            
             panelFooter.add(new JLabel("Carte Sac De Sable ("+nbcarteSacDeSable+")"));
-            panelFooter.add(new JLabel("Carte Montée des Eaux ("+nbcarteMonteedesEaux+")"));
             panelFooter.add(new JLabel("Carte Hélicoptère ("+nbcarteHelicoptere+")"));
             panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")"));
             
@@ -252,6 +248,66 @@ public class VueAventurier extends Observable {
      
      public void rafraichirPositon(Aventurier a){
          this.position.setText(a.getTuileCourante().getNom());
+     }
+     
+     public void rafraichirMains(Aventurier a){
+        this.window.setVisible(false);
+        this.panelFooter.removeAll();
+        int nbcarteSacDeSable = 0;
+        int nbcarteHelicoptere = 0;
+        int nbcarteTresor = 0;
+        int nbcarteTresorPierre = 0;
+        int nbcarteTresorZephyr = 0;
+        int nbcarteTresorCrystal = 0;
+        int nbcarteTresorCalice = 0;
+        ArrayList<CarteTresor> les_tresors = new ArrayList<>();
+        panelFooter.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
+        if (!a.getMains().isEmpty()){
+            for (CarteTirage carteTirage : a.getMains())
+                if (carteTirage instanceof CarteSacDeSable){
+                    nbcarteSacDeSable++;
+                }
+
+                else if (carteTirage instanceof CarteHelicoptere){
+                    nbcarteHelicoptere++;
+                }
+                else if (carteTirage instanceof CarteTresor){
+                    nbcarteTresor++;
+                    les_tresors.add((CarteTresor) carteTirage);
+                }    
+                if (!les_tresors.isEmpty()){
+                    for (CarteTresor carteTresor :les_tresors){
+                        if (carteTresor.getTypeTresor() == Utils.Tresor.PIERRE){
+                            nbcarteTresorPierre++;
+                        }
+                        else if (carteTresor.getTypeTresor() == Utils.Tresor.ZEPHYR){
+                            nbcarteTresorZephyr++;
+                        }
+                        else if (carteTresor.getTypeTresor() == Utils.Tresor.CRISTAL){
+                            nbcarteTresorCrystal++;
+                        }
+                        else if (carteTresor.getTypeTresor() == Utils.Tresor.CALICE){
+                            nbcarteTresorCalice++;
+                        }
+                    
+                    }
+                }
+        }
+            panelFooter.add(new JLabel("Carte Sac De Sable ("+nbcarteSacDeSable+")"));
+            panelFooter.add(new JLabel("Carte Hélicoptère ("+nbcarteHelicoptere+")"));
+            panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")"));
+            
+            String[] tresorList = { "Carte Tresor : La Pierre Sacrée (" + nbcarteTresorPierre+")",
+                "Carte Tresor : La statue du Zéphyr (" + nbcarteTresorZephyr+")",
+                "Carte Tresor : Le Cristal Ardent (" + nbcarteTresorCrystal+")",
+                "Carte Tresor : Le Calice de l'Onde (" + nbcarteTresorCalice+")",
+            };
+            JComboBox listeTresor = new JComboBox(tresorList);
+            listeTresor.setBackground(a.getPion().getCouleur());
+            
+            
+            panelFooter.add(listeTresor);
+            this.window.setVisible(true);
      }
      
 }
