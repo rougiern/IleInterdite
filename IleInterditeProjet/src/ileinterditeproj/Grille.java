@@ -7,7 +7,6 @@ package ileinterditeproj;
 
 import java.util.ArrayList;
 import java.util.Collection;
-import java.util.Collections;
 import java.util.HashMap;
 import java.util.Iterator;
 
@@ -37,7 +36,6 @@ public class Grille {
      * @param tableau the tableau to set
      */
     public void setTableau(ArrayList<Tuile> lestuiles) {
-        Collections.shuffle(lestuiles);
         int i = 0;
         for (int x=0; x<6;x++){
             for (int y=0;y<6;y++){
@@ -154,19 +152,19 @@ public class Grille {
             if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()!=Utils.EtatTuile.COULEE){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
+        if(posX>0 && posY >0){
             if(tableau[posX-1][posY-1].getNom().equals("null")==false && tableau[posX-1][posY-1].getEtat()!=Utils.EtatTuile.COULEE){
                 tuilesadj.add(tableau[posX-1][posY-1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
+        if(posX<5 && posY<5 ){
             if(tableau[posX+1][posY+1].getNom().equals("null")==false && tableau[posX+1][posY+1].getEtat()!=Utils.EtatTuile.COULEE){
                 tuilesadj.add(tableau[posX+1][posY+1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
+        if(posX>0 && posY<5 ){
             if(tableau[posX-1][posY+1].getNom().equals("null")==false && tableau[posX-1][posY+1].getEtat()!=Utils.EtatTuile.COULEE){
                 tuilesadj.add(tableau[posX-1][posY+1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
+        if(posX<5 && posY>0){
             if(tableau[posX+1][posY-1].getNom().equals("null")==false && tableau[posX+1][posY-1].getEtat()!=Utils.EtatTuile.COULEE){
                 tuilesadj.add(tableau[posX+1][posY-1]);}}
         

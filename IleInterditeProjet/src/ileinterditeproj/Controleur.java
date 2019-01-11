@@ -205,10 +205,7 @@ public class Controleur implements Observer {
                 
                 tuilesatteignables = joueurs.get(i).seDeplacer(grille);
                            
-                }
-                
-                else {
-                    
+                }else {
                     System.out.println("Voulez-vous utiliser votre vol ?");
                     String rep = sc.nextLine();
                     if (rep.equals("oui")) {
@@ -221,18 +218,10 @@ public class Controleur implements Observer {
                  
                 if (tuilesatteignables.isEmpty() == false) {
                 
-//                affichernomtuiles(tuilesatteignables);
-//                 
+                affichernomtuiles(tuilesatteignables);
+                
                   System.out.println("Ou se déplacer ?");
-//                 String nomtuile = sc.nextLine();
-//                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
-//                 
-//                 if(nouvelletuile != null){
-//                     joueurs.get(i).changerTuileCourante(nouvelletuile);
-//                     grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-//                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
-//                     vueaventurier.rafraichirPositon(joueurs.get(i));
-//                 }
+
                  
                 }else {
                     System.out.println("Action impossible");
@@ -242,15 +231,17 @@ public class Controleur implements Observer {
                 
             }else if((arg0 instanceof VuePlateau) && message.getAction()==Commandes.BOUGER){
                 
-                int i=0;
+                int x=0;
                 
-                do{                    
-                    i++;
-                }while(i<tuilesatteignables.size()&&tuilesatteignables.get(i)!=message.getTuile());
+                                   
+                   
+                while(x<tuilesatteignables.size()&& !(tuilesatteignables.get(x).getNom().equals(message.getTuile().getNom()))){
+                    x++;
+                }
                 
-                if(i<tuilesatteignables.size()){
-                    System.out.println(tuilesatteignables.get(i).getNom());
-                    joueurcourant.setTuileCourante(tuilesatteignables.get(i));
+                if(x!=tuilesatteignables.size()){
+                    System.out.println(tuilesatteignables.get(x).getNom());
+                    joueurcourant.setTuileCourante(tuilesatteignables.get(x));
                     joueurcourant.enleveUneAction();
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurcourant.getTuileCourante().getNom());
@@ -280,9 +271,10 @@ public class Controleur implements Observer {
                     
                     if (tuilesassechables.isEmpty() == false) {
                    
-//                    affichernomtuiles(tuilesassechables);
-//                        
+                    affichernomtuiles(tuilesassechables);
+                       
                     System.out.println("cliquez sur une case à assecher");
+                    
 //                    Scanner sc = new Scanner(System.in) ;
 //                    String nomtuile = sc.nextLine();
 //                    Tuile tuileassecher = chercherTuile(nomtuile,tuilesassechables);
@@ -290,11 +282,11 @@ public class Controleur implements Observer {
 //                    if (tuileassecher != null) {
 //                       joueurs.get(i).assechertuile(tuileassecher);
 //                        grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-//                        vplateau.raffraichir(this.grille);
+                       
 //                       System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
 //                    } 
                     
-                    if (joueurs.get(i) instanceof Ingenieur) {
+                    if (joueurcourant instanceof Ingenieur) {
                     
                     System.out.println("Voulez-vous assécher une autre case ?");
                     Scanner sc = new Scanner(System.in);
@@ -302,7 +294,7 @@ public class Controleur implements Observer {
                     
                     if(rep.equals("oui") ) {
                      
-                    tuilesassechables = joueurs.get(i).assecher(grille);
+                    tuilesassechables = joueurcourant.assecher(grille);
                     
                    
                     if (tuilesassechables.isEmpty() == false) {
@@ -337,14 +329,14 @@ public class Controleur implements Observer {
                 
                 int i=0;
                 
-                do{                    
+                while(i<tuilesassechables.size()&& !(tuilesassechables.get(i).getNom().equals(message.getTuile().getNom()))){
                     i++;
-                }while(i<tuilesassechables.size()&&tuilesassechables.get(i)!=message.getTuile());
+                }
                 
                 if(i<tuilesassechables.size()){
                     System.out.println(tuilesassechables.get(i).getNom());
                     joueurcourant.assechertuile(tuilesassechables.get(i));
-                    joueurcourant.enleveUneAction();
+
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : tuile assechee :"+tuilesassechables.get(i).getNom());
                     vplateau.raffraichir(this.grille);
@@ -393,8 +385,7 @@ public class Controleur implements Observer {
                             }else {
                                System.out.println("Action impossible");
                             }
-                        
-                        
+
                     }
                     
                 }
@@ -416,6 +407,7 @@ public class Controleur implements Observer {
                     vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                     vueaventurier.addObserver(this);
                 } else {
+                    vueaventurier.close();
                     System.out.println("Le tour est terminé");
                     compteurtour = 0;
                     
@@ -442,16 +434,10 @@ public class Controleur implements Observer {
         this.getJoueurs().add(aventurier); }
     }
 
-    /**
-     * @return the grille
-     */
     public Grille getGrille() {
         return grille;
     }
 
-    /**
-     * @return the joueurs
-     */
     public ArrayList<Aventurier> getJoueurs() {
         return joueurs;
     }
@@ -464,56 +450,8 @@ public class Controleur implements Observer {
         }
        
     }
-    
-    public void afficherGrille(){
-        int i = 1;
-        for (int x=0; x<6;x++){
-            for (int y=0;y<6;y++){
-                System.out.println("Tuiles n°"+i+"="+grille.getTableau()[x][y].getNom());
-                i++;
-                
-            }
-       }
-    
-    }
+   
 
-    /**
-     * @param joueurs the joueurs to set
-     */
-    public void setJoueurs(VueInitialisation v) {
-        
-            ArrayList<String> noms = v.getNoms();
-            ArrayList<String> roles = v.getRoles();
-            
-            int i = 0;
-            while(i<roles.size()){
-            
-            if(roles.get(i).equals("plongeur")){
-                Plongeur p = new Plongeur(noms.get(i),tuilesdepart.get(1)); //Noir
-                joueurs.add(p);
-            }else if(roles.get(i).equals("messager")){
-                Messager m = new Messager(noms.get(i),tuilesdepart.get(3));  //Blanc
-                joueurs.add(m);
-            }else if(roles.get(i).equals("navigateur")){
-                Navigateur n = new Navigateur(noms.get(i),tuilesdepart.get(2)); // Jaune
-                joueurs.add(n);
-            }else if(roles.get(i).equals("pilote")){
-                Pilote pilote = new Pilote(noms.get(i),tuilesdepart.get(4)); // Bleu
-                joueurs.add(pilote);
-            }else if(roles.get(i).equals("ingenieur")){
-                  // Pion.ROUGE
-                Ingenieur ing = new Ingenieur(noms.get(i),tuilesdepart.get(0)); //Rouge
-                joueurs.add(ing);
-            }else if(roles.get(i).equals("explorateur")){
-                Explorateur exp = new Explorateur(noms.get(i),tuilesdepart.get(5)); //Vert
-                joueurs.add(exp);
-            }
-            i++;
-            }
-            
-        }
-        
-    
 
     public Tuile chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
         int i =0;
@@ -680,65 +618,84 @@ public class Controleur implements Observer {
             return roles;
     }
            
-    public void tirerCarteInondation(){
-        if(piocheInondation.isEmpty()){
-            melangeDefausseCarteInondation();
-        }
-        CarteInondation cInon = piocheInondation.get(0);
-        Tuile ttire = cInon.getTuile();
-        grille.inonderTuile(ttire);
-        if(ttire.getEtat()==Utils.EtatTuile.INONDEE){
-            defausserCarteInondation(0);
-        }else if(ttire.getEtat()==Utils.EtatTuile.COULEE){
-            piocheInondation.remove(0);
-        }
-    }
     
-    public void defausserCarteInondation(int i){
+    
+    
+     public void defausserCarteInondation(int i) {
         defausseInondation.add(piocheInondation.get(i));
         piocheInondation.remove(i);
-        
+
     }
-    
-     public void defausserCarteMonteedesEaux(int i){
-        
+
+    public void defausserCarteMonteedesEaux(int i) {
+
         defausseTirage.add(piocheTirage.get(i));
         piocheTirage.remove(i);
-        
+
     }
 
     private void tirerCartetirage(Aventurier j) {
-       
-        if(piocheTirage.isEmpty()){
-            melangeDefausseCarteTirage();
-        }
-        
-        if(j.getMains().size()<9){
-            // Si la carte tirée est une carte montée des eaux
-            if (piocheTirage.get(0) instanceof CarteMonteedesEaux) {
-                this.tireCarteMonteeDesEaux(0);
-            } else {
-           j.getMains().add(piocheTirage.get(0)); 
-           piocheTirage.remove(piocheTirage.get(0));
+
+        CarteTirage carte1 = null, carte2 = null;
+
+        for (int t = 0; t < 2; t++) {
+
+            if (piocheTirage.isEmpty()) {
+                melangeDefausseCarteTirage();
             }
-         
-       }
-       
-    }
-        
-    public void tireCarteMonteeDesEaux(int i) {
-        
-        // On augmente le niveau de l'eau
-        this.vueniv.setNiveau(vueniv.getNiveau()+1);
-        
-        // Si la défausse inondation n'est pas vide on mélange les cartes inondations défaussées et on les remet dans la pioche
-        if (!(this.getDefausseInondation().isEmpty())) {
+
+            if (j.getMains().size() < 9) {
+
+                if (t == 0) {
+                    carte1 = piocheTirage.get(0);
+                } else {
+                    carte2 = piocheTirage.get(0);
+                }
+
+                if (piocheTirage.get(0) instanceof CarteMonteedesEaux) {
+                    this.tireCarteMonteeDesEaux(0);
+                } else {
+                    j.getMains().add(piocheTirage.get(0));
+                    piocheTirage.remove(piocheTirage.get(0));
+                }
+
+            }
+
+        }
+
+        if (carte1 instanceof CarteMonteedesEaux || carte2 instanceof CarteMonteedesEaux) {
             this.melangeDefausseCarteInondation();
         }
-        
+
+    }
+
+    public void tirerCarteInondation() {
+
+        for (int x = 0; x < vueniv.getNiveau(); x++) {
+
+            if (piocheInondation.isEmpty()) {
+                melangeDefausseCarteInondation();
+            }
+            CarteInondation cInon = piocheInondation.get(0);
+            Tuile ttire = cInon.getTuile();
+            grille.inonderTuile(ttire);
+            if (ttire.getEtat() == Utils.EtatTuile.INONDEE) {
+                defausserCarteInondation(0);
+            } else if (ttire.getEtat() == Utils.EtatTuile.COULEE) {
+                piocheInondation.remove(0);
+            }
+        }
+
+    }
+
+    public void tireCarteMonteeDesEaux(int i) {
+
+        // On augmente le niveau de l'eau
+        this.vueniv.setNiveau(vueniv.getNiveau() + 1);
+
         // On défausse la carte Montée des eaux qui vient d'être tirée
         this.defausserCarteMonteedesEaux(i);
-    }
+}
 
     private void melangeDefausseCarteTirage() {
         Collections.shuffle(this.getDefausseTirage());
