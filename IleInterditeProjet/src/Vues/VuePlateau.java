@@ -11,6 +11,7 @@ import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.Observable;
+import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -24,7 +25,7 @@ public class VuePlateau extends Observable {
     
     private JFrame window ;
     private JPanel mainpanel ;
-
+    private Utils.Commandes derniereaction;
 
 public VuePlateau(Grille g){
     window = new JFrame("Plateau de jeu");
@@ -47,7 +48,7 @@ public VuePlateau(Grille g){
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Utils.Commandes.BOUGER,vT.getTuile()));
+                notifyObservers(new Message(derniereaction,vT.getTuile()));
                 clearChanged();
             }
         });
@@ -97,5 +98,12 @@ public void afficher() {
 public void close() {
          this.window.dispose();
      }
+
+    /**
+     * @param derniereaction the derniereaction to set
+     */
+    public void setDerniereaction(Utils.Commandes derniereaction) {
+        this.derniereaction = derniereaction;
+    }
 
 }
