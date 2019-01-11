@@ -23,7 +23,7 @@ public class VueTuile extends JPanel {
         }else if(tuile.getEtat()==Utils.EtatTuile.INONDEE){
             bouton.setBackground(Color.cyan);
         }else if(tuile.getEtat()==Utils.EtatTuile.COULEE){
-           
+           bouton.setEnabled(false);
         }
         
     }
