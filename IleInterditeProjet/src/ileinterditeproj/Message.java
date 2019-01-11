@@ -14,12 +14,19 @@ public class Message {
     
     private Commandes action ;
     private String nomJ ;
+    private Tuile tuile;
     
     
     public Message(Commandes action ,String nom){
         this.action=action;
         this.nomJ=nom;
-        
+        this.tuile=null;
+    }
+    
+    public Message(Commandes action, Tuile tuile){
+        this.action=action;
+        this.nomJ=null;
+        this.tuile=tuile;
     }
 
     

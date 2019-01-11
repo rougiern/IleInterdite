@@ -55,8 +55,13 @@ public class Controleur implements Observer {
     private VueNiveau vueniv ;
     private VuePlateau vplateau ;
     private int compteurtour = 0;
-   
+    private ArrayList<Tuile> tuilesatteignables;
+    private Aventurier joueurcourant;
+    
     Controleur() {
+        
+        joueurcourant=null;
+        tuilesatteignables=null;
         
         //Création de la Grille
         grille = new Grille();
@@ -175,21 +180,24 @@ public class Controleur implements Observer {
         }
         if(arg1 instanceof Message){
             Message message = (Message) arg1 ;
-            if(message.getAction()==Commandes.BOUGER){
+            if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.BOUGER){
+                
                 
                 int i = 0;
                 while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
                     i++;
                 }
                 
+                joueurcourant=joueurs.get(i);
+                
+                
                 Grille g = this.getGrille();
                 Scanner sc = new Scanner(System.in) ;
-                ArrayList<Tuile> tuilesatteignables;
-                
+                                
                 if (!(joueurs.get(i) instanceof Pilote)) {
                 
                 tuilesatteignables = joueurs.get(i).seDeplacer(grille);
-                
+                           
                 }
                 
                 else {
@@ -224,6 +232,8 @@ public class Controleur implements Observer {
                 }
                 
                
+                
+            }else if((arg0 instanceof VuePlateau) && message.getAction()==Commandes.BOUGER){
                 
             }
             
@@ -661,4 +671,3 @@ public class Controleur implements Observer {
     
     
 }
-    
