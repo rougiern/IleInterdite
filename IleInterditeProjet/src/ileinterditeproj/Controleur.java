@@ -57,11 +57,14 @@ public class Controleur implements Observer {
     private int compteurtour = 0;
     private ArrayList<Tuile> tuilesatteignables;
     private Aventurier joueurcourant;
+    private ArrayList<Tuile> tuilesassechables;
+    
     
     Controleur() {
         
         joueurcourant=null;
         tuilesatteignables=null;
+        tuilesassechables=null;
         
         //Création de la Grille
         grille = new Grille();
@@ -159,7 +162,7 @@ public class Controleur implements Observer {
        
         //Création du plateau
         this.vplateau = new VuePlateau(this.grille);
-        
+        vplateau.addObserver(this);
         
         
         
@@ -185,6 +188,7 @@ public class Controleur implements Observer {
             Message message = (Message) arg1 ;
             if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.BOUGER){
                 
+                vplateau.setDerniereaction(Commandes.BOUGER);
                 
                 int i = 0;
                 while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
@@ -242,9 +246,10 @@ public class Controleur implements Observer {
                 
                 do{                    
                     i++;
-                }while(i<tuilesatteignables.size()&&tuilesatteignables.get(i)==message.getTuile());
+                }while(i<tuilesatteignables.size()&&tuilesatteignables.get(i)!=message.getTuile());
                 
                 if(i<tuilesatteignables.size()){
+                    System.out.println(tuilesatteignables.get(i).getNom());
                     joueurcourant.setTuileCourante(tuilesatteignables.get(i));
                     joueurcourant.enleveUneAction();
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
@@ -258,36 +263,41 @@ public class Controleur implements Observer {
 
             }
             
-            else if(message.getAction() == Commandes.ASSECHER) {
+            else if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.ASSECHER){
+                
+                vplateau.setDerniereaction(Commandes.ASSECHER);
                 
                 int i = 0;
-                while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
-                    i++; 
+                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
+                    i++;
                 }
+                
+                joueurcourant=joueurs.get(i);
                 
                     Grille g = this.getGrille();
                     
-                    ArrayList<Tuile> tuilesassechables = joueurs.get(i).assecher(grille);
+                    tuilesassechables = joueurcourant.assecher(grille);
                     
                     if (tuilesassechables.isEmpty() == false) {
                    
-                    affichernomtuiles(tuilesassechables);
-                        
-                    System.out.println("Quelle case assécher ?");
-                    Scanner sc = new Scanner(System.in) ;
-                    String nomtuile = sc.nextLine();
-                    Tuile tuileassecher = chercherTuile(nomtuile,tuilesassechables);
+//                    affichernomtuiles(tuilesassechables);
+//                        
+                    System.out.println("cliquez sur une case à assecher");
+//                    Scanner sc = new Scanner(System.in) ;
+//                    String nomtuile = sc.nextLine();
+//                    Tuile tuileassecher = chercherTuile(nomtuile,tuilesassechables);
                     
-                    if (tuileassecher != null) {
-                       joueurs.get(i).assechertuile(tuileassecher);
-                        grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
-                        vplateau.raffraichir(this.grille);
-                       System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
-                    } 
+//                    if (tuileassecher != null) {
+//                       joueurs.get(i).assechertuile(tuileassecher);
+//                        grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
+//                        vplateau.raffraichir(this.grille);
+//                       System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+//                    } 
                     
                     if (joueurs.get(i) instanceof Ingenieur) {
                     
                     System.out.println("Voulez-vous assécher une autre case ?");
+                    Scanner sc = new Scanner(System.in);
                     String rep = sc.nextLine();
                     
                     if(rep.equals("oui") ) {
@@ -297,19 +307,19 @@ public class Controleur implements Observer {
                    
                     if (tuilesassechables.isEmpty() == false) {
                     
-                    affichernomtuiles(tuilesassechables);
+//                    affichernomtuiles(tuilesassechables);
                     
                     System.out.println("Quelle case assécher ?");
-                    sc = new Scanner(System.in) ;
-                    nomtuile = sc.nextLine();
-                    tuileassecher = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
-                        if (tuileassecher != null) {
-                            ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
-                            System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
-                            vplateau.raffraichir(this.grille);
-                            }else{
-                            System.out.println("Assechement impossible");
-                            }
+//                    sc = new Scanner(System.in) ;
+//                    nomtuile = sc.nextLine();
+//                    tuileassecher = chercherTuile(nomtuile,joueurs.get(i).seDeplacer(grille));
+//                        if (tuileassecher != null) {
+//                            ((Ingenieur)joueurs.get(i)).assechertuile2efois(tuileassecher);
+//                            System.out.println("Action effectuée : Tuile assechée :"+tuileassecher.getNom());
+//                            vplateau.raffraichir(this.grille);
+//                            }else{
+//                            System.out.println("Assechement impossible");
+//                            }
                     }else {
                         System.out.println("Assechement impossible");
                     }
@@ -322,6 +332,29 @@ public class Controleur implements Observer {
                     }
         
              }
+            
+            else if((arg0 instanceof VuePlateau) && message.getAction()==Commandes.ASSECHER){
+                
+                int i=0;
+                
+                do{                    
+                    i++;
+                }while(i<tuilesassechables.size()&&tuilesassechables.get(i)!=message.getTuile());
+                
+                if(i<tuilesassechables.size()){
+                    System.out.println(tuilesassechables.get(i).getNom());
+                    joueurcourant.assechertuile(tuilesassechables.get(i));
+                    joueurcourant.enleveUneAction();
+                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
+                    System.out.println("Action effectuée : tuile assechee :"+tuilesassechables.get(i).getNom());
+                    vplateau.raffraichir(this.grille);
+                }else{
+                    System.out.println("la case n'est pas valide");
+                }
+                
+                
+
+            }
         
             else if ((message.getAction() ==Commandes.DEPLACER)) {
                 
