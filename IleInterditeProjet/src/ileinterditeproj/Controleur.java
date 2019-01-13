@@ -58,6 +58,7 @@ public class Controleur implements Observer {
     private ArrayList<Tuile> tuilesatteignables;
     private Aventurier joueurcourant;
     private ArrayList<Tuile> tuilesassechables;
+    private ArrayList<Utils.Tresor> tresorsrecupérés;
     
     
     Controleur() {
@@ -137,6 +138,7 @@ public class Controleur implements Observer {
         defausseInondation = new ArrayList();
         piocheTirage = new ArrayList();
         defausseTirage = new ArrayList();
+        tresorsrecupérés = new ArrayList();
         
         //Création de la vue niveau
         vueniv = new VueNiveau(1);
@@ -254,6 +256,51 @@ public class Controleur implements Observer {
                     System.out.println("la case n'est pas valide");
                 }
 
+            }
+            
+            else if ((arg0 instanceof VueAventurier) && message.getAction() == Commandes.RECUPERER_TRESOR) {
+                
+                int i = 0;
+                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
+                    i++;
+                }
+   
+                // On regarde si il a 4 cartes tirage du même trésor que le trésor de la tuile sur la quelle il est
+                int nbok = 0;
+                if (joueurs.get(i).getTuileCourante().getTresor() != null) {
+                    for (CarteTirage c : joueurs.get(i).getMains()) {
+                        if (c instanceof CarteTresor) {
+                            if (((CarteTresor) c).getTypeTresor() == joueurs.get(i).getTuileCourante().getTresor()) {
+                                nbok++;
+                            }
+                        }
+                    }
+                }    
+                    
+                // Si c'est le cas, on retire ces cartes de sa main
+                int nbretires = 0;    
+                if (nbok >= 4) {
+                        for (int u = 0; u < joueurs.get(i).getMains().size(); u++) {
+                            if (joueurs.get(i).getMains().get(u) instanceof CarteTresor) {
+                                if (((CarteTresor) joueurs.get(i).getMains().get(u)).getTypeTresor() == joueurs.get(i).getTuileCourante().getTresor()) {
+                                    joueurs.get(i).getMains().remove(u);
+                                }
+                            }   
+                        }
+                        
+                // On ajoute à la liste des trésors récupérés le trésor concerné, et on enlève de la tuile le trésor
+                        tresorsrecupérés.add(joueurs.get(i).getTuileCourante().getTresor());
+                        joueurs.get(i).getTuileCourante().setTresor(null);
+                        System.out.println("Trésor récupéré");
+                        
+                    } else {
+                        
+                        System.out.println("Impossible");
+                        
+                    }
+                    
+                
+                
             }
             
             else if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.ASSECHER){
@@ -694,9 +741,14 @@ public class Controleur implements Observer {
     public void DistributionDébut() {
         
         for (Aventurier a : this.getJoueurs()) {
-            for (int r = 0; r < 2;r++) {
-                a.getMains().add(this.getPiocheTirage().get(r));
-                this.getPiocheTirage().remove(r);
+            int r = 0, nb = 0;
+            while (r != 2) {
+                if (!(this.getPiocheTirage().get(nb) instanceof CarteMonteedesEaux)) {
+                    a.getMains().add(this.getPiocheTirage().get(nb));
+                    this.getPiocheTirage().remove(nb);
+                    r++;
+                }
+                nb++;
             }
         }
         
