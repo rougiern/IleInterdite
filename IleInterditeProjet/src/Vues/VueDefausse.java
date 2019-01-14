@@ -86,7 +86,7 @@ public class VueDefausse extends Observable {
             }else if(c instanceof CarteSacDeSable){
                 l.addItem(i+" - carte sac de sable");
             }else if(c instanceof CarteTresor){
-                l.addItem(i+" - carte tresor : "+ c.getTypeTresor().toString());
+                l.addItem(i+" - carte tresor : "+ ((CarteTresor) c ).getTypeTresor().toString());
             }
             i++;
         }
