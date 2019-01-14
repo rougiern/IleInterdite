@@ -20,6 +20,7 @@ import LesJoueurs.Navigateur;
 import LesJoueurs.Pilote;
 import LesJoueurs.Plongeur;
 import Vues.VueAventurier;
+import Vues.VueDefausse;
 import Vues.VueInscription;
 import Vues.VueNiveau;
 import Vues.VuePlateau;
@@ -59,6 +60,7 @@ public class Controleur implements Observer {
     private Aventurier joueurcourant;
     private ArrayList<Tuile> tuilesassechables;
     private ArrayList<Utils.Tresor> tresorsrecupérés;
+    private VueDefausse vdefausse;
     
     
     Controleur() {
@@ -166,6 +168,10 @@ public class Controleur implements Observer {
         this.vplateau = new VuePlateau(this.grille);
         vplateau.addObserver(this);
         
+        //Creation de la vue défausse
+        
+        this.vdefausse=new VueDefausse(new ArrayList<CarteTirage>());
+        vdefausse.addObserver(this);
         
         
     }
@@ -197,25 +203,25 @@ public class Controleur implements Observer {
                 
                 vplateau.setDerniereaction(Commandes.BOUGER);
                 
-                int i = 0;
-                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
-                    i++;
-                }
-                joueurcourant=joueurs.get(i);
+//                int i = 0;
+//                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
+//                    i++;
+//                }
+//                joueurcourant=joueurs.get(i);
                 
                 Grille g = this.getGrille();
                 Scanner sc = new Scanner(System.in) ;
                                 
-                if (!(joueurs.get(i) instanceof Pilote)) {
+                if (!(joueurcourant instanceof Pilote)) {
                 
-                tuilesatteignables = joueurs.get(i).seDeplacer(grille);
+                tuilesatteignables = joueurcourant.seDeplacer(grille);
                            
                 }else{   
-                    if(((Pilote)joueurs.get(i)).getNbvol()==1){                 
+                    if(((Pilote)joueurcourant).getNbvol()==1){                 
                         if (Utils.poserQuestion("Voulez-vous utiliser votre vol ?")) {
-                            tuilesatteignables = ((Pilote)joueurs.get(i)).seDeplacerVol(grille);
+                            tuilesatteignables = ((Pilote)joueurcourant).seDeplacerVol(grille);
                         } else {
-                        tuilesatteignables = joueurs.get(i).seDeplacer(grille);
+                        tuilesatteignables = joueurcourant.seDeplacer(grille);
                         }  
                     }
                 }
@@ -307,12 +313,13 @@ public class Controleur implements Observer {
                 
                 vplateau.setDerniereaction(Commandes.ASSECHER);
                 nbaInge = 1;
-                int i = 0;
-                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
-                    i++;
-                }
                 
-                joueurcourant=joueurs.get(i);
+//                int i = 0;
+//                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
+//                    i++;
+//                }
+//                
+//                joueurcourant=joueurs.get(i);
                 
                     Grille g = this.getGrille();
                     
@@ -432,6 +439,10 @@ public class Controleur implements Observer {
                     vueaventurier.close();
                     vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                     vueaventurier.addObserver(this);
+                    
+                    joueurcourant=this.getJoueurs().get(compteurtour);
+//                    défausse carte
+                    defausse();
                 } else {
                     vueaventurier.close();
                     System.out.println("Le tour est terminé");
@@ -447,7 +458,21 @@ public class Controleur implements Observer {
                     vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour) );
                     vueaventurier.addObserver(this);
                     
+                    joueurcourant=this.getJoueurs().get(compteurtour);
+//                    défausse carte
+                    defausse();
+                    
                 }
+            } else if ((arg0 instanceof VueDefausse) && message.getAction() == Commandes.DEFAUSSE){
+                
+                joueurcourant.defausserCarte(joueurcourant.getMains().get(message.getNum()));
+                
+                if(joueurcourant.getMains().size()>5){
+                    vdefausse.rafraichir(joueurcourant.getMains());
+                }else{                    
+                    vdefausse.cacher();
+                }
+                
             }
             
         }
@@ -784,6 +809,15 @@ public class Controleur implements Observer {
                 }
                 nb++;
             }
+        }
+        
+    }
+    
+    public void defausse(){
+        
+        if(joueurcourant.getMains().size()>5){
+            vdefausse.rafraichir(joueurcourant.getMains());
+            vdefausse.afficher();
         }
         
     }
