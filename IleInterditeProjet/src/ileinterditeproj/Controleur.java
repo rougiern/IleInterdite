@@ -186,6 +186,7 @@ public class Controleur implements Observer {
                 
                 vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
                 vueaventurier.addObserver(this);
+                vplateau.raffraichir(grille);
                 vplateau.afficher();
                 afficherJoueurs();
         }  
@@ -244,8 +245,9 @@ public class Controleur implements Observer {
                 
                 if(x!=tuilesatteignables.size()){
                     System.out.println(tuilesatteignables.get(x).getNom());
+                    joueurcourant.getTuileCourante().retirerAventurierTuile(joueurcourant);
                     joueurcourant.setTuileCourante(tuilesatteignables.get(x));
-                    joueurcourant.enleveUneAction();
+                    tuilesatteignables.get(x).addAventurierTuile(joueurcourant);
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurcourant.getTuileCourante().getNom());
                     vueaventurier.rafraichirPositon(joueurcourant);
@@ -401,7 +403,9 @@ public class Controleur implements Observer {
                                 Tuile nouvelletuile = chercherTuile(nomtuile,tuilesatteignables);
                  
                                  if(nouvelletuile != null){
+                                 joueurs.get(i).getTuileCourante().retirerAventurierTuile(joueurcourant);
                                  joueurs.get(i).changerTuileCourante(nouvelletuile);
+                                  nouvelletuile.addAventurierTuile(joueurcourant);
                                  joueurs.get(i).enleveUneAction();
                                  grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
                                  System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
