@@ -27,7 +27,8 @@ public class Utils {
         DEPLACER("Déplacer un autre joueur"),
         VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
         NULL("rien"),
-        DEFAUSSE("Defausser");
+        DEFAUSSE("Defausser"),
+        UTILISER_HELICO("Nik les stups");
         
 
         private final String libelle ;

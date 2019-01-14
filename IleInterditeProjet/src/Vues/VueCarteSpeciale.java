@@ -93,7 +93,7 @@ public class VueCarteSpeciale extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Commandes.UTILISER_HELICO,a.getNom()));
+                notifyObservers(new Message(Utils.Commandes.UTILISER_HELICO,a.getNom()));
                 clearChanged();
             }
         });
