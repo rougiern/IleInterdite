@@ -25,7 +25,9 @@ public class Utils {
         CHOISIR_CARTE("Utiliser une carte trésor"),
         CHOISIR_TUILE("Sélectionner une tuile"), 
         DEPLACER("Déplacer un autre joueur"),
-        VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage");
+        VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
+        NULL("rien");
+        
 
         private final String libelle ;
 

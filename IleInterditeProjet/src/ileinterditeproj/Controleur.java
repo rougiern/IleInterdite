@@ -200,9 +200,7 @@ public class Controleur implements Observer {
                 while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
                     i++;
                 }
-                
                 joueurcourant=joueurs.get(i);
-                
                 
                 Grille g = this.getGrille();
                 Scanner sc = new Scanner(System.in) ;
@@ -211,15 +209,14 @@ public class Controleur implements Observer {
                 
                 tuilesatteignables = joueurs.get(i).seDeplacer(grille);
                            
-                }else {
-                    System.out.println("Voulez-vous utiliser votre vol ?");
-                    String rep = sc.nextLine();
-                    if (rep.equals("oui")) {
-                        tuilesatteignables = ((Pilote)joueurs.get(i)).seDeplacerVol(grille);
-                    } else {
+                }else{   
+                    if(((Pilote)joueurs.get(i)).getNbvol()==1){                 
+                        if (Utils.poserQuestion("Voulez-vous utiliser votre vol ?")) {
+                            tuilesatteignables = ((Pilote)joueurs.get(i)).seDeplacerVol(grille);
+                        } else {
                         tuilesatteignables = joueurs.get(i).seDeplacer(grille);
+                        }  
                     }
-                    
                 }
                  
                 if (tuilesatteignables.isEmpty() == false) {
@@ -291,6 +288,7 @@ public class Controleur implements Observer {
                 // On ajoute à la liste des trésors récupérés le trésor concerné, et on enlève de la tuile le trésor
                         tresorsrecupérés.add(joueurs.get(i).getTuileCourante().getTresor());
                         joueurs.get(i).getTuileCourante().setTresor(null);
+                        joueurs.get(i).enleveUneAction();
                         System.out.println("Trésor récupéré");
                         
                     } else {
@@ -324,29 +322,24 @@ public class Controleur implements Observer {
                        
                     System.out.println("cliquez sur une case à assecher");
                     
-                    if (joueurcourant instanceof Ingenieur) {
-                    
-                    System.out.println("Voulez-vous assécher une autre case ?");
-                    Scanner sc = new Scanner(System.in);
-                    String rep = sc.nextLine();
-                    
-                    if(rep.equals("oui") ) {
-                     
-                    tuilesassechables = joueurcourant.assecher(grille);
-                    tuilesassechables.add(joueurcourant.getTuileCourante());
-                   
-                    if (tuilesassechables.isEmpty() == false) {
-                    
-                    affichernomtuiles(tuilesassechables);
-                    
-                    System.out.println("Quelle case assécher ?");
-
-                    }else {
-                        System.out.println("Assechement impossible");
-                    }
-                    }
-          
-                    }
+//                    if (joueurcourant instanceof Ingenieur) {
+//                    
+//                    if(Utils.poserQuestion("Voulez-vous assécher une autre case ?") ) {
+//                     
+//                    tuilesassechables = joueurcourant.assecher(grille);
+//                    tuilesassechables.add(joueurcourant.getTuileCourante());
+//                   
+//                    if (tuilesassechables.isEmpty() == false) {
+//                    
+//                    affichernomtuiles(tuilesassechables);
+//                    
+//                    System.out.println("Quelle case assécher ?");
+//
+//                    }else {
+//                        System.out.println("Assechement impossible");
+//                    }
+//                    }
+//                    }
                     
                  } else {
                         System.out.println("Assechement impossible");
@@ -369,6 +362,8 @@ public class Controleur implements Observer {
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : tuile assechee :"+tuilesassechables.get(i).getNom());
                     vplateau.raffraichir(this.grille);
+                    
+                    
                 }else{
                     System.out.println("la case n'est pas valide");
                 }
