@@ -32,6 +32,7 @@ public class Message {
 
     public Message(Commandes commandes, int selectedIndex) {
         this.nbcarte=selectedIndex ;
+        this.action = commandes ;
         
     }
     

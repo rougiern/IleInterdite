@@ -169,10 +169,9 @@ public class Controleur implements Observer {
         vplateau.addObserver(this);
         
         
-        //Creation de la vue défausse
+       
         
-        this.vdefausse=new VueDefausse(new ArrayList<CarteTirage>());
-        vdefausse.addObserver(this);
+        
         
 
     }
@@ -193,7 +192,7 @@ public class Controleur implements Observer {
                 //Distribution des cartes
                 DistributionDébut();
                 
-                vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
+                vueaventurier = new VueAventurier(joueurcourant);
                 vueaventurier.addObserver(this);
                 vplateau.raffraichir(grille);
                 vplateau.afficher();
@@ -206,11 +205,6 @@ public class Controleur implements Observer {
                 
                 vplateau.setDerniereaction(Commandes.BOUGER);
                 
-//                int i = 0;
-//                while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
-//                    i++;
-//                }
-//                joueurcourant=joueurs.get(i);
                 
                 Grille g = this.getGrille();
                 Scanner sc = new Scanner(System.in) ;
@@ -244,9 +238,7 @@ public class Controleur implements Observer {
                 
             }else if((arg0 instanceof VuePlateau) && message.getAction()==Commandes.BOUGER){
                 
-                int x=0;
-                
-                                   
+                int x=0;            
                    
                 while(x<tuilesatteignables.size()&& !(tuilesatteignables.get(x).getNom().equals(message.getTuile().getNom()))){
                     x++;
@@ -266,9 +258,7 @@ public class Controleur implements Observer {
                     System.out.println("la case n'est pas valide");
                 }
 
-            }
-            
-            else if ((arg0 instanceof VueAventurier) && message.getAction() == Commandes.RECUPERER_TRESOR) {
+            }else if ((arg0 instanceof VueAventurier) && message.getAction() == Commandes.RECUPERER_TRESOR) {
                 
                 int i = 0;
                 while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
@@ -312,9 +302,7 @@ public class Controleur implements Observer {
                     
                 
                 
-            }
-            
-            else if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.ASSECHER){
+            }else if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.ASSECHER){
                 
                 vplateau.setDerniereaction(Commandes.ASSECHER);
                 nbaInge = 1;
@@ -468,10 +456,11 @@ public class Controleur implements Observer {
                     defausse();
                     
                 }
-            } else if ((arg0 instanceof VueDefausse) && message.getAction() == Commandes.DEFAUSSE){
+            } else if ( message.getAction() == Commandes.DEFAUSSE){
                 
                 System.out.println("suppr carte");
                 joueurcourant.defausserCarte(message.getNbcarte());
+                vueaventurier.rafraichirMains(joueurcourant);
                 
                 
                 if(joueurcourant.getMains().size()>5){
@@ -489,12 +478,8 @@ public class Controleur implements Observer {
     }
     
     public void deuxiemeAssechementInge(){
-        
-                  
                  
                 if(Utils.poserQuestion("Voulez-vous assécher une autre case ?") ) {
-                     
-                    
                     
                     tuilesassechables = joueurcourant.assecher(grille);
                     if(joueurcourant.getTuileCourante().getEtat()==Utils.EtatTuile.INONDEE){
