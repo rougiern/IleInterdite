@@ -15,20 +15,29 @@ public class Message {
     private Commandes action ;
     private String nomJ ;
     private Tuile tuile;
+    private int num;
     
     
     public Message(Commandes action ,String nom){
         this.action=action;
         this.nomJ=nom;
         this.tuile=null;
+        this.num=0;
     }
     
     public Message(Commandes action, Tuile tuile){
         this.action=action;
         this.nomJ=null;
         this.tuile=tuile;
+        this.num=0;
     }
     
+    public Message(Commandes action, int num){
+        this.action=action;
+        this.nomJ=null;
+        this.tuile=null;
+        this.num=num;
+    }
    
 
     
