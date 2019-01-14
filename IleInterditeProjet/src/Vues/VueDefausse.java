@@ -53,7 +53,7 @@ public class VueDefausse extends Observable {
 
     public VueDefausse(ArrayList<CarteTirage> mains) {
 
-        window = new JFrame("Inscriptions des joueurs");
+        window = new JFrame("Défausser une carte");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         window.setSize(400, 200);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
@@ -86,7 +86,7 @@ public class VueDefausse extends Observable {
             }else if(c instanceof CarteSacDeSable){
                 l.addItem(i+" - carte sac de sable");
             }else if(c instanceof CarteTresor){
-                l.addItem(i+" - carte tresor : "+ ((CarteTresor) c ).getTypeTresor().toString());
+                l.addItem(i+" - carte tresor : "+ c.getTypeTresor().toString());
             }
             i++;
         }
@@ -108,9 +108,82 @@ public class VueDefausse extends Observable {
         
 
     }
+    
+    public void rafraichir(ArrayList<CarteTirage> mains){
+        panelmilieu.removeAll();
+        panelbas.removeAll();
+        panelhaut.removeAll();
+               
+        l.removeAllItems();
+        
+        
+        panelhaut.add(new JLabel("choisir une carte à défausser"));
+        mainPanel.add(panelhaut, BorderLayout.NORTH);
+
+        
+        panelbas.add(new JLabel(""));
+        panelbas.add(btndefausse);
+        panelbas.add(new JLabel(""));
+        mainPanel.add(panelbas, BorderLayout.SOUTH);
+
+        
+        int i = 1;
+        
+        for(CarteTirage c : mains){
+            if(c instanceof CarteHelicoptere){
+                l.addItem(i+" - carte helicoptere");
+            }else if(c instanceof CarteSacDeSable){
+                l.addItem(i+" - carte sac de sable");
+            }else if(c instanceof CarteTresor){
+                l.addItem(i+" - carte tresor : "+ c.getTypeTresor().toString());
+            }
+            i++;
+        }
+        panelmilieu.add(new JLabel(""));
+        panelmilieu.add(l);
+        panelmilieu.add(new JLabel(""));
+
+        btndefausse.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.DEFAUSSE,l.getSelectedIndex() ));
+                clearChanged();
+            }
+        });
+
+        mainPanel.add(panelmilieu, BorderLayout.CENTER);
+       
+        
+//        int i = 1;
+//        for(CarteTirage c : mains){
+//            if(c instanceof CarteHelicoptere){
+//                l.addItem(i+" - carte helicoptere");
+//            }else if(c instanceof CarteSacDeSable){
+//                l.addItem(i+" - carte sac de sable");
+//            }else if(c instanceof CarteTresor){
+//                l.addItem(i+" - carte tresor : "+ c.getTypeTresor().toString());
+//            }
+//            i++;
+//        }
+//        panelmilieu.add(new JLabel(""));
+//        panelmilieu.add(l);
+//        panelmilieu.add(new JLabel(""));
+//        
+//        mainPanel.add(panelbas);
+//        mainPanel.add(panelhaut);
+//        mainPanel.add(panelmilieu);
+        
+        mainPanel.revalidate();
+    }
 
     public void afficher() {
         this.window.setVisible(true);
+    }
+    
+    public void cacher(){
+        this.window.setVisible(false);
+        
     }
 
     public void close() {
