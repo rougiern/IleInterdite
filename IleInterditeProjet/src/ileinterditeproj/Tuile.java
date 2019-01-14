@@ -47,17 +47,17 @@ public class Tuile extends ObjetIdentifie{
     
     public void retirerAventurierTuile(Aventurier a){
         int i =0;
-         while(i<getAventuriers().size()&& getAventuriers().get(i).getNom().equals(a.getNom())){
+         while(i<getAventuriers().size()&& !(aventuriers.get(i).getNom().equals(a.getNom()))){
                 i++;
             }
             if(i!=getAventuriers().size()){
-            getAventuriers().remove(i);
+            aventuriers.remove(i);
             }
     }
     
     public void addAventurierTuile(Aventurier a){
         
-        getAventuriers().add(a);
+        aventuriers.add(a);
     }
 
     /**

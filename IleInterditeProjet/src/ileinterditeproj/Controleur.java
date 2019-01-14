@@ -168,12 +168,13 @@ public class Controleur implements Observer {
         this.vplateau = new VuePlateau(this.grille);
         vplateau.addObserver(this);
         
+        
         //Creation de la vue défausse
         
         this.vdefausse=new VueDefausse(new ArrayList<CarteTirage>());
         vdefausse.addObserver(this);
         
-        
+
     }
     
     @Override
@@ -186,6 +187,8 @@ public class Controleur implements Observer {
             }else if (message.getAction()==Action.INSCRIRE_JOUEURS){
                 AttribuerRole(message.getNoms());
                 vueinsc.close();
+                
+                joueurcourant=joueurs.get(0);
                 
                 //Distribution des cartes
                 DistributionDébut();
@@ -252,11 +255,13 @@ public class Controleur implements Observer {
                 if(x!=tuilesatteignables.size()){
                     System.out.println(tuilesatteignables.get(x).getNom());
                     joueurcourant.getTuileCourante().retirerAventurierTuile(joueurcourant);
-                    joueurcourant.setTuileCourante(tuilesatteignables.get(x));
                     tuilesatteignables.get(x).addAventurierTuile(joueurcourant);
+                    joueurcourant.setTuileCourante(tuilesatteignables.get(x));
+                    joueurcourant.enleveUneAction();
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : Nouvelle tuile :"+joueurcourant.getTuileCourante().getNom());
                     vueaventurier.rafraichirPositon(joueurcourant);
+                    vplateau.raffraichir(grille);
                 }else{
                     System.out.println("la case n'est pas valide");
                 }
@@ -412,7 +417,7 @@ public class Controleur implements Observer {
                                  if(nouvelletuile != null){
                                  joueurs.get(i).getTuileCourante().retirerAventurierTuile(joueurcourant);
                                  joueurs.get(i).changerTuileCourante(nouvelletuile);
-                                  nouvelletuile.addAventurierTuile(joueurcourant);
+                                 nouvelletuile.addAventurierTuile(joueurcourant);
                                  joueurs.get(i).enleveUneAction();
                                  grisebouton(vueaventurier, joueurs.get(i).getPtsaction());
                                  System.out.println("Action effectuée : Nouvelle tuile :"+joueurs.get(i).getTuileCourante().getNom());
@@ -465,12 +470,16 @@ public class Controleur implements Observer {
                 }
             } else if ((arg0 instanceof VueDefausse) && message.getAction() == Commandes.DEFAUSSE){
                 
-                joueurcourant.defausserCarte(joueurcourant.getMains().get(message.getNum()));
+                System.out.println("suppr carte");
+                joueurcourant.defausserCarte(message.getNbcarte());
+                
                 
                 if(joueurcourant.getMains().size()>5){
                     vdefausse.rafraichir(joueurcourant.getMains());
+                    System.out.println("rafraichissement");
                 }else{                    
-                    vdefausse.cacher();
+                    vdefausse.close();
+                    System.out.println("cacher");
                 }
                 
             }
@@ -643,7 +652,7 @@ public class Controleur implements Observer {
     }
 
     private void AttribuerRole(String[] noms) {
-            ArrayList<String> roles ;
+           ArrayList<String> roles ;
             roles = new ArrayList();
             roles.add("plongeur");
             roles.add("explorateur");
@@ -656,26 +665,32 @@ public class Controleur implements Observer {
             int valeur =r.nextInt(roles.size());
             if(roles.get(valeur).equals("plongeur")){
                 Plongeur p = new Plongeur(noms[i],tuilesdepart.get(1)); //Noir
+                tuilesdepart.get(1).addAventurierTuile(p);
                 roles = retirerRole(roles,"plongeur");
                 joueurs.add(p);
             }else if(roles.get(valeur).equals("explorateur")){
                 Explorateur exp = new Explorateur(noms[i],tuilesdepart.get(5));
+                tuilesdepart.get(5).addAventurierTuile(exp);
                 roles = retirerRole(roles,"explorateur");//Blanc
                 joueurs.add(exp);
             }else if(roles.get(valeur).equals("navigateur")){
                 Navigateur n = new Navigateur(noms[i],tuilesdepart.get(2));
+                tuilesdepart.get(2).addAventurierTuile(n);
                 roles = retirerRole(roles,"navigateur");
                 joueurs.add(n);
             }else if(roles.get(valeur).equals("messager")){
                  Messager m = new Messager(noms[i],tuilesdepart.get(3));
+                 tuilesdepart.get(3).addAventurierTuile(m);
                  roles = retirerRole(roles,"messager");
                  joueurs.add(m);
             }else if(roles.get(valeur).equals("ingenieur")){
                 Ingenieur ing = new Ingenieur(noms[i],tuilesdepart.get(0));
+                tuilesdepart.get(0).addAventurierTuile(ing);
                 roles = retirerRole(roles,"ingenieur");
                 joueurs.add(ing);
             }else if(roles.get(valeur).equals("pilote")){
                 Pilote pilote = new Pilote(noms[i],tuilesdepart.get(4));
+                tuilesdepart.get(4).addAventurierTuile(pilote);
                 roles = retirerRole(roles,"pilote");// Bleu
                 joueurs.add(pilote);
             }
@@ -816,8 +831,11 @@ public class Controleur implements Observer {
     public void defausse(){
         
         if(joueurcourant.getMains().size()>5){
-            vdefausse.rafraichir(joueurcourant.getMains());
+            vdefausse = new VueDefausse(joueurcourant.getMains());
+            vdefausse.addObserver(this);
+//            vdefausse.rafraichir(joueurcourant.getMains());
             vdefausse.afficher();
+            
         }
         
     }

@@ -73,5 +73,12 @@ public class Message {
     public Tuile getTuile() {
         return tuile;
     }
+
+    /**
+     * @return the nbcarte
+     */
+    public int getNbcarte() {
+        return nbcarte;
+    }
     
 }

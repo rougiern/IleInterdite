@@ -158,10 +158,10 @@ public abstract class Aventurier extends ObjetIdentifie{
         return mains;
     }
     
-    public void defausserCarte(CarteTirage carte){
-        if(mains.contains(carte)){
-            mains.remove(carte);
-        }
+    public void defausserCarte(int numcarte){
+        
+            mains.remove(numcarte);
+        
     }
 
 }

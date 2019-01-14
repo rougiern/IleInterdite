@@ -86,7 +86,7 @@ public class VueDefausse extends Observable {
             }else if(c instanceof CarteSacDeSable){
                 l.addItem(i+" - carte sac de sable");
             }else if(c instanceof CarteTresor){
-                l.addItem(i+" - carte tresor : "+ c.getTypeTresor().toString());
+                l.addItem(i+" - carte tresor : "+ ((CarteTresor)c).getTypeTresor().toString());
             }
             i++;
         }
@@ -135,7 +135,7 @@ public class VueDefausse extends Observable {
             }else if(c instanceof CarteSacDeSable){
                 l.addItem(i+" - carte sac de sable");
             }else if(c instanceof CarteTresor){
-                l.addItem(i+" - carte tresor : "+ c.getTypeTresor().toString());
+                l.addItem(i+" - carte tresor : "+ ((CarteTresor)c).getTypeTresor().toString());
             }
             i++;
         }
@@ -190,28 +190,28 @@ public class VueDefausse extends Observable {
         this.window.dispose();
     }
     
-    public static void main(String[] args) {
-        
-        ArrayList<CarteTirage> main=new ArrayList();
-        CarteHelicoptere carte1=new CarteHelicoptere();
-        CarteSacDeSable carte2=new CarteSacDeSable();
-        CarteTresor carte3=new CarteTresor(Tresor.CALICE);
-        CarteTresor carte4=new CarteTresor(Tresor.ZEPHYR);
-        CarteHelicoptere carte5=new CarteHelicoptere();
-        CarteTresor carte6=new CarteTresor(Tresor.CRISTAL);
-        CarteSacDeSable carte7=new CarteSacDeSable();
-      
-        main.add(carte1);
-        main.add(carte2);
-        main.add(carte3);
-        main.add(carte4);
-        main.add(carte5);
-        main.add(carte6);
-        main.add(carte7);
-        
-        VueDefausse vued = new VueDefausse(main);
-        vued.afficher();
-                
-    }
+//    public static void main(String[] args) {
+//        
+//        ArrayList<CarteTirage> main=new ArrayList();
+//        CarteHelicoptere carte1=new CarteHelicoptere();
+//        CarteSacDeSable carte2=new CarteSacDeSable();
+//        CarteTresor carte3=new CarteTresor(Tresor.CALICE);
+//        CarteTresor carte4=new CarteTresor(Tresor.ZEPHYR);
+//        CarteHelicoptere carte5=new CarteHelicoptere();
+//        CarteTresor carte6=new CarteTresor(Tresor.CRISTAL);
+//        CarteSacDeSable carte7=new CarteSacDeSable();
+//      
+//        main.add(carte1);
+//        main.add(carte2);
+//        main.add(carte3);
+//        main.add(carte4);
+//        main.add(carte5);
+//        main.add(carte6);
+//        main.add(carte7);
+//        
+//        VueDefausse vued = new VueDefausse(main);
+//        vued.afficher();
+//                
+//    }
 
 }
