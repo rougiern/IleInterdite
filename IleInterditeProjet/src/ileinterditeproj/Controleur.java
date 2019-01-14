@@ -340,17 +340,29 @@ public class Controleur implements Observer {
                 }
                 
                 if(i<tuilesassechables.size()){
+                    
+                    if (joueurcourant instanceof Ingenieur && nbaInge==0) {
+                        
+                        System.out.println("deuxieme assechement inge NBA=0");
+                        
+                    }
+                        
                     System.out.println(tuilesassechables.get(i).getNom());
                     joueurcourant.assechertuile(tuilesassechables.get(i));
+                    
 
                     grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : tuile assechee :"+tuilesassechables.get(i).getNom());
                     vplateau.raffraichir(this.grille);
                     
+                    vplateau.setDerniereaction(Utils.Commandes.NULL);
+                    
                     if (joueurcourant instanceof Ingenieur && nbaInge==1) {
-                        deuxiemeAssechementInge();
                         nbaInge=0;
+                        deuxiemeAssechementInge();
+                        
                     }
+                    
                     
                 }else{
                     System.out.println("la case n'est pas valide");
@@ -444,17 +456,19 @@ public class Controleur implements Observer {
                  
                 if(Utils.poserQuestion("Voulez-vous assécher une autre case ?") ) {
                      
+                    
+                    
                     tuilesassechables = joueurcourant.assecher(grille);
                     if(joueurcourant.getTuileCourante().getEtat()==Utils.EtatTuile.INONDEE){
                         tuilesassechables.add(joueurcourant.getTuileCourante());
                     }
-                    vplateau.setDerniereaction(Commandes.ASSECHER);
-                   
+                   affichernomtuiles(tuilesassechables);
+                   System.out.println("2iem affi inge");
                     if (tuilesassechables.isEmpty() == false) {
                         affichernomtuiles(tuilesassechables);
                         joueurcourant.setPtsaction(joueurcourant.getPtsaction()+1);
                         System.out.println("Quelle case assécher ING ?");
-
+                        vplateau.setDerniereaction(Commandes.ASSECHER);
                     }else {
                         System.out.println("Assechement impossible");
                 }
@@ -707,13 +721,14 @@ public class Controleur implements Observer {
     }
 
     public void tirerCarteInondation() {
-
+        String[] listeInnon = new String[vueniv.getNiveau()] ;
         for (int x = 0; x < vueniv.getNiveau(); x++) {
 
             if (piocheInondation.isEmpty()) {
                 melangeDefausseCarteInondation();
             }
             CarteInondation cInon = piocheInondation.get(0);
+            listeInnon[x]=cInon.getTuile().getNom();
             Tuile ttire = cInon.getTuile();
             grille.inonderTuile(ttire);
             if (ttire.getEtat() == Utils.EtatTuile.INONDEE) {
@@ -722,6 +737,13 @@ public class Controleur implements Observer {
                 piocheInondation.remove(0);
             }
         }
+        String s = "";
+        for (int x = 0; x < vueniv.getNiveau(); x++) {
+            s = s + listeInnon[x] +"," ;
+        }
+        s=s+" S'innonde maintenant !!!";
+        
+        Utils.afficherInformation(s);
 
     }
 

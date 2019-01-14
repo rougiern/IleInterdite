@@ -5,8 +5,6 @@
  */
 package ileinterditeproj;
 
-import ileinterditeproj.Utils.Tresor;
-
 /**
  *
  * @author duttod
@@ -15,10 +13,6 @@ public class CarteTirage extends ObjetIdentifie{
     
     CarteTirage() {
         super();
-    }
-    
-    public Tresor getTypeTresor(){
-        return null;
     }
     
 }
