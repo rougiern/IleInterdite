@@ -49,6 +49,7 @@ public VuePlateau(Grille g){
             public void actionPerformed(ActionEvent e) {
                 setChanged();
                 notifyObservers(new Message(derniereaction,vT.getTuile()));
+                setDerniereaction(Utils.Commandes.NULL);
                 clearChanged();
             }
         });
