@@ -15,6 +15,7 @@ public class Message {
     private Commandes action ;
     private String nomJ ;
     private Tuile tuile;
+    private int nbcarte ;
     
     
     public Message(Commandes action ,String nom){
@@ -27,6 +28,11 @@ public class Message {
         this.action=action;
         this.nomJ=null;
         this.tuile=tuile;
+    }
+
+    public Message(Commandes commandes, int selectedIndex) {
+        this.nbcarte=selectedIndex ;
+        
     }
     
    

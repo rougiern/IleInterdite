@@ -11,7 +11,7 @@ package ileinterditeproj;
  */
 public class CarteMonteedesEaux extends CarteTirage{
     
-    CarteMonteedesEaux() {
+    public CarteMonteedesEaux() {
         super();
     }
     
