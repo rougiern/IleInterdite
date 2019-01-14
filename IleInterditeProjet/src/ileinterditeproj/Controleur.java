@@ -172,7 +172,7 @@ public class Controleur implements Observer {
     
     @Override
     public void update(Observable arg0, Object arg1) {
-        
+        int nbaInge = 1;
         if(arg1 instanceof MessageIni){
             MessageIni message = (MessageIni) arg1;
             if(message.getAction()==Action.NB_JOUEURS){
@@ -304,7 +304,7 @@ public class Controleur implements Observer {
             else if((arg0 instanceof VueAventurier) && message.getAction()==Commandes.ASSECHER){
                 
                 vplateau.setDerniereaction(Commandes.ASSECHER);
-                
+                nbaInge = 1;
                 int i = 0;
                 while(i<joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))){
                     i++;
@@ -315,31 +315,15 @@ public class Controleur implements Observer {
                     Grille g = this.getGrille();
                     
                     tuilesassechables = joueurcourant.assecher(grille);
-                    tuilesassechables.add(joueurcourant.getTuileCourante());
+                    if(joueurcourant.getTuileCourante().getEtat()==Utils.EtatTuile.INONDEE){
+                        tuilesassechables.add(joueurcourant.getTuileCourante());
+                    }
+                   
                     if (tuilesassechables.isEmpty() == false) {
                    
                     affichernomtuiles(tuilesassechables);
                        
                     System.out.println("cliquez sur une case à assecher");
-                    
-//                    if (joueurcourant instanceof Ingenieur) {
-//                    
-//                    if(Utils.poserQuestion("Voulez-vous assécher une autre case ?") ) {
-//                     
-//                    tuilesassechables = joueurcourant.assecher(grille);
-//                    tuilesassechables.add(joueurcourant.getTuileCourante());
-//                   
-//                    if (tuilesassechables.isEmpty() == false) {
-//                    
-//                    affichernomtuiles(tuilesassechables);
-//                    
-//                    System.out.println("Quelle case assécher ?");
-//
-//                    }else {
-//                        System.out.println("Assechement impossible");
-//                    }
-//                    }
-//                    }
                     
                  } else {
                         System.out.println("Assechement impossible");
@@ -363,6 +347,10 @@ public class Controleur implements Observer {
                     System.out.println("Action effectuée : tuile assechee :"+tuilesassechables.get(i).getNom());
                     vplateau.raffraichir(this.grille);
                     
+                    if (joueurcourant instanceof Ingenieur && nbaInge==1) {
+                        deuxiemeAssechementInge();
+                        nbaInge=0;
+                    }
                     
                 }else{
                     System.out.println("la case n'est pas valide");
@@ -449,6 +437,31 @@ public class Controleur implements Observer {
         }
             
     }
+    
+    public void deuxiemeAssechementInge(){
+        
+                  
+                 
+                if(Utils.poserQuestion("Voulez-vous assécher une autre case ?") ) {
+                     
+                    tuilesassechables = joueurcourant.assecher(grille);
+                    if(joueurcourant.getTuileCourante().getEtat()==Utils.EtatTuile.INONDEE){
+                        tuilesassechables.add(joueurcourant.getTuileCourante());
+                    }
+                    vplateau.setDerniereaction(Commandes.ASSECHER);
+                   
+                    if (tuilesassechables.isEmpty() == false) {
+                        affichernomtuiles(tuilesassechables);
+                        joueurcourant.setPtsaction(joueurcourant.getPtsaction()+1);
+                        System.out.println("Quelle case assécher ING ?");
+
+                    }else {
+                        System.out.println("Assechement impossible");
+                }
+                }
+                    
+    }
+    
     
     public void addAventurier(Aventurier aventurier) {
         
