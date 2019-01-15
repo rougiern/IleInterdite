@@ -337,7 +337,7 @@ public class VueAventurier extends Observable {
         }
             panelFooter.add(new JLabel("Carte Sac De Sable ("+nbcarteSacDeSable+")"));
             panelFooter.add(new JLabel("Carte Hélicoptère ("+nbcarteHelicoptere+")"));
-            panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")  :"));
+            panelFooter.add(new JLabel("Carte Tresor ("+nbcarteTresor+")  "));
             
             String[] tresorList = { "Carte Tresor : La Pierre Sacrée (" + nbcarteTresorPierre+")",
                 "Carte Tresor : La statue du Zéphyr (" + nbcarteTresorZephyr+")",
