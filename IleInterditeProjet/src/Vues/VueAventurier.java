@@ -2,6 +2,8 @@ package Vues;
 
 
 import LesJoueurs.Aventurier;
+import LesJoueurs.Messager;
+import LesJoueurs.Navigateur;
 import ileinterditeproj.Message;
 import ileinterditeproj.Utils.Commandes;
 import java.awt.BorderLayout;
@@ -123,14 +125,24 @@ public class VueAventurier extends Observable {
                 clearChanged();
             }
         });
-        
-        this.btnAutreAction = new JButton("AutreAction") ;
+        if(a instanceof Navigateur){
+            this.btnAutreAction = new JButton("Déplacer joueur") ;
+        }else if(a instanceof Messager){
+            this.btnAutreAction = new JButton("Donner carte") ;
+        }else{
+            this.btnAutreAction = new JButton("Autre Action") ;
+        }
         
         btnAutreAction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Commandes.DEPLACER,a.getNom()));
+                if(a instanceof Navigateur){
+                    notifyObservers(new Message(Commandes.DEPLACER,a.getNom()));
+                }else if(a instanceof Messager){
+                    notifyObservers(new Message(Commandes.DONNER,a.getNom()));
+                }
+                
                 clearChanged();
             }
         });
