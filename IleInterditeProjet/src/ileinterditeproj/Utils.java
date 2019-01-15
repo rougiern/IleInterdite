@@ -28,8 +28,9 @@ public class Utils {
         VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
         NULL("rien"),
         DEFAUSSE("Defausser"),
-        UTILISER_HELICO("Nik les stups"),
-        BOUGER_HELICO("Se déplacer en hélicptère");
+        UTILISER_CARTE_HELICO("Nik les stups"),
+        BOUGER_AVEC_HELICO("Se déplacer en hélicptère"),
+        UTILISER_CARTE_SACSABLE("");
         
 
         private final String libelle ;

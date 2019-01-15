@@ -233,7 +233,7 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
     
     for (int x=0; x<6;x++){
             for (int y=0;y<6;y++){
-                    if (tableau[x][y].getEtat()==Utils.EtatTuile.ASSECHEE && tableau[x][y].getNom() != "null") {
+                    if ((tableau[x][y].getEtat()==Utils.EtatTuile.ASSECHEE || tableau[x][y].getEtat()==Utils.EtatTuile.INONDEE) && tableau[x][y].getNom() != "null") {
                         tuilesatteignables.add(tableau[x][y]);
                     }
             }
@@ -311,6 +311,22 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
         return tuilesadj ;
         
     }    
+    
+    public ArrayList<Tuile> getTuilesInondees() {
+    
+    ArrayList<Tuile> tuilesatteignables = new ArrayList<>();
+    
+    for (int x=0; x<6;x++){
+            for (int y=0;y<6;y++){
+                    if ((tableau[x][y].getEtat()==Utils.EtatTuile.INONDEE) && tableau[x][y].getNom() != "null") {
+                        tuilesatteignables.add(tableau[x][y]);
+                    }
+            }
+    }
+    
+    return tuilesatteignables;
+    
+} 
 
     public ArrayList<Tuile> getTuilesAdjacentesPlongeur(Tuile tuileCourante) {
        

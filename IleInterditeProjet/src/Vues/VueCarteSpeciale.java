@@ -80,7 +80,7 @@ public class VueCarteSpeciale extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Commandes.ASSECHER, a.getNom()));
+                notifyObservers(new Message(Commandes.UTILISER_CARTE_SACSABLE, a.getNom()));
                 clearChanged();
             }
         });
@@ -95,7 +95,7 @@ public class VueCarteSpeciale extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Utils.Commandes.UTILISER_HELICO, a.getNom()));
+                notifyObservers(new Message(Utils.Commandes.UTILISER_CARTE_HELICO, a.getNom()));
                 clearChanged();
             }
         });
@@ -117,7 +117,7 @@ public class VueCarteSpeciale extends Observable {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Utils.Commandes.BOUGER_HELICO, avt.getNom()));
+                notifyObservers(new Message(Utils.Commandes.BOUGER_AVEC_HELICO, avt.getNom()));
                 clearChanged();
             }
         });

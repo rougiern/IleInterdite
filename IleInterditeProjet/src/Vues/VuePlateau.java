@@ -84,6 +84,7 @@ public class VuePlateau extends Observable {
                             setChanged();
                             notifyObservers(new Message(derniereaction, vT.getTuile()));
                             clearChanged();
+                            derniereaction = null;
                         }
                     });
                 } else {
