@@ -205,19 +205,19 @@ public class Grille {
             if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
+        if(posX>0 && posY >0){
             if(tableau[posX-1][posY-1].getNom().equals("null")==false && tableau[posX-1][posY-1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX-1][posY-1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
+        if(posX<5 && posY<5 ){
             if(tableau[posX+1][posY+1].getNom().equals("null")==false && tableau[posX+1][posY+1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX+1][posY+1]);}}
         
-        if((posX!=0 && posY!=3) && (posX!=0 && posY!=2) ){
+        if(posX>0 && posY<5 ){
             if(tableau[posX-1][posY+1].getNom().equals("null")==false && tableau[posX-1][posY+1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX-1][posY+1]);}}
         
-        if((posX!=5 && posY!=2) && (posX!=5 && posY!=3)){
+        if(posX<5 && posY>0){
             if(tableau[posX+1][posY-1].getNom().equals("null")==false && tableau[posX+1][posY-1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX+1][posY-1]);}}
         
@@ -311,22 +311,6 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
         return tuilesadj ;
         
     }    
-    
-    public ArrayList<Tuile> getTuilesInondees() {
-    
-    ArrayList<Tuile> tuilesatteignables = new ArrayList<>();
-    
-    for (int x=0; x<6;x++){
-            for (int y=0;y<6;y++){
-                    if ((tableau[x][y].getEtat()==Utils.EtatTuile.INONDEE) && tableau[x][y].getNom() != "null") {
-                        tuilesatteignables.add(tableau[x][y]);
-                    }
-            }
-    }
-    
-    return tuilesatteignables;
-    
-} 
 
     public ArrayList<Tuile> getTuilesAdjacentesPlongeur(Tuile tuileCourante) {
        
@@ -408,5 +392,21 @@ public ArrayList<Tuile> getTuilesNonCoulees() {
             t.setEtat(Utils.EtatTuile.COULEE);
         }
     }
+    
+    public ArrayList<Tuile> getTuilesInondees() {
+    
+    ArrayList<Tuile> tuilesatteignables = new ArrayList<>();
+    
+    for (int x=0; x<6;x++){
+            for (int y=0;y<6;y++){
+                    if ((tableau[x][y].getEtat()==Utils.EtatTuile.INONDEE) && tableau[x][y].getNom() != "null") {
+                        tuilesatteignables.add(tableau[x][y]);
+                    }
+            }
+    }
+    
+    return tuilesatteignables;
+    
+} 
     
 }
