@@ -20,6 +20,7 @@ import LesJoueurs.Navigateur;
 import LesJoueurs.Pilote;
 import LesJoueurs.Plongeur;
 import Vues.VueAventurier;
+import Vues.VueCarteSpeciale;
 import Vues.VueDefausse;
 import Vues.VueInscription;
 import Vues.VueNiveau;
@@ -61,6 +62,7 @@ public class Controleur implements Observer {
     private ArrayList<Tuile> tuilesassechables;
     private ArrayList<Utils.Tresor> tresorsrecupérés;
     private VueDefausse vdefausse;
+    private VueCarteSpeciale vueutilisercartes;
     
     
     Controleur() {
@@ -167,12 +169,7 @@ public class Controleur implements Observer {
         //Création du plateau
         this.vplateau = new VuePlateau(this.grille);
         vplateau.addObserver(this);
-        
-        
-       
-        
-        
-        
+
 
     }
     
@@ -470,6 +467,42 @@ public class Controleur implements Observer {
                     vdefausse.close();
                     System.out.println("cacher");
                 }
+                
+            } else if (message.getAction() == Utils.Commandes.CHOISIR_CARTE) {
+                
+                int i = 0;
+                while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
+                    i++; 
+                }
+                
+                vueutilisercartes = new VueCarteSpeciale(joueurs.get(i));
+                vueutilisercartes.addObserver(this);
+                vueutilisercartes.afficher();
+                
+                joueurcourant = joueurs.get(i);
+                
+            } else if (message.getAction() == Utils.Commandes.UTILISER_HELICO) {
+                
+                vueutilisercartes.actualiserPourDeplacer(joueurs);
+                
+            } else if (message.getAction() == Utils.Commandes.BOUGER_HELICO) {
+                
+                Aventurier joueurutilisateurdelacarte = joueurcourant;
+                if (joueurutilisateurdelacarte != null) {
+                    System.out.println("oui");
+                } else {
+                     System.out.println("non");
+                }
+                
+                vueutilisercartes.close();
+                tuilesatteignables = grille.getTuilesNonCoulees();
+                for (Aventurier a : joueurs) {
+                    if (a.getNom().equals(message.getNomJ())) {
+                        joueurcourant = a;
+                    }
+                }
+                
+                vplateau.setDerniereaction(Commandes.BOUGER);
                 
             }
             
