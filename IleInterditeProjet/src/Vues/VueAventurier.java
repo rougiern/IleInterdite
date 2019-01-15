@@ -125,24 +125,15 @@ public class VueAventurier extends Observable {
                 clearChanged();
             }
         });
-        if(a instanceof Navigateur){
-            this.btnAutreAction = new JButton("Déplacer joueur") ;
-        }else if(a instanceof Messager){
-            this.btnAutreAction = new JButton("Donner carte") ;
-        }else{
-            this.btnAutreAction = new JButton("Autre Action") ;
-        }
+        
+        this.btnAutreAction = new JButton("Donner carte") ;
+        
         
         btnAutreAction.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                if(a instanceof Navigateur){
-                    notifyObservers(new Message(Commandes.DEPLACER,a.getNom()));
-                }else if(a instanceof Messager){
-                    notifyObservers(new Message(Commandes.DONNER,a.getNom()));
-                }
-                
+                notifyObservers(new Message(Commandes.DONNER,a.getNom()));             
                 clearChanged();
             }
         });
