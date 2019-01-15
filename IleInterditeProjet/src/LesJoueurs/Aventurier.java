@@ -5,6 +5,7 @@
  */
 package LesJoueurs;
 
+import ileinterditeproj.CarteHelicoptere;
 import ileinterditeproj.CarteTirage;
 import ileinterditeproj.EtatTuile;
 import ileinterditeproj.Grille;
@@ -162,6 +163,16 @@ public abstract class Aventurier extends ObjetIdentifie{
         
             mains.remove(numcarte);
         
+    }
+    
+    public boolean possedeHelico(){
+       boolean bool = false ;
+       for(CarteTirage t : mains){
+           if(t instanceof CarteHelicoptere){
+               bool = true ;      
+           }
+       }
+       return bool ;
     }
 
 }

@@ -18,6 +18,8 @@ import java.util.Scanner;
  */
 public class Ingenieur extends Aventurier {
     
+    private int nbAsseche = 1;
+    
     public Ingenieur(String nom, Tuile tuiledé) {
         super(nom, tuiledé);
         this.setPion(Pion.ROUGE);
@@ -25,6 +27,20 @@ public class Ingenieur extends Aventurier {
         
     public void assechertuile2efois(Tuile t) {
         t.setEtat(ileinterditeproj.Utils.EtatTuile.ASSECHEE);
+    }
+
+    /**
+     * @return the nbAsseche
+     */
+    public int getNbAsseche() {
+        return nbAsseche;
+    }
+
+    /**
+     * @param nbAsseche the nbAsseche to set
+     */
+    public void setNbAsseche(int nbAsseche) {
+        this.nbAsseche = nbAsseche;
     }
     
     
