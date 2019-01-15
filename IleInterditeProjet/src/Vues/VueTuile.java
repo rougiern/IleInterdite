@@ -36,6 +36,7 @@ public class VueTuile extends JPanel {
             bouton.setBackground(Parameters.TUILE_INONDEE_BG);
            
         }else if(tuile.getEtat()==Utils.EtatTuile.COULEE){
+            bouton.setEnabled(false);
            
         }
         
