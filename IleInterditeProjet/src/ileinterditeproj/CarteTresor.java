@@ -19,6 +19,10 @@ public class CarteTresor extends CarteTirage{
     public Utils.Tresor getTypeTresor(){
         return type;
     }
+    
+    public String toString(){
+        return this.getClass().getSimpleName() +":"+this.getTypeTresor().libelle;
+    }
 
     
     

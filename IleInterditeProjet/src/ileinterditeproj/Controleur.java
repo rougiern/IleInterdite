@@ -22,6 +22,7 @@ import LesJoueurs.Plongeur;
 import Vues.VueAventurier;
 import Vues.VueCarteSpeciale;
 import Vues.VueDefausse;
+import Vues.VueDonCarte;
 import Vues.VueInscription;
 import Vues.VueNiveau;
 import Vues.VuePlateau;
@@ -56,6 +57,7 @@ public class Controleur implements Observer {
     private VueInscription vueinsc; 
     private VueNiveau vueniv ;
     private VuePlateau vplateau ;
+    private VueDonCarte vdon;
     private int compteurtour = 0;
     private ArrayList<Tuile> tuilesatteignables;
     private Aventurier joueurcourant;
@@ -503,6 +505,29 @@ public class Controleur implements Observer {
                 }
                 
                 vplateau.setDerniereaction(Commandes.BOUGER);
+                
+            }else if ((arg0 instanceof VueAventurier) &&(message.getAction() ==Commandes.DONNER)) {
+                
+                
+                vdon = new VueDonCarte(joueurcourant.getMains(),joueurs,joueurcourant);
+                vdon.afficher();
+                vdon.addObserver(this);
+                
+                
+            }else if ((arg0 instanceof VueDonCarte) &&(message.getAction() ==Commandes.DONNER)) {
+                
+                
+                int i = 0;
+                while ((i < joueurs.size()) && (!(joueurs.get(i).getNom().equals(message.getNomJ())))) {
+                    i++; 
+                }
+                Utils.afficherInformation("La carte :"+joueurcourant.getMains().get(message.getNbcarte()).toString() +" donner a "+message.getNomJ());
+                Aventurier receveur = joueurs.get(i);
+                receveur.getMains().add(joueurcourant.getMains().get(message.getNbcarte()));
+                joueurcourant.getMains().remove(message.getNbcarte());
+                vdon.close();
+                
+                
                 
             }
             

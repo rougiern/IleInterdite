@@ -15,4 +15,10 @@ public class CarteTirage extends ObjetIdentifie{
         super();
     }
     
+    @Override
+    public String toString(){
+        
+        return this.getClass().getSimpleName();
+    }
+    
 }

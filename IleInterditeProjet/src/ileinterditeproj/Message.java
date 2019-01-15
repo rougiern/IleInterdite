@@ -36,7 +36,11 @@ public class Message {
         
     }
     
-   
+    public Message(Commandes commandes, int selectedIndex ,String nom) {
+        this.nbcarte=selectedIndex ;
+        this.action = commandes ;
+        this.nomJ=nom;
+    }
 
     
 
