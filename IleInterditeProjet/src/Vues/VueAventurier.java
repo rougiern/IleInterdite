@@ -33,6 +33,13 @@ import ileinterditeproj.Utils;
 import java.util.ArrayList;
  
 public class VueAventurier extends Observable {
+
+    /**
+     * @return the btnRecupererTresor
+     */
+    public JButton getBtnRecupererTresor() {
+        return btnRecupererTresor;
+    }
      
     private final JPanel panelBoutons ;
     private final JPanel panelCentre ;

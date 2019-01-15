@@ -41,8 +41,8 @@ import java.util.ArrayList;
 public class VueCarteSpeciale extends Observable {
 
     private final JFrame window;
-    private final JButton btnCartesacDesable;
-    private final JButton btnCarteHelico;
+    private JButton btnCartesacDesable;
+    private JButton btnCarteHelico;
     private JPanel mainPanel;
     //private final
 
@@ -101,9 +101,11 @@ public class VueCarteSpeciale extends Observable {
         });
 
         window.setVisible(true);
+        
     }
 
     public void actualiserPourDeplacer(ArrayList<Aventurier> joueurs) {
+        
         mainPanel.removeAll();
         mainPanel.setLayout(new GridLayout(joueurs.size(), 2));
         JButton boutondeplacer;
@@ -124,6 +126,7 @@ public class VueCarteSpeciale extends Observable {
         }
         mainPanel.revalidate();
     }
+    
 
     public void close() {
         this.window.dispose();

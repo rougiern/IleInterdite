@@ -126,7 +126,12 @@ public class VueNiveau {
     public void setNiveau(Integer niveau) {
         System.out.println("VueNiveau_nopic.setNiveau(" + niveau + ")");
         panelsGauches.get(this.niveau).setBackground(getBgColor(this.niveau - 1));
-        this.niveau = niveau ;
+        if (niveau > 5) {
+            
+        }else{
+           this.niveau = niveau ; 
+        }
+        
         panelsGauches.get(this.niveau).setBackground(this.niveau == 10 ? Color.RED : Color.YELLOW);
         this.mainPanel.repaint();
     }
@@ -187,5 +192,10 @@ public class VueNiveau {
         System.out.println("Pour passer au niveau 5, appuyer sur entrée");
         suite = scanner.nextLine();
         vueNiveau.setNiveau(10);
-    }    
+    }
+    
+    public void close() {
+        window.dispose();
+    }
+    
 }
