@@ -5,19 +5,24 @@ import LesJoueurs.Aventurier;
 import ileinterditeproj.Utils;
 import ileinterditeproj.Grille;
 import ileinterditeproj.Parameters;
+import ileinterditeproj.Utils.Commandes;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
+import java.awt.FlowLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
+import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JScrollPane;
+import javax.swing.SwingConstants;
 
 /**
  *
@@ -26,31 +31,97 @@ import javax.swing.JPanel;
 public class VuePlateau extends Observable {
 
     private JFrame window;
-    private JPanel mainpanel;
+    private JPanel panelgrille;
     private Utils.Commandes derniereaction;
     private JPanel paneljoueur;
     JPanel panelcase;
     private int nb;
+    private JPanel paneljoueurgauche;
+//    private JPanel paneljoueurdroite;
+    private JPanel mainpanel ;
+    private JPanel panelplateau;
+    private VueNiveau vueniveau;
+    
+    private VueAventurier vuej1;
+    private VueAventurier vuej2;
+    private VueAventurier vuej3;
+    private VueAventurier vuej4;
 
-    public VuePlateau(Grille g) {
+    public VuePlateau(Grille g,ArrayList<Aventurier> av) {
+        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        
         window = new JFrame("Plateau de jeu");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
         // Définit la taille de la fenêtre en pixels
-        window.setSize(1200, 600);
+        window.setSize(dim);
+        
+        vueniveau = new VueNiveau(1);
 
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+        
         window.setLocation(dim.width / 2 - window.getSize().width / 2, dim.height / 2 - window.getSize().height / 2);
-        mainpanel = new JPanel(new GridLayout(6, 6));
+        panelgrille = new JPanel(new GridLayout(6, 6));
+        mainpanel=new JPanel(new BorderLayout());
+        paneljoueurgauche=new JPanel(new GridLayout(1,4));
+        panelplateau=new JPanel(new BorderLayout());
+        mainpanel.add(paneljoueurgauche,BorderLayout.NORTH);
+        panelplateau.add(panelgrille,BorderLayout.CENTER);
+        panelplateau.add(vueniveau,BorderLayout.EAST);
+        mainpanel.add(panelplateau,BorderLayout.CENTER);
+//        mainpanel.add(paneljoueurdroite,BorderLayout.EAST);
         window.add(mainpanel);
-        mainpanel.setBackground(Parameters.PLATEAU_BG);
-
-        raffraichir(g);
-
+        panelgrille.setBackground(Parameters.PLATEAU_BG);
+        vueniveau.setBackground(Parameters.PLATEAU_BG);
+//        paneljoueurdroite.setBackground(Parameters.PLATEAU_BG);
+        paneljoueurgauche.setBackground(Parameters.PLATEAU_BG);
+        
+        
+        raffraichir(g,av);
+        
     }
 
-    public void raffraichir(Grille g) {
+    public void raffraichir(Grille g,ArrayList<Aventurier> av) {
+        
+        
+        paneljoueurgauche.removeAll();
+//        paneljoueurdroite.removeAll();
+        panelgrille.removeAll();
+        
+        if(av.isEmpty()==false){
 
-        mainpanel.removeAll();
+
+            vuej1=new VueAventurier(av.get(0));
+            setBouton(getVuej1(),av.get(0));
+            paneljoueurgauche.add(getVuej1());
+            
+            
+            
+            vuej2=new VueAventurier(av.get(1));
+            setBouton(getVuej2(),av.get(1));        
+            paneljoueurgauche.add(getVuej2());
+
+            if(av.size()>2){
+
+                vuej3=new VueAventurier(av.get(2));
+                setBouton(getVuej3(),av.get(2));
+                paneljoueurgauche.add(getVuej3());
+
+                if(av.size()>3){
+
+                    vuej4=new VueAventurier(av.get(3));
+                    setBouton(getVuej4(),av.get(3));
+                    paneljoueurgauche.add(getVuej4());                
+                }else{
+                    vuej4=null;
+                    paneljoueurgauche.add(new JLabel(" ")); 
+                }
+            }else{
+                vuej3=null;
+                paneljoueurgauche.add(new JLabel(" ")); 
+                
+            }
+            
+            this.griserAction();
+        }
 
           for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
@@ -61,7 +132,7 @@ public class VuePlateau extends Observable {
                     panelcase.add(vT, BorderLayout.CENTER);
                     paneljoueur = new JPanel(new GridLayout(1, 4));
                     panelcase.add(paneljoueur, BorderLayout.SOUTH);
-                    mainpanel.add(panelcase);
+                    panelgrille.add(panelcase);
                     nb = g.getTableau()[x][y].getAventuriers().size();
 
                     JLabel labelvide = new JLabel("");
@@ -83,18 +154,18 @@ public class VuePlateau extends Observable {
                         public void actionPerformed(ActionEvent e) {
                             setChanged();
                             notifyObservers(new Message(derniereaction, vT.getTuile()));
-                            setDerniereaction(Utils.Commandes.NULL);
                             clearChanged();
-                            
                         }
                     });
                 } else {
                     JLabel vide = new JLabel(" ");
-                    mainpanel.add(vide);
+                    panelgrille.add(vide);
                 }
             }
         }
-        mainpanel.revalidate();
+        panelgrille.revalidate();
+        paneljoueurgauche.revalidate();
+//        paneljoueurdroite.revalidate();
 
     }
 
@@ -111,6 +182,129 @@ public class VuePlateau extends Observable {
      */
     public void setDerniereaction(Utils.Commandes derniereaction) {
         this.derniereaction = derniereaction;
+    }
+    
+    private void setBouton(VueAventurier vAv, Aventurier av){
+        
+        vAv.getBtnBouger().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.DEMANDE_BOUGER,av.getNom()));
+                clearChanged();
+            }
+        });
+        
+        vAv.getBtnAssecher().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.DEMANDE_ASSECHER,av.getNom()));
+                clearChanged();
+            }
+        });
+        
+        
+        vAv.getBtnAutreAction().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.DONNER,av.getNom()));             
+                clearChanged();
+            }
+        });
+        
+        vAv.getBtnTerminerTour().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.TERMINER,av.getNom()));
+                clearChanged();
+            }
+            
+        });
+        
+        vAv.getBtnRecupererTresor().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.RECUPERER_TRESOR,av.getNom()));
+                clearChanged();
+            }
+            
+        });
+        
+        vAv.getBtnUtiliserCarte().addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.CHOISIR_CARTE,av.getNom()));
+                clearChanged();
+            }
+            
+        });
+        
+        if(vAv.getBtnDeplacerJoueur()!=null){
+            vAv.getBtnDeplacerJoueur().addActionListener(new ActionListener() {
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setChanged();
+                    notifyObservers(new Message(Commandes.DEPLACER,av.getNom()));
+                    clearChanged();
+                }
+
+            });
+        }
+        
+        
+    }
+
+    /**
+     * @return the vuej1
+     */
+    public VueAventurier getVuej1() {
+        return vuej1;
+    }
+
+    /**
+     * @return the vuej2
+     */
+    public VueAventurier getVuej2() {
+        return vuej2;
+    }
+
+    /**
+     * @return the vuej3
+     */
+    public VueAventurier getVuej3() {
+        return vuej3;
+    }
+
+    /**
+     * @return the vuej4
+     */
+    public VueAventurier getVuej4() {
+        return vuej4;
+    }
+    
+    public void griserAction(){
+        vuej1.griserActions();
+        vuej2.griserActions();
+        if (vuej3!=null){
+            vuej3.griserActions();
+            if (vuej4!=null){
+                vuej4.griserActions();
+            }
+        }
+        
+        
+    }
+
+    /**
+     * @return the vueniveau
+     */
+    public VueNiveau getVueniveau() {
+        return vueniveau;
     }
 
 }

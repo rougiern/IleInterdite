@@ -29,21 +29,15 @@ import ileinterditeproj.CarteSacDeSable;
 import ileinterditeproj.CarteMonteedesEaux;
 import ileinterditeproj.CarteHelicoptere;
 import ileinterditeproj.CarteTresor;
+import ileinterditeproj.Parameters;
 import ileinterditeproj.Utils;
 import java.util.ArrayList;
  
-public class VueAventurier extends Observable {
-
-    /**
-     * @return the btnRecupererTresor
-     */
-    public JButton getBtnRecupererTresor() {
-        return btnRecupererTresor;
-    }
+public class VueAventurier extends JPanel {
      
     private final JPanel panelBoutons ;
     private final JPanel panelCentre ;
-    private final JFrame window;
+//    private final JFrame window;
     private final JPanel panelAventurier;
     private final JPanel mainPanel;
     private final JPanel panelHeader;
@@ -54,25 +48,27 @@ public class VueAventurier extends Observable {
     private final JButton btnRecupererTresor;
     private final JButton btnUtiliserCarte;
     private final JButton btnTerminerTour;
-    private final JButton btnDeplacerJoueur;
     private JTextField position;
-   
+    private final JButton btnDeplacerJoueur;
    
    
     
     public VueAventurier(Aventurier a){
 
-        this.window = new JFrame();
-        window.setSize(350, 500);
-        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
-        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
-        //le titre = nom du joueur 
-        window.setTitle(a.getNom());
+//        this.window = new JFrame();
+//       window.setSize(350, 500);
+//        Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
+//        window.setLocation(dim.width/2-window.getSize().width/2, dim.height/2-window.getSize().height/2);
+//        //le titre = nom du joueur 
+//        window.setTitle(a.getNom());
+
+        
+        
         panelHeader = new JPanel(new GridLayout(2,1));
         mainPanel = new JPanel(new BorderLayout());
                 
         panelHeader.add(mainPanel);
-        this.window.add(panelHeader);
+        
 
         mainPanel.setBackground(new Color(230, 230, 230));
         mainPanel.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
@@ -98,7 +94,7 @@ public class VueAventurier extends Observable {
         this.panelCentre.setBorder(new MatteBorder(0, 0, 2, 0, a.getPion().getCouleur()));
         mainPanel.add(this.panelCentre, BorderLayout.CENTER);
         
-        panelCentre.add(new JLabel ("Position", SwingConstants.CENTER));
+        panelCentre.add(new JLabel (a.getNom(), SwingConstants.CENTER));
         position = new  JTextField(30);
         position.setText(a.getTuileCourante().getNom());
         position.setHorizontalAlignment(CENTER);
@@ -107,85 +103,82 @@ public class VueAventurier extends Observable {
 
         // =================================================================================
         // SUD : les boutons
-        if(a instanceof Navigateur){
-            this.panelBoutons = new JPanel(new GridLayout(4,2));
-        }else{
-            this.panelBoutons = new JPanel(new GridLayout(3,2));
-        }
+        this.panelBoutons = new JPanel(new GridLayout(3,2));
         this.panelBoutons.setOpaque(false);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
         this.btnBouger = new JButton("Bouger") ;
         
-        btnBouger.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.BOUGER,a.getNom()));
-                clearChanged();
-            }
-        });
+//        btnBouger.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.BOUGER,a.getNom()));
+//                clearChanged();
+//            }
+//        });
         
         
         this.btnAssecher = new JButton( "Assecher");
         
-            btnAssecher.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.ASSECHER,a.getNom()));
-                clearChanged();
-            }
-        });
+//            btnAssecher.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.ASSECHER,a.getNom()));
+//                clearChanged();
+//            }
+//        });
         
         this.btnAutreAction = new JButton("Donner carte") ;
         
         
-        btnAutreAction.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.DONNER,a.getNom()));             
-                clearChanged();
-            }
-        });
+//        btnAutreAction.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.DONNER,a.getNom()));             
+//                clearChanged();
+//            }
+//        });
         
         this.btnTerminerTour = new JButton("Terminer Tour") ;
         
-        btnTerminerTour.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.TERMINER,a.getNom()));
-                clearChanged();
-            }
-            
-        });
+//        btnTerminerTour.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.TERMINER,a.getNom()));
+//                clearChanged();
+//            }
+//            
+//        });
         
         this.btnRecupererTresor = new JButton("Récuperer un trésor") ;
         
-        btnRecupererTresor.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.RECUPERER_TRESOR,a.getNom()));
-                clearChanged();
-            }
-            
-        });
+//        btnRecupererTresor.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.RECUPERER_TRESOR,a.getNom()));
+//                clearChanged();
+//            }
+//            
+//        });
         
         this.btnUtiliserCarte = new JButton("Utiliser une carte spéciale") ;
         
-        btnUtiliserCarte.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.CHOISIR_CARTE,a.getNom()));
-                clearChanged();
-            }
-            
-        });
-        
+//        btnUtiliserCarte.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.CHOISIR_CARTE,a.getNom()));
+//                clearChanged();
+//            }
+//            
+//        });
+
+               
 
         this.panelBoutons.add(btnBouger);
         this.panelBoutons.add(btnAssecher);
@@ -195,20 +188,22 @@ public class VueAventurier extends Observable {
         this.panelBoutons.add(btnUtiliserCarte);
         
         if(a instanceof Navigateur){
-              btnDeplacerJoueur = new JButton("Déplacer un Joueur") ;
-             btnDeplacerJoueur.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Commandes.DEPLACER,a.getNom()));
-                clearChanged();
-            }
-            
-        });
-             this.panelBoutons.add(btnDeplacerJoueur);
+            this.btnDeplacerJoueur = new JButton("Déplacer un Joueur") ;
+        
+//        btnDeplacerJoueur.addActionListener(new ActionListener() {
+//            @Override
+//            public void actionPerformed(ActionEvent e) {
+//                setChanged();
+//                notifyObservers(new Message(Commandes.DEPLACER,a.getNom()));
+//                clearChanged();
+//            }
+//            
+//        });
+            this.panelBoutons.add(btnDeplacerJoueur);
         }else{
-            this.btnDeplacerJoueur= null;
+            this.btnDeplacerJoueur=null;
         }
+        
  
         // =================================================================================
         // =Deuxième partie de la fenêtre                                                  =
@@ -275,8 +270,15 @@ public class VueAventurier extends Observable {
             panelFooter.add(listeTresor);
             
             panelHeader.add(panelFooter);
+            
+            this.setLayout(new BorderLayout());
+            
+            this.add(panelHeader, BorderLayout.CENTER);
+            this.add(new JLabel(" "), BorderLayout.EAST);
+            this.add(new JLabel(" "), BorderLayout.WEST);
+            this.setBackground(Parameters.PLATEAU_BG);
         
-            this.window.setVisible(true);
+//            this.window.setVisible(true);
     } 
     
     public void setPosition(String pos) {
@@ -308,20 +310,20 @@ public class VueAventurier extends Observable {
 
     }
      
-     public void close() {
-         this.window.dispose();
-     }
-     
-     public void afficher(){
-         this.window.setVisible(true);
-     }
+//     public void close() {
+//         this.window.dispose();
+//     }
+//     
+//     public void afficher(){
+//         this.window.setVisible(true);
+//     }
      
      public void rafraichirPositon(Aventurier a){
          this.position.setText(a.getTuileCourante().getNom());
      }
      
      public void rafraichirMains(Aventurier a){
-        this.window.setVisible(false);
+//        this.window.setVisible(false);
         this.panelFooter.removeAll();
         int nbcarteSacDeSable = 0;
         int nbcarteHelicoptere = 0;
@@ -377,8 +379,46 @@ public class VueAventurier extends Observable {
             
             
             panelFooter.add(listeTresor);
-            this.window.setVisible(true);
+//            this.window.setVisible(true);
      }
+
+    /**
+     * @return the btnRecupererTresor
+     */
+    public JButton getBtnRecupererTresor() {
+        return btnRecupererTresor;
+    }
+
+    /**
+     * @return the btnUtiliserCarte
+     */
+    public JButton getBtnUtiliserCarte() {
+        return btnUtiliserCarte;
+    }
+    
+    public void griserActions(){
+        this.btnAssecher.setEnabled(false);
+        this.btnAutreAction.setEnabled(false);
+        this.btnBouger.setEnabled(false);
+        this.btnRecupererTresor.setEnabled(false);
+        this.btnTerminerTour.setEnabled(false);
+        this.btnUtiliserCarte.setEnabled(false);
+        if(this.btnDeplacerJoueur!=null){
+            this.btnDeplacerJoueur.setEnabled(false);
+        }
+    }
+    
+    public void degriserActions(){
+        this.btnAssecher.setEnabled(true);
+        this.btnAutreAction.setEnabled(true);
+        this.btnBouger.setEnabled(true);
+        this.btnRecupererTresor.setEnabled(true);
+        this.btnTerminerTour.setEnabled(true);
+        this.btnUtiliserCarte.setEnabled(true);
+        if(this.btnDeplacerJoueur!=null){
+            this.btnDeplacerJoueur.setEnabled(true);
+        }
+    }
 
     /**
      * @return the btnDeplacerJoueur
