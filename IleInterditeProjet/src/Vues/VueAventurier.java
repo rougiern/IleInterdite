@@ -54,6 +54,7 @@ public class VueAventurier extends Observable {
     private final JButton btnRecupererTresor;
     private final JButton btnUtiliserCarte;
     private final JButton btnTerminerTour;
+    private final JButton btnDeplacerJoueur;
     private JTextField position;
    
    
@@ -106,7 +107,11 @@ public class VueAventurier extends Observable {
 
         // =================================================================================
         // SUD : les boutons
-        this.panelBoutons = new JPanel(new GridLayout(3,2));
+        if(a instanceof Navigateur){
+            this.panelBoutons = new JPanel(new GridLayout(4,2));
+        }else{
+            this.panelBoutons = new JPanel(new GridLayout(3,2));
+        }
         this.panelBoutons.setOpaque(false);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
@@ -188,6 +193,22 @@ public class VueAventurier extends Observable {
         this.panelBoutons.add(btnTerminerTour);
         this.panelBoutons.add(btnRecupererTresor);
         this.panelBoutons.add(btnUtiliserCarte);
+        
+        if(a instanceof Navigateur){
+              btnDeplacerJoueur = new JButton("Déplacer un Joueur") ;
+             btnDeplacerJoueur.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Commandes.DEPLACER,a.getNom()));
+                clearChanged();
+            }
+            
+        });
+             this.panelBoutons.add(btnDeplacerJoueur);
+        }else{
+            this.btnDeplacerJoueur= null;
+        }
  
         // =================================================================================
         // =Deuxième partie de la fenêtre                                                  =
@@ -358,6 +379,13 @@ public class VueAventurier extends Observable {
             panelFooter.add(listeTresor);
             this.window.setVisible(true);
      }
+
+    /**
+     * @return the btnDeplacerJoueur
+     */
+    public JButton getBtnDeplacerJoueur() {
+        return btnDeplacerJoueur;
+    }
      
 }
 

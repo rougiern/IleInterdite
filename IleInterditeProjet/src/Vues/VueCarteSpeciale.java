@@ -56,10 +56,10 @@ public class VueCarteSpeciale extends Observable {
         window.setTitle("Vos cartes speciales");
         mainPanel = new JPanel(new GridLayout(1, 2));
         window.add(mainPanel);
-        
+
         int nbcarteSac = 0;
         int nbcarteHelico = 0;
-        
+
         if (!a.getMains().isEmpty()) {
             for (CarteTirage carteTirage : a.getMains()) {
                 if (carteTirage instanceof CarteSacDeSable) {
@@ -101,32 +101,55 @@ public class VueCarteSpeciale extends Observable {
         });
 
         window.setVisible(true);
-        
+
     }
 
     public void actualiserPourDeplacer(ArrayList<Aventurier> joueurs) {
-        
+
         mainPanel.removeAll();
         mainPanel.setLayout(new GridLayout(joueurs.size(), 2));
         JButton boutondeplacer;
         for (Aventurier avt : joueurs) {
             boutondeplacer = new JButton("Déplacer");
-            
+
             mainPanel.add(new JLabel(avt.getNom(), SwingConstants.CENTER));
             mainPanel.add(boutondeplacer);
-            
+
             boutondeplacer.addActionListener(new ActionListener() {
-            @Override
-            public void actionPerformed(ActionEvent e) {
-                setChanged();
-                notifyObservers(new Message(Utils.Commandes.BOUGER_AVEC_HELICO, avt.getNom()));
-                clearChanged();
-            }
-        });
+                @Override
+                public void actionPerformed(ActionEvent e) {
+                    setChanged();
+                    notifyObservers(new Message(Utils.Commandes.BOUGER_AVEC_HELICO, avt.getNom()));
+                    clearChanged();
+                }
+            });
         }
         mainPanel.revalidate();
     }
-    
+
+    public void actualiserPourDeplacerNav(ArrayList<Aventurier> joueurs, Aventurier a) {
+
+        mainPanel.removeAll();
+        mainPanel.setLayout(new GridLayout(joueurs.size(), 2));
+        JButton boutondeplacer;
+        for (Aventurier avt : joueurs) {
+            if (!(avt.getNom().equals(a.getNom()))) {
+                boutondeplacer = new JButton("Déplacer");
+
+                mainPanel.add(new JLabel(avt.getNom(), SwingConstants.CENTER));
+                mainPanel.add(boutondeplacer);
+                boutondeplacer.addActionListener(new ActionListener() {
+                    @Override
+                    public void actionPerformed(ActionEvent e) {
+                        setChanged();
+                        notifyObservers(new Message(Utils.Commandes.DEPLACER, avt.getNom()));
+                        clearChanged();
+                    }
+                });
+            }
+        }
+        mainPanel.revalidate();
+    }
 
     public void close() {
         this.window.dispose();
