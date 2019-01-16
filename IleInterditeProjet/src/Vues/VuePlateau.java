@@ -30,11 +30,18 @@ import javax.swing.SwingConstants;
  */
 public class VuePlateau extends Observable {
 
+    /**
+     * @return the derniereaction
+     */
+    public Utils.Commandes getDerniereaction() {
+        return derniereaction;
+    }
+
     private JFrame window;
     private JPanel panelgrille;
     private Utils.Commandes derniereaction;
     private JPanel paneljoueur;
-    JPanel panelcase;
+    private JPanel panelcase;
     private int nb;
     private JPanel paneljoueurgauche;
 //    private JPanel paneljoueurdroite;
@@ -154,6 +161,7 @@ public class VuePlateau extends Observable {
                         public void actionPerformed(ActionEvent e) {
                             setChanged();
                             notifyObservers(new Message(derniereaction, vT.getTuile()));
+                            setDerniereaction(null);
                             clearChanged();
                         }
                     });
@@ -249,7 +257,7 @@ public class VuePlateau extends Observable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     setChanged();
-                    notifyObservers(new Message(Commandes.DEPLACER,av.getNom()));
+                    notifyObservers(new Message(Commandes.DEMANDE_DEPLACER,av.getNom()));
                     clearChanged();
                 }
 

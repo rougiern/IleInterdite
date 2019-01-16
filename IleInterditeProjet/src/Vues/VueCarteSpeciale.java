@@ -142,7 +142,7 @@ public class VueCarteSpeciale extends Observable {
                     @Override
                     public void actionPerformed(ActionEvent e) {
                         setChanged();
-                        notifyObservers(new Message(Utils.Commandes.DEPLACER, avt.getNom()));
+                        notifyObservers(new Message(Utils.Commandes.DEMANDE_DEPLACER, avt.getNom()));
                         clearChanged();
                     }
                 });
