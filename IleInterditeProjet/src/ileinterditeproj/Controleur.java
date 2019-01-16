@@ -883,7 +883,7 @@ public class Controleur implements Observer {
         for (int t = 0; t < 2; t++) {
 
             if (piocheTirage.isEmpty()) {
-                melangeDefausseCarteTirage();
+                retourneDefausseCarteTirage();
             }
 
             if (j.getMains().size() < 9) {
@@ -951,7 +951,7 @@ public class Controleur implements Observer {
         this.defausserCarteMonteedesEaux(i);
     }
 
-    private void melangeDefausseCarteTirage() {
+    private void retourneDefausseCarteTirage() {
         Collections.shuffle(this.getDefausseTirage());
         piocheTirage.addAll(this.getDefausseTirage());
         defausseTirage.clear();
