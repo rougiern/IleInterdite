@@ -19,14 +19,14 @@ public class Utils {
         BOUGER("Déplacer son pion"),
         DEMANDE_BOUGER("Déplacer son pion"),
         ASSECHER("Assécher une tuile"),
-        DEMANDE_ASSECHER("Assécher une tuile"),
+        DEMANDE_ASSECHER("Demande l'Asséchement d'une tuile"),
         DONNER("Donner une carte à un autre joueur"),
         RECUPERER_TRESOR("Récupérer le trésor de la tuile"),
         TERMINER("Terminer son tour"),
         RECEVOIR("Recevoir la carte donnée par un autre joueur"), 
         CHOISIR_CARTE("Utiliser une carte trésor"),
         CHOISIR_TUILE("Sélectionner une tuile"), 
-        DEPLACER("Déplacer un autre joueur"),
+        DEMANDE_DEPLACER("Demande de déplacer un autre joueur"),
         VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
         NULL("rien"),
         DEFAUSSE("Defausser"),
@@ -34,7 +34,8 @@ public class Utils {
         BOUGER_AVEC_HELICO("Se déplacer en hélicptère"),
         UTILISER_CARTE_SACSABLE(""),
         ASSECHER_SAC_SABLE(""),
-        DEPLACEMENT_NOYADE("");
+        DEPLACEMENT_NOYADE(""),
+        DEPLACER("Déplace un autre joueur");
         
 
         private final String libelle ;
