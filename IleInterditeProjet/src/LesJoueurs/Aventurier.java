@@ -7,6 +7,7 @@ package LesJoueurs;
 
 import ileinterditeproj.CarteHelicoptere;
 import ileinterditeproj.CarteTirage;
+import ileinterditeproj.CarteTresor;
 import ileinterditeproj.EtatTuile;
 import ileinterditeproj.Grille;
 import ileinterditeproj.ObjetIdentifie;
@@ -39,7 +40,18 @@ public abstract class Aventurier extends ObjetIdentifie{
      * @param g
      * @return the role
      */
-   
+   public boolean pasDeTresor() {
+       boolean cond = false ;
+       int i =0;
+       while(i<mains.size() && !(mains.get(i) instanceof CarteTresor)){
+           i++;  
+       }
+       if(i!=mains.size()){
+           cond = true ;
+       }
+       return cond ;
+       
+    }
     
     public ArrayList<Tuile> seDeplacer(Grille g) {
 
@@ -174,5 +186,7 @@ public abstract class Aventurier extends ObjetIdentifie{
        }
        return bool ;
     }
+
+    
 
 }

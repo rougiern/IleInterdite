@@ -498,10 +498,19 @@ public class Controleur implements Observer {
                 }
             // DON D UNE CARTE TRESOR 
             } else if ((arg0 instanceof VueAventurier) && (message.getAction() == Commandes.DONNER)) {
-
-                vdon = new VueDonCarte(joueurcourant.getMains(), joueurs, joueurcourant);
-                vdon.afficher();
-                vdon.addObserver(this);
+                
+                if(pasSeulSurCase(joueurcourant) || (joueurcourant instanceof Messager)){
+                    if((joueurcourant.pasDeTresor())){
+                    vdon = new VueDonCarte(joueurcourant.getMains(), joueurs, joueurcourant);
+                    vdon.afficher();
+                    vdon.addObserver(this);
+                    }else{
+                     Utils.afficherInformation("Le Joueur n'a pas de carte Trésor.e.s à donner ");   
+                    }
+                }else{
+                    Utils.afficherInformation("Le.a Joueur.e est seul.e sur sa case il.iel ne peut rien donner ");
+                }
+                
 
             } else if ((arg0 instanceof VueDonCarte) && (message.getAction() == Commandes.DONNER) && joueurcourant instanceof Messager) {
 
@@ -539,6 +548,12 @@ public class Controleur implements Observer {
 
         }
 
+    }
+    
+    private boolean pasSeulSurCase(Aventurier a) {
+        
+       return a.getTuileCourante().getAventuriers().size()>1;
+       
     }
 
     public boolean tousTresorsObtenus() {
@@ -1140,5 +1155,7 @@ public class Controleur implements Observer {
         }
 
     }
+
+    
 
 }

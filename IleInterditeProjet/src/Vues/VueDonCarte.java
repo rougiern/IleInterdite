@@ -6,6 +6,7 @@
 package Vues;
 
 import LesJoueurs.Aventurier;
+import LesJoueurs.Messager;
 import ileinterditeproj.CarteHelicoptere;
 import ileinterditeproj.CarteSacDeSable;
 import ileinterditeproj.CarteTirage;
@@ -37,6 +38,7 @@ public class VueDonCarte extends Observable{
     private JComboBox l;
     private JComboBox joueurs;
     private JButton btndon;
+    private ArrayList<Integer> indexmains;
 
     public VueDonCarte(ArrayList<CarteTirage> mains ,ArrayList<Aventurier> joueurs ,Aventurier jcourant) {
 
@@ -56,7 +58,7 @@ public class VueDonCarte extends Observable{
         panelbas = new JPanel(new GridLayout(1, 3));
         panelbas.add(new JLabel(""));
         btndon = new JButton("Donner");
-        panelbas.add(btndon);
+        panelbas.add(btndon);        
         panelbas.add(new JLabel(""));
         mainPanel.add(panelbas, BorderLayout.SOUTH);
 
@@ -64,16 +66,13 @@ public class VueDonCarte extends Observable{
         panelmilieu = new JPanel(new GridLayout(5,1));
 
         l = new JComboBox();
-        
-        int i = 1;
-        
-        for(CarteTirage c : mains){
-            if(c instanceof CarteHelicoptere){
-                l.addItem(i+" - carte helicoptere");
-            }else if(c instanceof CarteSacDeSable){
-                l.addItem(i+" - carte sac de sable");
-            }else if(c instanceof CarteTresor){
-                l.addItem(i+" - carte tresor : "+ ((CarteTresor)c).getTypeTresor().toString());
+        indexmains = new ArrayList();
+        int i = 0;
+        while(i<mains.size()){
+            
+            if(mains.get(i) instanceof CarteTresor){
+                l.addItem(i+" - carte tresor : "+ ((CarteTresor)mains.get(i)).getTypeTresor().toString());
+                indexmains.add(i);
             }
             i++;
         }
@@ -84,24 +83,33 @@ public class VueDonCarte extends Observable{
         this.joueurs = new JComboBox() ;
         
         for(Aventurier a : joueurs){
-            if(!(a.getNom().equals(jcourant.getNom()))){
-            this.joueurs.addItem(a.getNom());
+            if(jcourant instanceof Messager){
+                if(!(a.getNom().equals(jcourant.getNom()))){
+                    this.joueurs.addItem(a.getNom());
+                }
+            }else{
+                if(!(a.getNom().equals(jcourant.getNom()))&&a.getTuileCourante()==jcourant.getTuileCourante()){
+                    this.joueurs.addItem(a.getNom());
+                }
             }
         }
         
         panelmilieu.add(new JLabel("A quel joueur voulez vous donnez la carte ?"));
         panelmilieu.add(this.joueurs);
         panelmilieu.add(new JLabel(""));
+        
 
         btndon.addActionListener(new ActionListener() {
             @Override
             public void actionPerformed(ActionEvent e) {
                 setChanged();
-                notifyObservers(new Message(Utils.Commandes.DONNER,l.getSelectedIndex(),getnomJ() ));
+                notifyObservers(new Message(Utils.Commandes.DONNER,indexmains.get(l.getSelectedIndex()),getnomJ() ));
+                System.out.println(l.getSelectedItem());
                 clearChanged();
             }
         });
-
+        
+        
         mainPanel.add(panelmilieu, BorderLayout.CENTER);
         
         

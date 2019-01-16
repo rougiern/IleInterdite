@@ -14,6 +14,7 @@ public class Message {
     
     private Commandes action ;
     private String nomJ ;
+    private String nomcarte ;
     private Tuile tuile;
     private int nbcarte ;
     
@@ -38,6 +39,12 @@ public class Message {
     
     public Message(Commandes commandes, int selectedIndex ,String nom) {
         this.nbcarte=selectedIndex ;
+        this.action = commandes ;
+        this.nomJ=nom;
+    }
+    
+    public Message(Commandes commandes, String selectedIndex ,String nom) {
+        this.nbcarte=Integer.parseInt(selectedIndex);
         this.action = commandes ;
         this.nomJ=nom;
     }
