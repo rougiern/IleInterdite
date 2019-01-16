@@ -411,7 +411,8 @@ public class Controleur implements Observer {
 
             } else if (message.getAction() == Commandes.TERMINER) {
                 victoire();
-
+                defaite();
+                
                 tirerCarteInondation();
 
                 vplateau.raffraichir(this.grille);
@@ -610,6 +611,7 @@ public class Controleur implements Observer {
                     if (grille.getTableau()[x][y].getEtat() == Utils.EtatTuile.COULEE) {
                         if (nomstresors.contains(grille.getTableau()[x][y].getTresor().name())) {
                             condition = true;
+                            System.out.println("Tresor coulee");
                         } else {
                         nomstresors.add(grille.getTableau()[x][y].getTresor().name());
                         }
@@ -627,6 +629,7 @@ public class Controleur implements Observer {
             for (int y = 0; y < 6; y++) {
                 if(grille.getTableau()[x][y].getNom().equals("Heliport") && grille.getTableau()[x][y].getEtat() == Utils.EtatTuile.COULEE){
                     cond = true ;
+                    System.out.println("Heliport coulee");
                 }
             }
         }
@@ -636,11 +639,32 @@ public class Controleur implements Observer {
     
     public boolean hommeAlaMer(){
         
-        return true;
+        boolean cond = false ;
+        ArrayList<Tuile> tuilesA = new ArrayList();
+        for(Aventurier a :joueurs){
+            if(a instanceof Pilote){
+                tuilesA=((Pilote) a).seDeplacerVol(grille);
+            }else{
+                tuilesA=a.seDeplacer(grille);
+            }
+            if(tuilesA.isEmpty()){
+                cond = true;
+                System.out.println("HommeAlaMer ");
+            }
+        }
+
+        return cond;
         
     }
 
     public void defaite() {
+        
+         if (TresorsCoulee() || hommeAlaMer() || heliportCoulee()) {
+            Utils.afficherInformation("VOUS AVEZ PERDU !!!");
+            vueaventurier.close();
+            vplateau.close();
+            vueniv.close();
+        }
 
     }
 
