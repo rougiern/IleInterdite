@@ -448,6 +448,7 @@ public class Controleur implements Observer {
             } else if (message.getAction() == Commandes.DEFAUSSE) {
 
                 System.out.println("suppr carte");
+                defausseTirage.add(joueurcourant.getMains().get(message.getNbcarte()));
                 joueurcourant.retirerCarte(message.getNbcarte());
                 vueaventurier.rafraichirMains(joueurcourant);
 
