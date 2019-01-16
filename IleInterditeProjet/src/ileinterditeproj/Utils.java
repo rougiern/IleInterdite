@@ -30,7 +30,9 @@ public class Utils {
         DEFAUSSE("Defausser"),
         UTILISER_CARTE_HELICO("Nik les stups"),
         BOUGER_AVEC_HELICO("Se déplacer en hélicptère"),
-        UTILISER_CARTE_SACSABLE("");
+        UTILISER_CARTE_SACSABLE(""),
+        ASSECHER_SAC_SABLE(""),
+        DEPLACEMENT_NOYADE("");
         
 
         private final String libelle ;
