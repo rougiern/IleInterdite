@@ -195,40 +195,14 @@ public class Controleur implements Observer {
                 afficherJoueurs();
             }
         } else if (arg1 instanceof Message) {
-            if (noyadeEnCours) {
+            
+            
                 Message message = (Message) arg1;
-                // On doit recevoir le déplacement d'un joueur en cours de noyade
-                // => le déplacer puis vérifier s'il reste des joueurs en cours de
-                // noyade
-                // Déplacer le joueurCourant qui était en de se noyer
-                if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEPLACEMENT_NOYADE) {
-                    int x = 0;
-
-                    while (x < tuilesatteignables.size() && !(tuilesatteignables.get(x).getNom().equals(message.getTuile().getNom()))) {
-                        x++;
-                    }
-
-                    if (x != tuilesatteignables.size()) {
-                        System.out.println(tuilesatteignables.get(x).getNom());
-                        joueurcourant.getTuileCourante().retirerAventurierTuile(joueurcourant);
-                        tuilesatteignables.get(x).addAventurierTuile(joueurcourant);
-                        joueurcourant.setTuileCourante(tuilesatteignables.get(x));
-                        System.out.println("Action effectuée : Nouvelle tuile :" + joueurcourant.getTuileCourante().getNom());
-
-                    } else {
-                        System.out.println("la case n'est pas valide");
-                    }
+                if(message.getAction()==null){
+                    System.out.println("Action = null");
+                }else{
+                    System.out.println("Actions ="+message.getAction().name());
                 }
-                // Vérifier si toujours un joueur entrain de se noyer
-                if (gererNoyade() == null) {
-                    noyadeEnCours = false;
-                    joueurcourant = joueurs.get(compteurtour);
-                }
-                vplateau.raffraichir(this.grille, joueurs);
-                this.grisebouton(joueurcourant.getPtsaction());
-            }
-            if (!noyadeEnCours) {
-                Message message = (Message) arg1;
                 if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEMANDE_BOUGER) {
 
                     vplateau.setDerniereaction(Commandes.BOUGER);
@@ -285,6 +259,7 @@ public class Controleur implements Observer {
                     } else {
                         System.out.println("la case n'est pas valide");
                     }
+                    vplateau.setDerniereaction(null);
                     vplateau.raffraichir(this.grille, joueurs);
                     grisebouton(joueurcourant.getPtsaction());
 
@@ -349,7 +324,7 @@ public class Controleur implements Observer {
                         System.out.println("nb carte trésor inferieur a 4"); //trace
 
                     }
-
+                    vplateau.setDerniereaction(null);
                 } else if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEMANDE_ASSECHER) {
 
                     vplateau.setDerniereaction(Commandes.ASSECHER);
@@ -370,7 +345,7 @@ public class Controleur implements Observer {
                         System.out.println("Assechement impossible:Aucune case a assecher a proximité");
                     }
 
-                } else if ((arg0 instanceof VuePlateau) && (message.getAction() == Commandes.ASSECHER || message.getAction() == Commandes.ASSECHER_SAC_SABLE)) {
+                } else if (message.getAction() == Commandes.ASSECHER || message.getAction() == Commandes.ASSECHER_SAC_SABLE) {
 
                     int i = 0;
                     while (i < tuilesassechables.size() && !(tuilesassechables.get(i).getNom().equals(message.getTuile().getNom()))) {
@@ -380,6 +355,7 @@ public class Controleur implements Observer {
                     if (i < tuilesassechables.size()) {
 
                         System.out.println(tuilesassechables.get(i).getNom());
+                        vplateau.setDerniereaction(Commandes.ASSECHER);
                         if(message.getAction()==Commandes.ASSECHER_SAC_SABLE){
                             joueurcourant.setPtsaction(joueurcourant.getPtsaction() + 1);
                             int nbcartesenlevees = 0;
@@ -398,9 +374,12 @@ public class Controleur implements Observer {
                         vplateau.raffraichir(this.grille, joueurs);
                         grisebouton(joueurcourant.getPtsaction());
                         System.out.println("PA"+joueurcourant.getPtsaction());
+                        vplateau.setDerniereaction(null);
                         if (joueurcourant instanceof Ingenieur && ((Ingenieur) joueurcourant).getNbAsseche() == 1 && !(message.getAction() == Commandes.ASSECHER_SAC_SABLE)) {
                             deuxiemeAssechementInge();    
+                            vplateau.setDerniereaction(Commandes.ASSECHER);
                         }
+                        
                     } else {
                         System.out.println("la case n'est pas valide");  
                     }
@@ -457,7 +436,7 @@ public class Controleur implements Observer {
                         //défausse carte
                         defausse();
                     }
-
+                    vplateau.setDerniereaction(null);
                     vplateau.raffraichir(this.grille, joueurs);
                     grisebouton(joueurcourant.getPtsaction());
 
@@ -478,7 +457,7 @@ public class Controleur implements Observer {
                         vdefausse.close();
                         System.out.println("cacher");
                     }
-
+                    
                 } else if (message.getAction() == Utils.Commandes.CHOISIR_CARTE) {
 
                     vueutilisercartes = new VueCarteSpeciale(joueurcourant);
@@ -578,7 +557,7 @@ public class Controleur implements Observer {
 
         }
 
-    }
+    
 
     private boolean pasSeulSurCase(Aventurier a) {
 
@@ -736,6 +715,7 @@ public class Controleur implements Observer {
                 joueurcourant.setPtsaction(joueurcourant.getPtsaction() + 1);
                 ((Ingenieur) joueurcourant).setNbAsseche(0);
                 System.out.println("PA"+joueurcourant.getPtsaction());
+                vplateau.setDerniereaction(Commandes.ASSECHER);
 
             } else {
                 System.out.println("Assechement impossible");
@@ -773,8 +753,7 @@ public class Controleur implements Observer {
 
     }
 
-    public Tuile
-            chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
+    public Tuile chercherTuile(String nomtuile, ArrayList<Tuile> tuilesatteignable) {
         int i = 0;
         Tuile tvoulu = null;
 
@@ -791,8 +770,7 @@ public class Controleur implements Observer {
 
     }
 
-    public Aventurier
-            chercherAventurier(String nomjoueurcherche) {
+    public Aventurier chercherAventurier(String nomjoueurcherche) {
         int i = 0;
         Aventurier jvoulu = null;
 
