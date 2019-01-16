@@ -53,9 +53,9 @@ public class Controleur implements Observer {
     private ArrayList<CarteInondation> defausseInondation;
     private ArrayList<CarteTirage> piocheTirage;
     private ArrayList<CarteTirage> defausseTirage;
-    private VueAventurier vueaventurier;
+//    private VueAventurier vueaventurier;
     private VueInscription vueinsc;
-    private VueNiveau vueniv;
+//    private VueNiveau vueniv;
     private VuePlateau vplateau;
     private VueDonCarte vdon;
     private int compteurtour = 0;
@@ -146,9 +146,20 @@ public class Controleur implements Observer {
         tresorsrecupérés = new ArrayList();
 
         //Création de la vue niveau
-        vueniv = new VueNiveau(1);
+//        vueniv = new VueNiveau(1);
         //Initialisation de la grille
         grille.setTableau(lestuiles);
+        
+        //Lancement du jeu      
+        joueurs = new ArrayList();
+
+        vueinsc = new VueInscription();
+        vueinsc.addObserver(this);
+        vueinsc.afficher();
+
+        //Création du plateau
+        this.vplateau = new VuePlateau(this.grille, joueurs);
+        vplateau.addObserver(this);
 
         //Création de la liste des cartes inondations, en fonction des tuiles inondées
         setpiocheInondation(lestuiles);
@@ -160,16 +171,7 @@ public class Controleur implements Observer {
         //Création de la liste des cartes tirages
         setPiocheTirage();
 
-        //Lancement du jeu      
-        joueurs = new ArrayList();
-
-        vueinsc = new VueInscription();
-        vueinsc.addObserver(this);
-        vueinsc.afficher();
-
-        //Création du plateau
-        this.vplateau = new VuePlateau(this.grille);
-        vplateau.addObserver(this);
+        
 
     }
 
@@ -188,16 +190,17 @@ public class Controleur implements Observer {
                 //Distribution des cartes
                 DistributionDébut();
 
-                vueaventurier = new VueAventurier(joueurcourant);
-                vueaventurier.addObserver(this);
-                vplateau.raffraichir(grille);
+//                vueaventurier = new VueAventurier(joueurcourant);
+//                vueaventurier.addObserver(this);
+                vplateau.raffraichir(grille,joueurs);
+                this.grisebouton(joueurcourant.getPtsaction());
                 vplateau.afficher();
                 afficherJoueurs();
             }
         }
         if (arg1 instanceof Message) {
             Message message = (Message) arg1;
-            if ((arg0 instanceof VueAventurier) && message.getAction() == Commandes.BOUGER) {
+            if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEMANDE_BOUGER) {
 
                 vplateau.setDerniereaction(Commandes.BOUGER);
 
@@ -210,6 +213,8 @@ public class Controleur implements Observer {
                     if (((Pilote) joueurcourant).getNbvol() == 1) {
                         if (Utils.poserQuestion("Voulez-vous utiliser votre vol ?")) {
                             tuilesatteignables = ((Pilote) joueurcourant).seDeplacerVol(grille);
+                        }else{
+                            tuilesatteignables = joueurcourant.seDeplacer(grille);
                         }
                     } else {
                         tuilesatteignables = joueurcourant.seDeplacer(grille);
@@ -240,20 +245,25 @@ public class Controleur implements Observer {
                     tuilesatteignables.get(x).addAventurierTuile(joueurcourant);
                     joueurcourant.setTuileCourante(tuilesatteignables.get(x));
                     joueurcourant.enleveUneAction();
-                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
+//                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
                     System.out.println("Action effectuée : Nouvelle tuile :" + joueurcourant.getTuileCourante().getNom());
-                    vueaventurier.rafraichirPositon(joueurcourant);
-                    vplateau.raffraichir(grille);
+//                    vueaventurier.rafraichirPositon(joueurcourant);
+                    
                 } else {
                     System.out.println("la case n'est pas valide");
                 }
+                
                 if (message.getAction() == Commandes.BOUGER_AVEC_HELICO || message.getAction() == Commandes.DEPLACEMENT_NOYADE) {
                     joueurcourant.setPtsaction(joueurcourant.getPtsaction() + 1);
                     joueurcourant = this.getJoueurs().get(compteurtour);
 
                 }
+                
+                vplateau.raffraichir(this.grille,joueurs);
+                grisebouton(joueurcourant.getPtsaction());
+                
               // GESTION DE LA RECUPERATION D UN TRESOR
-            } else if ((arg0 instanceof VueAventurier) && message.getAction() == Commandes.RECUPERER_TRESOR) {
+            } else if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.RECUPERER_TRESOR) {
 
                 int i = 0;
                 while (i < joueurs.size() && !(joueurs.get(i).getNom().equals(message.getNomJ()))) {
@@ -291,8 +301,8 @@ public class Controleur implements Observer {
                     // On ajoute à la liste des trésors récupérés le trésor concerné, et on enlève de la tuile le trésor
                     tresorsrecupérés.add(joueurs.get(i).getTuileCourante().getTresor());
                     joueurs.get(i).enleveUneAction();
-                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
-                    vueaventurier.rafraichirMains(joueurs.get(i));
+                    vplateau.raffraichir(grille,joueurs);
+                    grisebouton(joueurcourant.getPtsaction());
 
                     for (int x = 0; x < 6; x++) {
                         for (int y = 0; y < 6; y++) {
@@ -306,14 +316,15 @@ public class Controleur implements Observer {
 
                     Utils.afficherInformation("Trésor récupéré:" + joueurs.get(i).getTuileCourante().getTresor().name());
                     joueurs.get(i).getTuileCourante().setTresor(null);
-                    vplateau.raffraichir(grille);
+                    vplateau.raffraichir(this.grille,joueurs);
+                    grisebouton(joueurcourant.getPtsaction());
 
                 } else {
                     System.out.println("nb carte trésor inferieur a 4"); //trace
 
                 }
 
-            } else if ((arg0 instanceof VueAventurier) && message.getAction() == Commandes.ASSECHER) {
+            } else if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEMANDE_ASSECHER) {
 
                 vplateau.setDerniereaction(Commandes.ASSECHER);
 
@@ -346,9 +357,10 @@ public class Controleur implements Observer {
                     System.out.println(tuilesassechables.get(i).getNom());
                     joueurcourant.assechertuile(tuilesassechables.get(i));
 
-                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
+                    
                     System.out.println("Action effectuée : tuile assechee :" + tuilesassechables.get(i).getNom());
-                    vplateau.raffraichir(this.grille);
+                    vplateau.raffraichir(this.grille,joueurs);
+                    grisebouton(joueurcourant.getPtsaction());
 
                     vplateau.setDerniereaction(Utils.Commandes.NULL);
 
@@ -361,7 +373,7 @@ public class Controleur implements Observer {
                     System.out.println("la case n'est pas valide");
                 }
 
-            } else if ((arg0 instanceof VueAventurier) && (message.getAction() == Commandes.DEPLACER)) {
+            } else if ((arg0 instanceof VuePlateau) && (message.getAction() == Commandes.DEPLACER)) {
 
                 int nbActions = joueurcourant.getPtsaction();
                 Grille g = this.getGrille();
@@ -393,19 +405,19 @@ public class Controleur implements Observer {
                 tirerCarteInondation();
                 gererNoyade();
                 
-                vplateau.raffraichir(this.grille);
+                
                 tirerCartetirage(joueurcourant);
                 compteurtour++;
                 if (compteurtour < joueurs.size()) {
-                    vueaventurier.close();
-                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
-                    vueaventurier.addObserver(this);
+//                    vueaventurier.close();
+//                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
+//                    vueaventurier.addObserver(this);
 
                     joueurcourant = this.getJoueurs().get(compteurtour);
 //                    défausse carte
                     defausse();
                 } else {
-                    vueaventurier.close();
+//                    vueaventurier.close();
                     System.out.println("Le tour est terminé");
                     compteurtour = 0;
 
@@ -416,20 +428,25 @@ public class Controleur implements Observer {
                         }
                     }
 
-                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
-                    vueaventurier.addObserver(this);
+//                    vueaventurier = new VueAventurier(this.getJoueurs().get(compteurtour));
+//                    vueaventurier.addObserver(this);
 
                     joueurcourant = this.getJoueurs().get(compteurtour);
 //                    défausse carte
                     defausse();
                 }
+                
+                vplateau.raffraichir(this.grille,joueurs);
+                grisebouton(joueurcourant.getPtsaction());
+                
             // ACTION EFFECTUER LORS DE defausse()
             } else if (message.getAction() == Commandes.DEFAUSSE) {
 
                 System.out.println("suppr carte");
                 defausseTirage.add(joueurcourant.getMains().get(message.getNbcarte()));
                 joueurcourant.retirerCarte(message.getNbcarte());
-                vueaventurier.rafraichirMains(joueurcourant);
+                vplateau.raffraichir(this.grille,joueurs);
+                grisebouton(joueurcourant.getPtsaction());
 
                 if (joueurcourant.getMains().size() > 5) {
                     vdefausse.close();
@@ -474,7 +491,8 @@ public class Controleur implements Observer {
                     if ((joueurutilisateurdelacarte.getMains().get(numindice) instanceof CarteHelicoptere) && nbcartesenlevees == 0) {
                         defausseTirage.add(joueurcourant.getMains().get(numindice));
                         joueurutilisateurdelacarte.retirerCarte(numindice);
-                        vueaventurier.rafraichirMains(joueurutilisateurdelacarte);
+                        vplateau.raffraichir(this.grille,joueurs);
+                        grisebouton(joueurcourant.getPtsaction());
                         nbcartesenlevees++;
                     }
                 }
@@ -492,12 +510,13 @@ public class Controleur implements Observer {
                     if ((joueurcourant.getMains().get(numindice) instanceof CarteSacDeSable) && nbcartesenlevees == 0) {
                         defausseTirage.add(joueurcourant.getMains().get(numindice));
                         joueurcourant.retirerCarte(numindice);
-                        vueaventurier.rafraichirMains(joueurcourant);
+                        vplateau.raffraichir(this.grille,joueurs);
+                        grisebouton(joueurcourant.getPtsaction());
                         nbcartesenlevees++;
                     }
                 }
             // DON D UNE CARTE TRESOR 
-            } else if ((arg0 instanceof VueAventurier) && (message.getAction() == Commandes.DONNER)) {
+            } else if ((arg0 instanceof VuePlateau) && (message.getAction() == Commandes.DONNER)) {
                 
                 if(pasSeulSurCase(joueurcourant) || (joueurcourant instanceof Messager)){
                     if((joueurcourant.pasDeTresor())){
@@ -520,11 +539,11 @@ public class Controleur implements Observer {
                 }
                 Utils.afficherInformation("La carte :" + joueurcourant.getMains().get(message.getNbcarte()).toString() + " donner a " + message.getNomJ());
                 joueurcourant.enleveUneAction();
-                grisebouton(vueaventurier, joueurcourant.getPtsaction());
                 Aventurier receveur = joueurs.get(i);
                 receveur.getMains().add(joueurcourant.getMains().get(message.getNbcarte()));
                 joueurcourant.getMains().remove(message.getNbcarte());
-                vueaventurier.rafraichirMains(joueurcourant);
+                vplateau.raffraichir(this.grille,joueurs);
+                grisebouton(joueurcourant.getPtsaction());
                 vdon.close();
 
             } else if ((arg0 instanceof VueDonCarte) && (message.getAction() == Commandes.DONNER)) {
@@ -537,10 +556,10 @@ public class Controleur implements Observer {
                     Utils.afficherInformation("La carte :" + joueurcourant.getMains().get(message.getNbcarte()).toString() + " donner a " + message.getNomJ());
                     Aventurier receveur = joueurs.get(i);
                     receveur.getMains().add(joueurcourant.getMains().get(message.getNbcarte()));
-                    joueurcourant.enleveUneAction();
-                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
+                    joueurcourant.enleveUneAction();                    
                     joueurcourant.getMains().remove(message.getNbcarte());
-                    vueaventurier.rafraichirMains(joueurcourant);
+                    vplateau.raffraichir(this.grille,joueurs);
+                    grisebouton(joueurcourant.getPtsaction());
                     vdon.close();
                 }
 
@@ -586,9 +605,9 @@ public class Controleur implements Observer {
 
         if (tousTresorsObtenus() && tousSurHeliport() && unJoueurPossedeHelico()) {
             Utils.afficherInformation("VOUS AVEZ GAGNEZ !!!");
-            vueaventurier.close();
+           
             vplateau.close();
-            vueniv.close();
+            
         }
 
     }
@@ -675,11 +694,7 @@ public class Controleur implements Observer {
 
         if (TresorsCoulee() || hommeAlaMer() || heliportCoulee()) {
             Utils.afficherInformation("VOUS AVEZ PERDU !!!");
-            vueaventurier
-                    .close();
-
-            vueniv
-                    .close();
+            
 
         }
 
@@ -787,21 +802,41 @@ public class Controleur implements Observer {
 
         }
     }
+    
+    public VueAventurier getVueAv(){
+        int i =0;
+        while (i < joueurs.size() && joueurs.get(i).getNom().equals(joueurcourant.getNom()) == false) {
+            i++;
+        }
+        
+        if(i==0){
+            return vplateau.getVuej1();
+        }else if(i==1){
+            return vplateau.getVuej2();
+        }else if(i==2){
+            return vplateau.getVuej3();
+        }else{
+            return vplateau.getVuej4();
+        }
+        
+    }
 
-    public void grisebouton(Observable av, int nbaction) {
+    public void grisebouton(int nbaction) {
+        
+        getVueAv().degriserActions();
 
         if (nbaction == 0) {
 
-            ((VueAventurier) av).getBtnAssecher().setEnabled(false);
+            getVueAv().getBtnAssecher().setEnabled(false);
 
-            ((VueAventurier) av).getBtnBouger().setEnabled(false);
+            getVueAv().getBtnBouger().setEnabled(false);
 
-            ((VueAventurier) av).getBtnAutreAction().setEnabled(false);
+            getVueAv().getBtnAutreAction().setEnabled(false);
 
-            ((VueAventurier) av).getBtnRecupererTresor().setEnabled(false);
+            getVueAv().getBtnRecupererTresor().setEnabled(false);
             
-            if(((VueAventurier) av).getBtnDeplacerJoueur()!=null){
-            ((VueAventurier) av).getBtnDeplacerJoueur().setEnabled(false);
+            if(getVueAv().getBtnDeplacerJoueur()!=null){
+            getVueAv().getBtnDeplacerJoueur().setEnabled(false);
             }
 
         }
@@ -1047,10 +1082,10 @@ public class Controleur implements Observer {
     }
 
     public void tirerCarteInondation() {
-        String[] listeInnon = new String[vueniv.getNiveau()];
+        String[] listeInnon = new String[vplateau.getVueniveau().getNiveau()];
 
         for (int x = 0; x
-                < vueniv.getNiveau(); x++) {
+                < vplateau.getVueniveau().getNiveau(); x++) {
 
             if (piocheInondation.isEmpty()) {
                 melangeDefausseCarteInondation();
@@ -1073,7 +1108,7 @@ public class Controleur implements Observer {
         String s = "";
 
         for (int x = 0; x
-                < vueniv.getNiveau(); x++) {
+                < vplateau.getVueniveau().getNiveau(); x++) {
             s = s + listeInnon[x] + ",";
 
         }
@@ -1087,7 +1122,7 @@ public class Controleur implements Observer {
     public void tireCarteMonteeDesEaux(int i) {
 
         // On augmente le niveau de l'eau
-        this.vueniv.setNiveau(vueniv.getNiveau() + 1);
+        this.vplateau.getVueniveau().setNiveau(vplateau.getVueniveau().getNiveau() + 1);
         Collections
                 .shuffle(this.getDefausseInondation());
         ArrayList<CarteInondation> copie = new ArrayList();
