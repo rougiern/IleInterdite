@@ -31,8 +31,11 @@ import ileinterditeproj.CarteSacDeSable;
 import ileinterditeproj.CarteMonteedesEaux;
 import ileinterditeproj.CarteHelicoptere;
 import ileinterditeproj.CarteTresor;
+import ileinterditeproj.Parameters;
 import ileinterditeproj.Utils;
+import java.awt.Image;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
 
 /**
  *
@@ -49,13 +52,16 @@ public class VueCarteSpeciale extends Observable {
     public VueCarteSpeciale(Aventurier a) {
 
         this.window = new JFrame();
-        window.setSize(500, 200);
+        window.setSize(450, 425);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width / 2 - window.getSize().width / 2, dim.height / 2 - window.getSize().height / 2);
         //le titre = nom du joueur 
         window.setTitle("Vos cartes speciales");
+        JPanel panelPrincipale = new JPanel(new BorderLayout());
+        
         mainPanel = new JPanel(new GridLayout(1, 2));
-        window.add(mainPanel);
+        window.add(panelPrincipale);
+        panelPrincipale.add(mainPanel, BorderLayout.CENTER);
 
         int nbcarteSac = 0;
         int nbcarteHelico = 0;
@@ -69,8 +75,24 @@ public class VueCarteSpeciale extends Observable {
                 }
             }
         }
-
-        btnCartesacDesable = new JButton("Carte sac de sable(" + nbcarteSac + ")");
+        JPanel panelhead = new JPanel(new GridLayout(1,2));
+        JLabel labelcarteSac = new JLabel("Carte sac de sable(" + nbcarteSac + ")");
+        panelhead.add(labelcarteSac);
+        labelcarteSac.setBorder(new MatteBorder(2, 2, 2, 2,a.getPion().getCouleur()));
+        
+        JLabel labelcarteHelico = new JLabel("Carte Helicoptère(" + nbcarteHelico + ")");
+        panelhead.add(labelcarteHelico);
+        labelcarteHelico.setBorder(new MatteBorder(2, 2, 2, 2,a.getPion().getCouleur()));
+        panelPrincipale.add(panelhead, BorderLayout.NORTH);
+                
+                
+                
+                
+                
+        btnCartesacDesable = new JButton("");
+        
+        ImageIcon icone = new ImageIcon(new ImageIcon(Parameters.CARTES + "SacsDeSable.png").getImage().getScaledInstance(200, 350, Image.SCALE_DEFAULT));
+        btnCartesacDesable.setIcon(icone);
         btnCartesacDesable.setBackground(a.getPion().getCouleur());
         mainPanel.add(btnCartesacDesable);
         if (nbcarteSac == 0) {
@@ -85,8 +107,10 @@ public class VueCarteSpeciale extends Observable {
             }
         });
 
-        btnCarteHelico = new JButton("Carte Helicoptère(" + nbcarteHelico + ")");
+        btnCarteHelico = new JButton("");
+        ImageIcon icone1 = new ImageIcon(new ImageIcon(Parameters.CARTES + "Helicoptere.png").getImage().getScaledInstance(200, 350, Image.SCALE_DEFAULT));
         btnCarteHelico.setBackground(a.getPion().getCouleur());
+        btnCarteHelico.setIcon(icone1);
         mainPanel.add(btnCarteHelico);
         if (nbcarteHelico == 0) {
             btnCarteHelico.setEnabled(false);

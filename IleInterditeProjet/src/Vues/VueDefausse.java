@@ -180,6 +180,10 @@ public class VueDefausse extends Observable {
         this.window.setVisible(true);
     }
     
+    public boolean estOuverte(){
+        return this.window.isVisible() ;
+    }
+    
     public void cacher(){
         this.window.setVisible(false);
         

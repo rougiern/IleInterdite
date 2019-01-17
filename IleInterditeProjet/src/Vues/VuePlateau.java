@@ -13,12 +13,14 @@ import java.awt.FlowLayout;
 import java.awt.GridBagConstraints;
 import java.awt.GridBagLayout;
 import java.awt.GridLayout;
+import java.awt.Image;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
@@ -40,7 +42,7 @@ public class VuePlateau extends Observable {
     private int nb;
     private JPanel paneljoueurgauche;
     private JPanel paneljoueurdroite;
-//    private JPanel paneljoueurdroite;
+    private JPanel paneltresor;
     private JPanel mainpanel;
     private JPanel panelplateau;
     private VueNiveau vueniveau;
@@ -50,7 +52,7 @@ public class VuePlateau extends Observable {
     private VueAventurier vuej3;
     private VueAventurier vuej4;
 
-    public VuePlateau(Grille g, ArrayList<Aventurier> av) {
+    public VuePlateau(Grille g, ArrayList<Aventurier> av, ArrayList<Utils.Tresor> tresorrecup) {
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
 
         window = new JFrame("Plateau de jeu");
@@ -65,25 +67,26 @@ public class VuePlateau extends Observable {
         mainpanel = new JPanel(new BorderLayout());
 
         paneljoueurgauche = new JPanel(new GridBagLayout());
-        paneljoueurdroite = new JPanel(new GridBagLayout());
+        paneljoueurdroite = new JPanel(new BorderLayout());
+        paneltresor=new JPanel(new GridBagLayout());
 
         panelplateau = new JPanel(new BorderLayout());
-        mainpanel.add(paneljoueurdroite, BorderLayout.WEST);
-        mainpanel.add(paneljoueurgauche, BorderLayout.EAST);
+        mainpanel.add(paneljoueurgauche, BorderLayout.WEST);
+        mainpanel.add(paneljoueurdroite, BorderLayout.EAST);
         panelplateau.add(panelgrille, BorderLayout.CENTER);
-
         mainpanel.add(panelplateau, BorderLayout.CENTER);
         window.add(mainpanel);
         panelgrille.setBackground(Parameters.PLATEAU_BG);
         vueniveau.setBackground(Parameters.PLATEAU_BG);
         paneljoueurdroite.setBackground(Parameters.PLATEAU_BG);
         paneljoueurgauche.setBackground(Parameters.PLATEAU_BG);
+        paneltresor.setBackground(Parameters.PLATEAU_BG);
 
-        raffraichir(g, av);
+        raffraichir(g, av, tresorrecup);
 
     }
 
-    public void raffraichir(Grille g, ArrayList<Aventurier> av) {
+    public void raffraichir(Grille g, ArrayList<Aventurier> av, ArrayList<Utils.Tresor> tresorrecup) {
 
         paneljoueurgauche.removeAll();
         paneljoueurdroite.removeAll();
@@ -102,7 +105,7 @@ public class VuePlateau extends Observable {
             paneljoueurgauche.add(getVuej1(), constraints);
 
             constraints.gridx = 0;
-            constraints.gridy = -1;
+            constraints.gridy = 1;
             vuej2 = new VueAventurier(av.get(1));
             setBouton(getVuej2(), av.get(1));
             paneljoueurgauche.add(getVuej2(), constraints);
@@ -110,28 +113,49 @@ public class VuePlateau extends Observable {
             if (av.size() > 2) {
 
                 constraints.gridx = 0;
-                constraints.gridy = 0;
+                constraints.gridy = 2;
                 vuej3 = new VueAventurier(av.get(2));
                 setBouton(getVuej3(), av.get(2));
-                paneljoueurdroite.add(getVuej3(), constraints);
+                paneljoueurgauche.add(getVuej3(), constraints);
 
             } else {
                 vuej3 = null;
-                paneljoueurdroite.add(new JLabel(" "));
 
             }
 
             if (av.size() > 3) {
-
-                constraints.gridx = 0;
-                constraints.gridy = -1;
+                
                 vuej4 = new VueAventurier(av.get(3));
                 setBouton(getVuej4(), av.get(3));
-                paneljoueurdroite.add(getVuej4(), constraints);
+                paneljoueurdroite.add(getVuej4(), BorderLayout.NORTH);
             } else {
                 vuej4 = null;
-                paneljoueurdroite.add(new JLabel(" "));
+            }            
+            
+            paneljoueurdroite.add(vueniveau,BorderLayout.CENTER);
+            
+            if(!(tresorrecup.isEmpty())){
+                for(Utils.Tresor t : tresorrecup){
+                    if(t==Utils.Tresor.PIERRE){
+                        constraints.gridx = 0;
+                        constraints.gridy = 0;
+                    }else if(t==Utils.Tresor.ZEPHYR){
+                        constraints.gridx = 1;
+                        constraints.gridy = 0;
+                    }else if(t==Utils.Tresor.CRISTAL){
+                        constraints.gridx = 2;
+                        constraints.gridy = 0;
+                    }else if(t==Utils.Tresor.CALICE){
+                        constraints.gridx = 3;
+                        constraints.gridy = 0;
+                    }
+                    
+                    JLabel icone = new JLabel(new ImageIcon(new ImageIcon(t.getPathPicture()).getImage().getScaledInstance(70, 120, Image.SCALE_DEFAULT)));
+                    paneltresor.add(icone, constraints);
+                }
             }
+            
+            paneljoueurdroite.add(paneltresor,BorderLayout.SOUTH);
 
             this.griserAction(av);
         }
