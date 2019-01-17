@@ -5,6 +5,7 @@ import LesJoueurs.Aventurier;
 import ileinterditeproj.Utils;
 import ileinterditeproj.Grille;
 import ileinterditeproj.Parameters;
+import ileinterditeproj.Tuile;
 import ileinterditeproj.Utils.Commandes;
 import java.awt.BorderLayout;
 import java.awt.Color;
@@ -20,6 +21,7 @@ import java.awt.event.ActionListener;
 import java.util.ArrayList;
 import java.util.Observable;
 import java.util.Observer;
+import javax.swing.BorderFactory;
 import javax.swing.ImageIcon;
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -27,6 +29,7 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 import javax.swing.SwingConstants;
+import javax.swing.border.Border;
 
 /**
  *
@@ -46,6 +49,7 @@ public class VuePlateau extends Observable {
     private JPanel mainpanel;
     private JPanel panelplateau;
     private VueNiveau vueniveau;
+    private ArrayList<VueTuile> tuiles;
 
     private VueAventurier vuej1;
     private VueAventurier vuej2;
@@ -81,6 +85,7 @@ public class VuePlateau extends Observable {
         paneljoueurdroite.setBackground(Parameters.PLATEAU_BG);
         paneljoueurgauche.setBackground(Parameters.PLATEAU_BG);
         paneltresor.setBackground(Parameters.PLATEAU_BG);
+        tuiles = new ArrayList<>();
 
         raffraichir(g, av, tresorrecup);
 
@@ -164,6 +169,7 @@ public class VuePlateau extends Observable {
             for (int y = 0; y < 6; y++) {
                 if (!(g.getTableau()[x][y].getNom().equals("null"))) {
                     VueTuile vT = new VueTuile(g.getTableau()[x][y]);
+                    tuiles.add(vT);
 
                     JPanel panelcase = new JPanel(new BorderLayout());
                     panelcase.setPreferredSize(new Dimension(162, 150));
@@ -353,6 +359,20 @@ public class VuePlateau extends Observable {
             }
         }
 
+    }
+    
+    public void delimiterTuilesAtteignables(ArrayList<Tuile> tuilesatteignables, Aventurier a) {
+
+        for (Tuile tuilesatt: tuilesatteignables) {
+            for (VueTuile tuiles : this.tuiles) {
+                if (tuilesatt == tuiles.getTuile()) {
+                    tuiles.getBouton().setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(),3));
+                }
+            }
+        }
+        
+        tuiles.clear();
+        
     }
 
     /**
