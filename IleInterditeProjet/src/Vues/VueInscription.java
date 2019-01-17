@@ -51,17 +51,19 @@ public class VueInscription extends Observable {
         window.setSize(600, 300);
         Dimension dim = Toolkit.getDefaultToolkit().getScreenSize();
         window.setLocation(dim.width / 2 - window.getSize().width / 2, dim.height / 2 - window.getSize().height / 2);
-        window.setBackground(Color.ORANGE);
         mainPanel = new JPanel(new BorderLayout());
         mainPanel.setOpaque(false);
         window.add(mainPanel);
         
         panelhaut = new JPanel();
         
-        panelhaut.add(new JLabel("~ Inscription des joueurs ~"));
-        panelhaut.setBackground(Color.ORANGE);
+        JLabel titre = new JLabel("~ Inscription des joueurs ~");
+        titre.setFont(new Font("Arial", Font.BOLD, 20));
+        panelhaut.add(titre);
+        panelhaut.setBackground(Color.orange);
         panelhaut.setOpaque(true);
         mainPanel.add(panelhaut, BorderLayout.NORTH);
+        mainPanel.setBackground(Color.lightGray);
 
         panelbas = new JPanel(new GridLayout(1, 3));
         panelbas.add(new JLabel(""));
@@ -73,13 +75,14 @@ public class VueInscription extends Observable {
             master = ImageIO.read(new File(Parameters.ICONS +"iconDoneOrange.jpg"));
             Image scaled = master.getScaledInstance(28, 28, java.awt.Image.SCALE_SMOOTH);
             btnvalider.setIcon(new ImageIcon(scaled));
+            btnvalider.setPreferredSize(new Dimension(100,50));
             btnvalider.setBackground(Color.WHITE);
             } catch (IOException ex) {
             System.out.println("Erreur de lecture de de l'image");
             }
 
         panelbas.add(new JLabel(""));
-        panelbas.setBackground(Color.ORANGE);
+        panelbas.setBackground(Color.orange);
         panelbas.setOpaque(true);
         mainPanel.add(panelbas, BorderLayout.SOUTH);
 
@@ -92,18 +95,20 @@ public class VueInscription extends Observable {
         panelmilieu = new JPanel(new GridLayout(3, 2));
         JLabel casevide = new JLabel("");
         casevide.setOpaque(true);
-        casevide.setBackground(Color.ORANGE);
+        casevide.setBackground(Color.lightGray);
         for (int i = 1; i <= 6; i++) {
 
             if (i == 3) {
                 JLabel demande = new JLabel("Combien de joueurs participent ?", SwingConstants.CENTER);
+                demande.setFont(new Font("Arial", Font.ITALIC, 18));
                 demande.setOpaque(true);
-                demande.setBackground(Color.ORANGE);
+                demande.setBackground(Color.lightGray);
                 panelmilieu.add(demande);
             } else if (i == 4) {
                 l = new JComboBox(nb);
+                l.setFont(new Font("Arial", Font.BOLD, 18));
                 panelmilieu.add(l);
-                l.setBackground(Color.ORANGE);
+                l.setBackground(Color.lightGray);
             } else {
                 panelmilieu.add(casevide);
             }
@@ -132,18 +137,20 @@ public class VueInscription extends Observable {
         btnvalider.removeAll();
         panelmilieu.removeAll();
         panelmilieu.setLayout(new GridLayout(nbj, 2));
+        panelmilieu.setBackground(Color.lightGray);
         int nbc = 0;
 
         for (int k = 1; k <= (nbj * 2); k++) {
 
             if (k % 2 != 0) {
-                JLabel name = new JLabel("Nom : ", SwingConstants.CENTER);
-                name.setBackground(Color.ORANGE);
+                JLabel name = new JLabel("Nom du joueur :   ", SwingConstants.CENTER);
+                name.setFont(new Font("Arial", Font.PLAIN, 18));
                 name.setOpaque(true);
                 panelmilieu.add(name);
             } else {
                 champs[nbc] = new JTextField();
-                champs[nbc].setBackground(Color.yellow);
+                champs[nbc].setFont(new Font("Arial", Font.PLAIN, 18));
+                champs[nbc].setBackground(Color.WHITE);
                 panelmilieu.add(champs[nbc]);
                 nbc++;
             }
@@ -159,6 +166,7 @@ public class VueInscription extends Observable {
         panelbas.add(new JLabel(""));
         panelbas.setOpaque(false);
         btnvalider = new JButton("Inscrire");
+        btnvalider.setPreferredSize(new Dimension(100,50));
             BufferedImage master1;            
             try {
             master1 = ImageIO.read(new File(Parameters.ICONS +"plume-orange.png"));
