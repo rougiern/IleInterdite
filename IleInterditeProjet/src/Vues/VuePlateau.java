@@ -149,7 +149,7 @@ public class VuePlateau extends Observable {
                     VueTuile vT = new VueTuile(g.getTableau()[x][y]);
                     
                     JPanel panelcase = new JPanel(new BorderLayout());
-                    panelcase.setPreferredSize(new Dimension(120, 150));
+                    panelcase.setPreferredSize(new Dimension(162, 150));
                     panelcase.add(vT, BorderLayout.CENTER);
                     
                     paneljoueur = new JPanel(new GridLayout(1, 4));

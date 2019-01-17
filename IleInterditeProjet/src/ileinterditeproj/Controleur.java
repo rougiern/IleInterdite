@@ -19,6 +19,7 @@ import LesJoueurs.Messager;
 import LesJoueurs.Navigateur;
 import LesJoueurs.Pilote;
 import LesJoueurs.Plongeur;
+import Vues.VueAcceuil;
 import Vues.VueAventurier;
 import Vues.VueCarteSpeciale;
 import Vues.VueDefausse;
@@ -31,7 +32,9 @@ import ileinterditeproj.Grille;
 import ileinterditeproj.Message;
 import ileinterditeproj.Tuile;
 import ileinterditeproj.Utils.Commandes;
+import java.awt.Desktop;
 import static java.lang.Math.random;
+import java.net.URL;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
@@ -56,6 +59,7 @@ public class Controleur implements Observer {
 //    private VueAventurier vueaventurier;
     private VueInscription vueinsc;
 //    private VueNiveau vueniv;
+    private VueAcceuil vueaccueil;
     private VuePlateau vplateau;
     private VueDonCarte vdon;
     private int compteurtour = 0;
@@ -154,9 +158,9 @@ public class Controleur implements Observer {
         //Lancement du jeu      
         joueurs = new ArrayList();
 
-        vueinsc = new VueInscription();
-        vueinsc.addObserver(this);
-        vueinsc.afficher();
+        vueaccueil = new VueAcceuil();
+        vueaccueil.addObserver(this);
+        vueaccueil.afficher();
 
         //Création du plateau
         this.vplateau = new VuePlateau(this.grille, joueurs);
@@ -175,7 +179,20 @@ public class Controleur implements Observer {
     public void update(Observable arg0, Object arg1) {
         if (arg1 instanceof MessageIni) {
             MessageIni message = (MessageIni) arg1;
-            if (message.getAction() == Action.NB_JOUEURS) {
+            if (message.getAction() == Action.COMMENCER_PARTIE) {
+                
+                 vueinsc = new VueInscription();
+                 vueinsc.addObserver(this);
+                 vueinsc.afficher();
+                 vueaccueil.close();
+
+            }
+            
+            else if(message.getAction() == Action.OUVRIR_PAGEWEB) {
+                openWebpage(message.getLien());
+            }
+            
+            else if (message.getAction() == Action.NB_JOUEURS) {
                 vueinsc.formulaire(message.getNbj());
             } else if (message.getAction() == Action.INSCRIRE_JOUEURS) {
                 AttribuerRole(message.getNoms());
@@ -1156,11 +1173,6 @@ public class Controleur implements Observer {
 
         // On augmente le niveau de l'eau
         this.vplateau.getVueniveau().setNiveau(vplateau.getVueniveau().getNiveau() + 1);
-        Collections.shuffle(this.getDefausseInondation());
-        ArrayList<CarteInondation> copie = new ArrayList();
-        copie.addAll(this.getDefausseInondation());
-        copie.addAll(piocheInondation);
-        piocheInondation= copie;
         // On défausse la carte Montée des eaux qui vient d'être tirée
 
         this.defausserCarteMonteedesEaux(i);
@@ -1176,8 +1188,10 @@ public class Controleur implements Observer {
 
     public void melangeDefausseCarteInondation() {
         Collections.shuffle(this.getDefausseInondation());
-        piocheInondation.addAll(this.getDefausseInondation());
-        defausseInondation.clear();
+        ArrayList<CarteInondation> copie = new ArrayList();
+        copie.addAll(this.getDefausseInondation());
+        copie.addAll(piocheInondation);
+        piocheInondation= copie;
 
     }
 
@@ -1212,4 +1226,13 @@ public class Controleur implements Observer {
 
     }
 
+    public static void openWebpage(String urlString){
+             try{
+                 Desktop.getDesktop().browse(new URL(urlString).toURI());
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+         }
+    
 }

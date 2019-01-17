@@ -11,5 +11,7 @@ package ileinterditeproj;
  */
 public enum Action {
     INSCRIRE_JOUEURS,
-    NB_JOUEURS;
+    NB_JOUEURS,
+    COMMENCER_PARTIE,
+    OUVRIR_PAGEWEB;
 }

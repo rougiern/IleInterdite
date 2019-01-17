@@ -63,7 +63,7 @@ public class VueAventurier extends JPanel {
 //        window.setTitle(a.getNom());
 
         
-        
+        this.setPreferredSize(new Dimension(340,325));
         panelHeader = new JPanel(new GridLayout(2,1));
         mainPanel = new JPanel(new BorderLayout());
                 
@@ -170,7 +170,7 @@ public class VueAventurier extends JPanel {
 //            
 //        });
         
-        this.btnUtiliserCarte = new JButton("Utiliser une carte spéciale") ;
+        this.btnUtiliserCarte = new JButton("Utiliser une carte") ;
         
 //        btnUtiliserCarte.addActionListener(new ActionListener() {
 //            @Override
@@ -192,7 +192,7 @@ public class VueAventurier extends JPanel {
         this.panelBoutons.add(btnUtiliserCarte);
         
         if(a instanceof Navigateur){
-            this.btnDeplacerJoueur = new JButton("Déplacer un Joueur") ;
+            this.btnDeplacerJoueur = new JButton("Bouger 1 Joueur") ;
         
 //        btnDeplacerJoueur.addActionListener(new ActionListener() {
 //            @Override
@@ -227,7 +227,7 @@ public class VueAventurier extends JPanel {
 
         this.panelFooter = new JPanel(new GridLayout(4,1));
         panelFooter.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
-        if (a.getMains().size() != 0 ){
+        if (!(a.getMains().isEmpty())){
             for (CarteTirage carteTirage : a.getMains())
                 if (carteTirage instanceof CarteSacDeSable){
                     nbcarteSacDeSable++;
@@ -240,7 +240,7 @@ public class VueAventurier extends JPanel {
                     nbcarteTresor++;
                     les_tresors.add((CarteTresor) carteTirage);
                 }    
-                if (les_tresors.size() !=0){
+                if (!(les_tresors.isEmpty())){
                     for (CarteTresor carteTresor :les_tresors){
                         if (carteTresor.getTypeTresor() == Utils.Tresor.PIERRE){
                             nbcarteTresorPierre++;
