@@ -50,7 +50,7 @@ public class VueDefausse extends Observable {
     private JComboBox l;
     private JButton btndefausse;
 
-    public VueDefausse(ArrayList<CarteTirage> mains) {
+    public VueDefausse(ArrayList<CarteTirage> mains, String nomjoueur) {
 
         window = new JFrame("Défausser une carte");
         window.setDefaultCloseOperation(javax.swing.JFrame.EXIT_ON_CLOSE);
@@ -62,7 +62,7 @@ public class VueDefausse extends Observable {
         window.add(mainPanel);
 
         panelhaut = new JPanel();
-        panelhaut.add(new JLabel("choisir une carte à défausser"));
+        panelhaut.add(new JLabel("choisir une carte à défausser : "+nomjoueur));
         mainPanel.add(panelhaut, BorderLayout.NORTH);
 
         panelbas = new JPanel(new GridLayout(1, 3));

@@ -208,6 +208,7 @@ public class Controleur implements Observer {
                 // noyade
                 // Déplacer le joueurCourant qui était en de se noyer
                 joueurcourant = gererNoyade();
+                griseAllbouton();
                 if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEPLACEMENT_NOYADE) {
                     int x = 0;
                     while (x < tuilesatteignables.size() && !(tuilesatteignables.get(x).getNom().equals(message.getTuile().getNom()))) {
@@ -225,12 +226,15 @@ public class Controleur implements Observer {
                         System.out.println("la case n'est pas valide");
                     }
                 }
+                gererNoyade();
+                joueurcourant = gererNoyadeMessage();
                 vplateau.raffraichir(this.grille, joueurs);
                // this.grisebouton(joueurcourant.getPtsaction());
                 // Vérifier si toujours un joueur entrain de se noyer
                 if (gererNoyade() == null) {
                     noyadeEnCours = false;
                     joueurcourant = joueurs.get(compteurtour);
+                    grisebouton(joueurcourant.getPtsaction());
                 }
             }
             if (!noyadeEnCours) {
@@ -710,12 +714,41 @@ public class Controleur implements Observer {
             if (a.getTuileCourante().getEtat() == Utils.EtatTuile.COULEE) {
                 ArrayList<Tuile> tuilesA = new ArrayList();
                 if (a instanceof Pilote) {
+                    ((Pilote) a).setNbvol(1);
                     tuilesA = ((Pilote) a).seDeplacerVol(grille);
+                    ((Pilote) a).setNbvol(0);
                 } else {
                     tuilesA = a.seDeplacer(grille);
                 }
                 if (!(tuilesA.isEmpty())) {
                     if(!(noyadeEnCours)){
+                        Utils.afficherInformation(a.getNom() + " doit se déplacer pour ne pas se noyer !");
+                    }
+                    tuilesatteignables = tuilesA;
+                    vplateau.setDerniereaction(Commandes.DEPLACEMENT_NOYADE);
+                    noyadeEnCours = true;
+                    return a;
+
+                }
+            }
+
+        }
+        return null;
+    }
+    
+    public Aventurier gererNoyadeMessage() {
+        for (Aventurier a : joueurs) {
+            if (a.getTuileCourante().getEtat() == Utils.EtatTuile.COULEE) {
+                ArrayList<Tuile> tuilesA = new ArrayList();
+                if (a instanceof Pilote) {
+                    ((Pilote) a).setNbvol(1);
+                    tuilesA = ((Pilote) a).seDeplacerVol(grille);
+                    ((Pilote) a).setNbvol(0);
+                } else {
+                    tuilesA = a.seDeplacer(grille);
+                }
+                if (!(tuilesA.isEmpty())) {
+                    if(noyadeEnCours){
                         Utils.afficherInformation(a.getNom() + " doit se déplacer pour ne pas se noyer !");
                     }
                     tuilesatteignables = tuilesA;
@@ -1171,7 +1204,7 @@ public class Controleur implements Observer {
     public void defausse() {
 
         if (joueurcourant.getMains().size() > 5) {
-            vdefausse = new VueDefausse(joueurcourant.getMains());
+            vdefausse = new VueDefausse(joueurcourant.getMains(), joueurcourant.getNom());
             vdefausse.addObserver(this);
             vdefausse.afficher();
 
