@@ -6,6 +6,7 @@
 package LesJoueurs;
 
 import ileinterditeproj.CarteHelicoptere;
+import ileinterditeproj.CarteSacDeSable;
 import ileinterditeproj.CarteTirage;
 import ileinterditeproj.CarteTresor;
 import ileinterditeproj.EtatTuile;
@@ -44,6 +45,19 @@ public abstract class Aventurier extends ObjetIdentifie{
        boolean cond = false ;
        int i =0;
        while(i<mains.size() && !(mains.get(i) instanceof CarteTresor)){
+           i++;  
+       }
+       if(i!=mains.size()){
+           cond = true ;
+       }
+       return cond ;
+       
+    }
+   
+   public boolean pasDeCarteAction() {
+       boolean cond = false ;
+       int i =0;
+       while(i<mains.size() && !(mains.get(i) instanceof CarteSacDeSable) && !(mains.get(i) instanceof CarteHelicoptere)){
            i++;  
        }
        if(i!=mains.size()){
