@@ -56,9 +56,7 @@ public class Controleur implements Observer {
     private ArrayList<CarteInondation> defausseInondation;
     private ArrayList<CarteTirage> piocheTirage;
     private ArrayList<CarteTirage> defausseTirage;
-//    private VueAventurier vueaventurier;
     private VueInscription vueinsc;
-//    private VueNiveau vueniv;
     private VueAcceuil vueaccueil;
     private VuePlateau vplateau;
     private VueDonCarte vdon;
@@ -150,8 +148,6 @@ public class Controleur implements Observer {
         defausseTirage = new ArrayList();
         tresorsrecupérés = new ArrayList();
 
-        //Création de la vue niveau
-//        vueniv = new VueNiveau(1);
         //Initialisation de la grille
         grille.setTableau(lestuiles);
 
@@ -165,6 +161,7 @@ public class Controleur implements Observer {
         //Création du plateau
         this.vplateau = new VuePlateau(this.grille, joueurs, tresorsrecupérés);
         vplateau.addObserver(this);
+        
 
         //Création de la liste des cartes inondations, en fonction des tuiles inondées
         setpiocheInondation(lestuiles);
@@ -206,9 +203,13 @@ public class Controleur implements Observer {
                 DistributionDébut();
                 vplateau.raffraichir(grille, joueurs, tresorsrecupérés);
                 vplateau.afficher();
+                
+                vplateau.getVueniveau().setNiveau(10);   // pour que tirercarteInondation tire 1 carta a chaque fois
                 for (int i = 0; i < 6; i++) {
                     tirerCarteInondation();
                 }
+                setDifficulte(message.getDifficulte());  //Initialise la difficulte donc la vue niveau 
+                
                 vplateau.raffraichir(grille, joueurs, tresorsrecupérés);
                 this.grisebouton(joueurcourant.getPtsaction());
                 afficherJoueurs();
@@ -393,6 +394,7 @@ public class Controleur implements Observer {
 
                         System.out.println(tuilesassechables.get(i).getNom());
                         vplateau.setDerniereaction(Commandes.ASSECHER);
+                        
                         if (message.getAction() == Commandes.ASSECHER_SAC_SABLE) {
                             joueurcourant.setPtsaction(joueurcourant.getPtsaction() + 1);
                             int nbcartesenlevees = 0;
@@ -637,6 +639,22 @@ public class Controleur implements Observer {
         }
 
     }
+    
+    public void setDifficulte(String dif){
+        //"novice", "normal", "élite","légendaire"
+        if(dif.equals("novice")){
+            vplateau.getVueniveau().setNiveau(1);
+        }else if (dif.equals("normal")){
+            vplateau.getVueniveau().setNiveau(2);
+        }else if (dif.equals("élite")){
+            vplateau.getVueniveau().setNiveau(3);
+        }else if (dif.equals("légendaire")){
+            vplateau.getVueniveau().setNiveau(4);
+        }else{
+            System.out.println("Erreur difficulté");
+        }
+        
+    }
 
     private boolean pasSeulSurCase(Aventurier a) {
 
@@ -715,7 +733,6 @@ public class Controleur implements Observer {
     }
 
     public boolean hommeAlaMer() {
-
         boolean cond = false;
         for (Aventurier a : joueurs) {
             if (a.getTuileCourante().getEtat() == Utils.EtatTuile.COULEE) {
@@ -786,24 +803,33 @@ public class Controleur implements Observer {
         }
         return null;
     }
+    
+    public boolean nivEau10(){
+        if(vplateau.getVueniveau().getNiveau()>=10){
+            Utils.afficherInformation(" NIVEAU D EAU >= 10 ");
+        }
+        return vplateau.getVueniveau().getNiveau()>=10 ;
+    }
+    
     public void defaite() {
 
-        if (TresorsCoulee() || hommeAlaMer() || heliportCoulee()) {
-            Utils.afficherInformation("VOUS AVEZ PERDU !!!");  
+        if (TresorsCoulee() || hommeAlaMer() || heliportCoulee() || nivEau10()) {
+            Utils.afficherInformation("VOUS AVEZ PERDU !!!"); 
+            vplateau.close();
         }
     }
 
     public void deuxiemeAssechementInge() {
 
         if (Utils.poserQuestion("Voulez-vous assécher une autre case ?")) {
+            int sauvegardepts = joueurcourant.getPtsaction();
             joueurcourant.setPtsaction(1);
             tuilesassechables = joueurcourant.assecher(grille);
             System.out.println(joueurcourant.getNom());
-            joueurcourant.setPtsaction(0);
+            joueurcourant.setPtsaction(sauvegardepts);
 
             if (joueurcourant.getTuileCourante().getEtat() == Utils.EtatTuile.INONDEE) {
                 tuilesassechables.add(joueurcourant.getTuileCourante());
-
             }
             affichernomtuiles(tuilesassechables);
             System.out.println("2iem affi inge");
@@ -1119,9 +1145,9 @@ public class Controleur implements Observer {
     }
 
     public void tirerCarteInondation() {
-        String[] listeInnon = new String[vplateau.getVueniveau().getNiveau()];
+        String[] listeInnon = new String[vplateau.getVueniveau().nbCarteAPiocher()];
 
-        for (int x = 0; x < vplateau.getVueniveau().getNiveau(); x++) {
+        for (int x = 0; x < vplateau.getVueniveau().nbCarteAPiocher(); x++) {
 
             if (piocheInondation.isEmpty()) {
                 melangeDefausseCarteInondation();
@@ -1145,7 +1171,7 @@ public class Controleur implements Observer {
         }
         String s = "";
 
-        for (int x = 0; x < vplateau.getVueniveau().getNiveau(); x++) {
+        for (int x = 0; x < vplateau.getVueniveau().nbCarteAPiocher(); x++) {
             s = s + listeInnon[x] + ",";
 
         }

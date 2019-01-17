@@ -22,6 +22,7 @@ public class MessageIni {
     private String[] noms;
     private int nbj;
     private String lien;
+    private String difficulte ;
     
     
     public MessageIni(Action a ,String[] n){
@@ -40,6 +41,13 @@ public class MessageIni {
         this.action=a;
         this.lien=n;
     }
+    
+    public MessageIni(Action action, String[] noms, String difficulte) {
+        this.action=action;
+        this.noms=noms;
+        this.difficulte=difficulte;
+    }
+
     
 
     /**
@@ -61,6 +69,13 @@ public class MessageIni {
      */
     public String getLien() {
         return lien;
+    }
+
+    /**
+     * @return the difficulte
+     */
+    public String getDifficulte() {
+        return difficulte;
     }
     
 
