@@ -101,19 +101,19 @@ public class Grille {
         
         ArrayList<Tuile> tuilesadj = new ArrayList();
         
-        if(posX!=0){
+        if(posX>0){
             if(tableau[posX-1][posY].getNom().equals("null")==false && tableau[posX-1][posY].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX-1][posY]);}}
         
-        if(posX!=5){
+        if(posX<5){
             if(tableau[posX+1][posY].getNom().equals("null")==false && tableau[posX+1][posY].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX+1][posY]);}}
         
-        if(posY!=5){
+        if(posY<5){
             if(tableau[posX][posY+1].getNom().equals("null")==false && tableau[posX][posY+1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX][posY+1]);}}
         
-        if(posY!=0){
+        if(posY>0){
             if(tableau[posX][posY-1].getNom().equals("null")==false && tableau[posX][posY-1].getEtat()==Utils.EtatTuile.INONDEE){
                 tuilesadj.add(tableau[posX][posY-1]);}}
         
