@@ -287,6 +287,7 @@ public class VuePlateau extends Observable {
         }
         
         int i = 0;
+        JLabel vide;
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
                 if (!(g.getTableau()[x][y].getNom().equals("null"))) {
@@ -309,8 +310,7 @@ public class VuePlateau extends Observable {
 
                     nb = g.getTableau()[x][y].getAventuriers().size();
 
-                    JLabel labelvide = new JLabel("");
-
+                    
                     for (int k = 1; k <= 4; k++) {
                         if (nb > 0) {
                             JPanel couleur = new JPanel();
@@ -334,7 +334,7 @@ public class VuePlateau extends Observable {
                     });
                        i++;
                 } else {
-                    JLabel vide = new JLabel(" ");
+                     vide = new JLabel(" ");
                     panelgrille.add(vide);
                 }
             }

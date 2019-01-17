@@ -156,14 +156,19 @@ public class VueCarteSpeciale extends Observable {
     public void actualiserPourDeplacerNav(ArrayList<Aventurier> joueurs, Aventurier a) {
 
         mainPanel.removeAll();
-        mainPanel.setLayout(new GridLayout(joueurs.size(), 2));
+        window.setTitle("Déplacement aventurier");
+        mainPanel.setLayout(new GridLayout(joueurs.size()-1, 2));
         JButton boutondeplacer;
+        JPanel panelaventurier;
         for (Aventurier avt : joueurs) {
             if (!(avt.getNom().equals(a.getNom()))) {
                 boutondeplacer = new JButton("Déplacer");
 
-                mainPanel.add(new JLabel(avt.getNom(), SwingConstants.CENTER));
-                mainPanel.add(boutondeplacer);
+                panelaventurier = new JPanel(new GridLayout(1,2));
+                panelaventurier.setBackground(avt.getPion().getCouleur());
+                panelaventurier.add(new JLabel(avt.getNom(), SwingConstants.CENTER));
+                panelaventurier.add(boutondeplacer);
+                mainPanel.add(panelaventurier);
                 boutondeplacer.addActionListener(new ActionListener() {
                     @Override
                     public void actionPerformed(ActionEvent e) {

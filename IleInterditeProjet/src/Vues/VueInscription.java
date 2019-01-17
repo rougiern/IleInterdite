@@ -145,7 +145,7 @@ public class VueInscription extends Observable {
         for (int k = 1; k <= (nbj * 2); k++) {
 
             if (k % 2 != 0) {
-                JLabel name = new JLabel("Nom du joueur :   ", SwingConstants.CENTER);
+                JLabel name = new JLabel("Nom du joueur :     ", SwingConstants.CENTER);
                 name.setFont(new Font("Arial", Font.PLAIN, 18));
                 name.setOpaque(true);
                 panelmilieu.add(name);
