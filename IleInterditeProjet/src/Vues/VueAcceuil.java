@@ -156,6 +156,17 @@ public class VueAcceuil  extends Observable {
         this.window.dispose();
     }
     
+            
+        public static void openWebpage(String urlString){
+             try{
+                 Desktop.getDesktop().browse(new URL(urlString).toURI());
+             }
+             catch (Exception e){
+                 e.printStackTrace();
+             }
+         }
+    
+    
     
  
          
