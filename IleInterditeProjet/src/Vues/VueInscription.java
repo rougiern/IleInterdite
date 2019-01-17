@@ -43,6 +43,8 @@ public class VueInscription extends Observable {
     private JComboBox l;
     private JButton btnvalider;
     private Integer[] nb = {2, 3, 4};
+    private JComboBox difficulte ;
+    private String[] dif = {"novice", "normal", "élite","légendaire"} ;
 
     public VueInscription() {
 
@@ -136,7 +138,7 @@ public class VueInscription extends Observable {
 
         btnvalider.removeAll();
         panelmilieu.removeAll();
-        panelmilieu.setLayout(new GridLayout(nbj, 2));
+        panelmilieu.setLayout(new GridLayout(nbj+1, 2));
         panelmilieu.setBackground(Color.lightGray);
         int nbc = 0;
 
@@ -156,6 +158,17 @@ public class VueInscription extends Observable {
             }
 
         }
+        JLabel d = new JLabel("Choisir difficulté:", SwingConstants.CENTER);
+        d.setFont(new Font("Arial", Font.PLAIN, 18));
+        d.setOpaque(true);
+        panelmilieu.add(d);
+        
+        
+        difficulte = new JComboBox(dif);
+        difficulte.setFont(new Font("Arial", Font.PLAIN, 18));
+        difficulte.setBackground(Color.WHITE);
+        panelmilieu.add(difficulte);
+        
 
         
 
@@ -188,7 +201,7 @@ public class VueInscription extends Observable {
                 for (int z = 0; z < nbj; z++) {
                 noms[z] = champs[z].getText();
                 }
-                notifyObservers(new MessageIni(Action.INSCRIRE_JOUEURS, noms));
+                notifyObservers(new MessageIni(Action.INSCRIRE_JOUEURS, noms ,dif[difficulte.getSelectedIndex()] ));
                 clearChanged();
             }
         });

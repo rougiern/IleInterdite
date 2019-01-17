@@ -130,6 +130,26 @@ public class VueNiveau extends JPanel{
         panelsGauches.get(this.niveau).setBackground(this.niveau == 10 ? Color.RED : Color.YELLOW);
         this.mainPanel.repaint();
     }
+    
+    public int nbCarteAPiocher(){
+        //this.niveau
+        //niv =1||2 => 2 Carte
+        //niv =3||4||5 => 3 Carte
+        // niv =6||7 => 4 Carte
+        // niv = 8||9 => 5 Carte
+        int nbcarte =1;
+        if(this.getNiveau()==1 ||this.getNiveau()==2  ){
+           nbcarte = 2; 
+        }else if(this.getNiveau()==3 ||this.getNiveau()==4 ||this.getNiveau()==5 ){
+            nbcarte = 3;
+        }else if(this.getNiveau()==6 ||this.getNiveau()==7){
+            nbcarte = 4;
+        }else if(this.getNiveau()==8 ||this.getNiveau()==9){
+            nbcarte =5 ;
+        }
+        
+        return nbcarte;
+    }
 
     public Integer getNiveau() {
         return this.niveau ;
