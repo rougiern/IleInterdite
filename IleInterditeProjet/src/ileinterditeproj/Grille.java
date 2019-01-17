@@ -40,9 +40,9 @@ public class Grille {
         for (int x=0; x<6;x++){
             for (int y=0;y<6;y++){
                 if ((x==0 && y ==0) || (x==0 && y==1) || (x==0 && y==4) || (x==0 && y==5) || (x==1 && y==0) ||(x==1 && y==5) || (x==4 && y==0)||(x==4 && y==5) || (x==5 && y==5) || (x==5 && y==0)|| (x==5 && y==1)||(x==5 && y==4) ){
-                 tableau[x][y]=new Tuile("null") ;  
+                    tableau[x][y]=new Tuile("null") ;  
                 }else{
-                tableau[x][y]=lestuiles.get(i);
+                    tableau[x][y]=lestuiles.get(i);
                 i++;
                 }
             }

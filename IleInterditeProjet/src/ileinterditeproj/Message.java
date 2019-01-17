@@ -19,6 +19,11 @@ public class Message {
     private int nbcarte ;
     
     
+    public Message(Commandes action ){
+        this.action=action;
+        
+    }
+    
     public Message(Commandes action ,String nom){
         this.action=action;
         this.nomJ=nom;
