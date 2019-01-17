@@ -33,11 +33,11 @@ public class VueTuile extends JPanel {
          this.add(bouton, BorderLayout.CENTER);
         
          if (tuile.getEtat() == Utils.EtatTuile.ASSECHEE) {
-            ImageIcon icone = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + ".png").getImage().getScaledInstance(150, 170, Image.SCALE_DEFAULT));
+            ImageIcon icone = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + ".png").getImage().getScaledInstance(120, 150, Image.SCALE_DEFAULT));
             bouton.setIcon(icone);
 
         } else if (tuile.getEtat() == Utils.EtatTuile.INONDEE) {
-            ImageIcon iconeinondee = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + "_Inonde" + ".png").getImage().getScaledInstance(150, 170, Image.SCALE_DEFAULT));
+            ImageIcon iconeinondee = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + "_Inonde" + ".png").getImage().getScaledInstance(120, 150, Image.SCALE_DEFAULT));
             bouton.setIcon(iconeinondee);
 
         } else if (tuile.getEtat() == Utils.EtatTuile.COULEE) {
@@ -50,11 +50,11 @@ public class VueTuile extends JPanel {
             if (tuile.getNom().equals("LaCarverneDesOmbres") || tuile.getNom().equals("LaCarverneDuBrasier") || tuile.getNom().equals("LePalaisDeCorail") || tuile.getNom().equals("LeJardinDesHurlements") || tuile.getNom().equals("LeTempleDuSoleil") || tuile.getNom().equals("LeTempleDeLaLune") || tuile.getNom().equals("LePalaisDesMarees") || tuile.getNom().equals("LeJardinDesMurmures")) {
                 if (tuile.getEtat() == Utils.EtatTuile.INONDEE) {
 
-                    ImageIcon iconepastresor = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + "_Inonde" + "_PasTresor" + ".png").getImage().getScaledInstance(150, 170, Image.SCALE_DEFAULT));
+                    ImageIcon iconepastresor = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + "_Inonde" + "_PasTresor" + ".png").getImage().getScaledInstance(120, 150, Image.SCALE_DEFAULT));
                     bouton.setIcon(iconepastresor);
                 } else {
 
-                    ImageIcon iconepastresor = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + "_PasTresor" + ".png").getImage().getScaledInstance(150, 170, Image.SCALE_DEFAULT));
+                    ImageIcon iconepastresor = new ImageIcon(new ImageIcon(Parameters.TUILES + tuile.getNom() + "_PasTresor" + ".png").getImage().getScaledInstance(120, 150, Image.SCALE_DEFAULT));
                     bouton.setIcon(iconepastresor);
                 }
             }
