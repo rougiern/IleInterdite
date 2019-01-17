@@ -37,7 +37,7 @@ public class VueDonCarte extends Observable{
     private JPanel panelmilieu, panelbas, panelhaut, mainPanel;
     private JComboBox l;
     private JComboBox joueurs;
-    private JButton btndon;
+    private JButton btndon,btnannul;
     private ArrayList<Integer> indexmains;
 
     public VueDonCarte(ArrayList<CarteTirage> mains ,ArrayList<Aventurier> joueurs ,Aventurier jcourant) {
@@ -56,10 +56,11 @@ public class VueDonCarte extends Observable{
         mainPanel.add(panelhaut, BorderLayout.NORTH);
 
         panelbas = new JPanel(new GridLayout(1, 3));
-        panelbas.add(new JLabel(""));
         btndon = new JButton("Donner");
         panelbas.add(btndon);        
         panelbas.add(new JLabel(""));
+        btnannul = new JButton("Annuler");
+        panelbas.add(btnannul);  
         mainPanel.add(panelbas, BorderLayout.SOUTH);
 
         
@@ -104,6 +105,16 @@ public class VueDonCarte extends Observable{
             public void actionPerformed(ActionEvent e) {
                 setChanged();
                 notifyObservers(new Message(Utils.Commandes.DONNER,indexmains.get(l.getSelectedIndex()),getnomJ() ));
+                System.out.println(l.getSelectedItem());
+                clearChanged();
+            }
+        });
+        
+        btnannul.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                setChanged();
+                notifyObservers(new Message(Utils.Commandes.FERMER_DONCARTE ));
                 System.out.println(l.getSelectedItem());
                 clearChanged();
             }
