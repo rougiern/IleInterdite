@@ -9,7 +9,6 @@ import LesJoueurs.Aventurier;
 import ileinterditeproj.Message;
 import ileinterditeproj.Utils.Commandes;
 import java.awt.BorderLayout;
-import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
@@ -136,8 +135,11 @@ public class VueCarteSpeciale extends Observable {
         for (Aventurier avt : joueurs) {
             boutondeplacer = new JButton("Déplacer");
 
-            mainPanel.add(new JLabel(avt.getNom(), SwingConstants.CENTER));
-            mainPanel.add(boutondeplacer);
+            JPanel panelaventurier = new JPanel(new GridLayout(1,2));
+            panelaventurier.setBackground(avt.getPion().getCouleur());
+            panelaventurier.add(new JLabel(avt.getNom(), SwingConstants.CENTER));
+            panelaventurier.add(boutondeplacer);
+            mainPanel.add(panelaventurier);
 
             boutondeplacer.addActionListener(new ActionListener() {
                 @Override
