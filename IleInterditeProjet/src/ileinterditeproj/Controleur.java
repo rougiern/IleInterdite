@@ -78,30 +78,30 @@ public class Controleur implements Observer {
         ArrayList<Tuile> lestuiles = new ArrayList();
 
         //Création des tuiles
-        Tuile t1 = new Tuile("Le Pont des Abimes");
-        Tuile t2 = new Tuile("La Porte de Bronze");  // Pion.ROUGE
-        Tuile t3 = new Tuile("La Caverne des Ombres", Utils.Tresor.CRISTAL);
-        Tuile t4 = new Tuile("La Porte de Fer");    //Pion.VIOLET
-        Tuile t5 = new Tuile("La Porte d'Or");   //Pion.JAUNE
-        Tuile t6 = new Tuile("Les Falaises de l'Oubli");
-        Tuile t7 = new Tuile("Le Palais de Corail", Utils.Tresor.CALICE);
-        Tuile t8 = new Tuile("La Porte d'Argent");  //Pion.ORANGE
-        Tuile t9 = new Tuile("Les Dunes de l’Illusion");
+        Tuile t1 = new Tuile("LePontDesAbimes");
+        Tuile t2 = new Tuile("LaPorteDeBronze");  // Pion.ROUGE
+        Tuile t3 = new Tuile("LaCarverneDesOmbres", Utils.Tresor.CRISTAL);
+        Tuile t4 = new Tuile("LaPorteDeFer");    //Pion.VIOLET
+        Tuile t5 = new Tuile("LaPortedOr");   //Pion.JAUNE
+        Tuile t6 = new Tuile("LesFalaisesDeLOubli");
+        Tuile t7 = new Tuile("LePalaisDeCorail", Utils.Tresor.CALICE);
+        Tuile t8 = new Tuile("LaPortedArgent");  //Pion.ORANGE
+        Tuile t9 = new Tuile("LesDunesDeLIllusion");
         Tuile t10 = new Tuile("Heliport");      //Pion.BLEU 
-        Tuile t11 = new Tuile("La Porte de Cuivre");  // Pion.VERT
-        Tuile t12 = new Tuile("Le Jardin des Hurlements", Utils.Tresor.ZEPHYR);
-        Tuile t13 = new Tuile("La Foret Pourpre");
-        Tuile t14 = new Tuile("Le Lagon Perdu");
-        Tuile t15 = new Tuile("Le Marais Brumeux");
+        Tuile t11 = new Tuile("LaPorteDeCuivre");  // Pion.VERT
+        Tuile t12 = new Tuile("LeJardinDesHurlements", Utils.Tresor.ZEPHYR);
+        Tuile t13 = new Tuile("LaForetPourpre");
+        Tuile t14 = new Tuile("LeLagonPerdu");
+        Tuile t15 = new Tuile("LeMaraisBrumeux");
         Tuile t16 = new Tuile("Observatoire");
-        Tuile t17 = new Tuile("Le Rocher Fantome");
-        Tuile t18 = new Tuile("La Caverne du Brasier", Utils.Tresor.CRISTAL);
-        Tuile t19 = new Tuile("Le Temple du Soleil", Utils.Tresor.PIERRE);
-        Tuile t20 = new Tuile("Le Temple de La Lune", Utils.Tresor.PIERRE);
-        Tuile t21 = new Tuile("Le Palais des Marees", Utils.Tresor.CALICE);
-        Tuile t22 = new Tuile("Le Val du Crepuscule");
-        Tuile t23 = new Tuile("La Tour du Guet");
-        Tuile t24 = new Tuile("Le Jardin des Murmures", Utils.Tresor.ZEPHYR);
+        Tuile t17 = new Tuile("LeRocherFantome");
+        Tuile t18 = new Tuile("LaCarverneDuBrasier", Utils.Tresor.CRISTAL);
+        Tuile t19 = new Tuile("LeTempleDuSoleil", Utils.Tresor.PIERRE);
+        Tuile t20 = new Tuile("LeTempleDeLaLune", Utils.Tresor.PIERRE);
+        Tuile t21 = new Tuile("LePalaisDesMarees", Utils.Tresor.CALICE);
+        Tuile t22 = new Tuile("LeValDuCrepuscule");
+        Tuile t23 = new Tuile("LaTourDuGuet");
+        Tuile t24 = new Tuile("LeJardinDesMurmures", Utils.Tresor.ZEPHYR);
 
         //Affectation des tuiles de départ
         tuilesdepart = new ArrayList();
@@ -181,6 +181,11 @@ public class Controleur implements Observer {
                 AttribuerRole(message.getNoms());
                 vueinsc.close();
 
+                joueurs.get(0).getMains().add(new CarteTresor(Utils.Tresor.CALICE));
+                joueurs.get(0).getMains().add(new CarteTresor(Utils.Tresor.CALICE));
+                joueurs.get(0).getMains().add(new CarteTresor(Utils.Tresor.CALICE));
+                joueurs.get(0).getMains().add(new CarteTresor(Utils.Tresor.CALICE));
+                
                 joueurcourant = joueurs.get(0);
 
                 //Distribution des cartes
@@ -731,7 +736,7 @@ public class Controleur implements Observer {
 
         if (TresorsCoulee() || hommeAlaMer() || heliportCoulee()) {
             Utils.afficherInformation("VOUS AVEZ PERDU !!!");
-            vplateau.close();
+           // vplateau.close();
 
         }
 
