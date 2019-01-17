@@ -196,7 +196,42 @@ public class Controleur implements Observer {
             }
         } else if (arg1 instanceof Message) {
             
-            
+                if (noyadeEnCours) {
+                Message message = (Message) arg1;
+                // On doit recevoir le déplacement d'un joueur en cours de noyade
+                // => le déplacer puis vérifier s'il reste des joueurs en cours de
+                // noyade
+                // Déplacer le joueurCourant qui était en de se noyer
+                joueurcourant = gererNoyade();
+                if ((arg0 instanceof VuePlateau) && message.getAction() == Commandes.DEPLACEMENT_NOYADE) {
+                    int x = 0;
+                    while (x < tuilesatteignables.size() && !(tuilesatteignables.get(x).getNom().equals(message.getTuile().getNom()))) {
+                        x++;
+                    }
+
+                    if (x != tuilesatteignables.size()) {
+                        System.out.println(tuilesatteignables.get(x).getNom());
+                        joueurcourant.getTuileCourante().retirerAventurierTuile(joueurcourant);
+                        tuilesatteignables.get(x).addAventurierTuile(joueurcourant);
+                        joueurcourant.setTuileCourante(tuilesatteignables.get(x));
+                        System.out.println("Action effectuée : Nouvelle tuile :" + joueurcourant.getTuileCourante().getNom());
+
+                    } else {
+                        System.out.println("la case n'est pas valide");
+                    }
+                }
+                vplateau.raffraichir(this.grille, joueurs);
+               // this.grisebouton(joueurcourant.getPtsaction());
+                // Vérifier si toujours un joueur entrain de se noyer
+                if (gererNoyade() == null) {
+                    noyadeEnCours = false;
+                    joueurcourant = joueurs.get(compteurtour);
+                }
+            }
+            if (!noyadeEnCours) {
+                vplateau.raffraichir(this.grille, joueurs);
+                this.grisebouton(joueurcourant.getPtsaction());
+                
                 Message message = (Message) arg1;
                 if(message.getAction()==null){
                     System.out.println("Action = null");
@@ -248,16 +283,21 @@ public class Controleur implements Observer {
                         tuilesatteignables.get(x).addAventurierTuile(joueurcourant);
                         joueurcourant.setTuileCourante(tuilesatteignables.get(x));
                         joueurcourant.enleveUneAction();
-                        //                    grisebouton(vueaventurier, joueurcourant.getPtsaction());
+ 
                         System.out.println("Action effectuée : Nouvelle tuile :" + joueurcourant.getTuileCourante().getNom());
-                        //                    vueaventurier.rafraichirPositon(joueurcourant);
                         if (message.getAction() == Commandes.BOUGER_AVEC_HELICO || message.getAction() == Commandes.DEPLACER ) {
                         joueurcourant.setPtsaction(joueurcourant.getPtsaction() + 1);
                         joueurcourant = this.getJoueurs().get(compteurtour);
-
-                    }
+                            if(message.getAction() == Commandes.DEPLACER){
+                            joueurcourant.enleveUneAction();
+                            }
+                        }
                     } else {
                         System.out.println("la case n'est pas valide");
+                        if (message.getAction() == Commandes.BOUGER_AVEC_HELICO || message.getAction() == Commandes.DEPLACER ) {
+                        joueurcourant.setPtsaction(joueurcourant.getPtsaction() + 1);
+                        joueurcourant = this.getJoueurs().get(compteurtour);
+                        }
                     }
                     vplateau.setDerniereaction(null);
                     vplateau.raffraichir(this.grille, joueurs);
@@ -404,7 +444,6 @@ public class Controleur implements Observer {
                     if (av != null) {
                         tuilesatteignables = av.deplacementParNavigateur(grille);
                         vplateau.setDerniereaction(Commandes.DEPLACER);
-                        joueurcourant.enleveUneAction();
                         joueurcourant = av;
 
                     }
@@ -414,9 +453,7 @@ public class Controleur implements Observer {
                     defaite();
 
                     tirerCarteInondation();
-                    if (gererNoyade() != null) {
-                        noyadeEnCours = true;
-                    }
+                    gererNoyade();
                     tirerCartetirage(joueurcourant);
                     compteurtour++;
                     if (compteurtour < joueurs.size()) {
@@ -437,6 +474,9 @@ public class Controleur implements Observer {
                         defausse();
                     }
                     vplateau.setDerniereaction(null);
+                    if(noyadeEnCours){
+                        joueurcourant = gererNoyade();
+                    }
                     vplateau.raffraichir(this.grille, joueurs);
                     grisebouton(joueurcourant.getPtsaction());
 
@@ -554,6 +594,7 @@ public class Controleur implements Observer {
 
                 }
             }
+        }
 
         }
 
@@ -595,7 +636,6 @@ public class Controleur implements Observer {
 
         if (tousTresorsObtenus() && tousSurHeliport() && unJoueurPossedeHelico()) {
             Utils.afficherInformation("VOUS AVEZ GAGNEZ !!!");
-
             vplateau.close();
 
         }
@@ -670,8 +710,9 @@ public class Controleur implements Observer {
                     tuilesA = a.seDeplacer(grille);
                 }
                 if (!(tuilesA.isEmpty())) {
-                    Utils.afficherInformation(a.getNom() + " doit se déplacer pour ne pas se noyer !");
-                    joueurcourant = a;
+                    if(!(noyadeEnCours)){
+                        Utils.afficherInformation(a.getNom() + " doit se déplacer pour ne pas se noyer !");
+                    }
                     tuilesatteignables = tuilesA;
                     vplateau.setDerniereaction(Commandes.DEPLACEMENT_NOYADE);
                     noyadeEnCours = true;
@@ -683,11 +724,14 @@ public class Controleur implements Observer {
         }
         return null;
     }
+    
+    
 
     public void defaite() {
 
         if (TresorsCoulee() || hommeAlaMer() || heliportCoulee()) {
             Utils.afficherInformation("VOUS AVEZ PERDU !!!");
+            vplateau.close();
 
         }
 
@@ -830,6 +874,20 @@ public class Controleur implements Observer {
                 getVueAv().getBtnDeplacerJoueur().setEnabled(false);
             }
 
+        }
+    }
+    
+    public void griseAllbouton() {
+
+      
+
+       vplateau.getVuej1().griserActions();
+       vplateau.getVuej2().griserActions();
+       if(vplateau.getVuej3()!=null){
+           vplateau.getVuej3().griserActions();
+        }
+       if(vplateau.getVuej4()!=null){
+           vplateau.getVuej4().griserActions();
         }
     }
 
