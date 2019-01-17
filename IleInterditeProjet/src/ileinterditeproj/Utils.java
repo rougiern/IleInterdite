@@ -30,12 +30,13 @@ public class Utils {
         VOIR_DEFAUSSE("Un joueur souhaite voir la défausse de cartes Tirage"),
         NULL("rien"),
         DEFAUSSE("Defausser"),
-        UTILISER_CARTE_HELICO("Nik les stups"),
-        BOUGER_AVEC_HELICO("Se déplacer en hélicptère"),
-        UTILISER_CARTE_SACSABLE(""),
-        ASSECHER_SAC_SABLE(""),
-        DEPLACEMENT_NOYADE(""),
-        DEPLACER("Déplace un autre joueur");
+        UTILISER_CARTE_HELICO("Demande l'utilisation d'un hélicoptère"),
+        BOUGER_AVEC_HELICO("Se déplacer en hélicoptère"),
+        UTILISER_CARTE_SACSABLE("Demande l'utilisation d'un sac de sable"),
+        ASSECHER_SAC_SABLE("Asséche avec un sac de sable"),
+        DEPLACEMENT_NOYADE("Forcer le déplacement d'un aventurier qui se noie "),
+        DEPLACER("Déplace un autre joueur"),
+        FERMER_DONCARTE("Ferme la vue don carte");
         
 
         private final String libelle ;

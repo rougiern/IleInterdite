@@ -555,7 +555,6 @@ public class Controleur implements Observer {
                             joueurcourant.enleveUneAction();
                             joueurcourant.getMains().remove(message.getNbcarte());
                             vplateau.raffraichir(this.grille, joueurs, tresorsrecupérés);
-//                            grisebouton(joueurcourant.getPtsaction());
                             griseAllbouton();
                             vdon.close();
                             defausse(receveur);
@@ -590,7 +589,9 @@ public class Controleur implements Observer {
                         System.out.println("LAPUTE");
                     }
                     //GESTION DE FIN DE TOUR
-                } else if (message.getAction() == Commandes.TERMINER) {
+                }else if ((arg0 instanceof VueDonCarte) && (message.getAction() == Commandes.FERMER_DONCARTE)) {
+                    vdon.close();
+                }else if (message.getAction() == Commandes.TERMINER) {
                     victoire();
                     defaite();
 
