@@ -103,7 +103,11 @@ public class VueAventurier extends JPanel {
 
         // =================================================================================
         // SUD : les boutons
-        this.panelBoutons = new JPanel(new GridLayout(3,2));
+        if (!(a instanceof Navigateur)) {
+                this.panelBoutons = new JPanel(new GridLayout(3,2)); } else {
+                 this.panelBoutons = new JPanel(new GridLayout(4,2));
+        }
+        
         this.panelBoutons.setOpaque(false);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
@@ -200,6 +204,7 @@ public class VueAventurier extends JPanel {
 //            
 //        });
             this.panelBoutons.add(btnDeplacerJoueur);
+            this.panelBoutons.add(new JLabel(""));
         }else{
             this.btnDeplacerJoueur=null;
         }

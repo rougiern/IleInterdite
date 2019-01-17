@@ -10,6 +10,8 @@ import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.FlowLayout;
+import java.awt.GridBagConstraints;
+import java.awt.GridBagLayout;
 import java.awt.GridLayout;
 import java.awt.Toolkit;
 import java.awt.event.ActionEvent;
@@ -30,20 +32,14 @@ import javax.swing.SwingConstants;
  */
 public class VuePlateau extends Observable {
 
-    /**
-     * @return the derniereaction
-     */
-    public Utils.Commandes getDerniereaction() {
-        return derniereaction;
-    }
-
     private JFrame window;
     private JPanel panelgrille;
     private Utils.Commandes derniereaction;
     private JPanel paneljoueur;
-    private JPanel panelcase;
+    JPanel panelcase;
     private int nb;
     private JPanel paneljoueurgauche;
+     private JPanel paneljoueurdroite;
 //    private JPanel paneljoueurdroite;
     private JPanel mainpanel ;
     private JPanel panelplateau;
@@ -66,19 +62,23 @@ public class VuePlateau extends Observable {
 
         
         window.setLocation(dim.width / 2 - window.getSize().width / 2, dim.height / 2 - window.getSize().height / 2);
-        panelgrille = new JPanel(new GridLayout(6, 6));
+        panelgrille = new JPanel(new GridBagLayout());
         mainpanel=new JPanel(new BorderLayout());
-        paneljoueurgauche=new JPanel(new GridLayout(1,4));
+        
+        paneljoueurgauche=new JPanel(new GridBagLayout());
+        paneljoueurdroite = new JPanel(new GridBagLayout());
+        
         panelplateau=new JPanel(new BorderLayout());
-        mainpanel.add(paneljoueurgauche,BorderLayout.NORTH);
+        mainpanel.add(paneljoueurdroite,BorderLayout.WEST);
+        mainpanel.add(paneljoueurgauche,BorderLayout.EAST);
         panelplateau.add(panelgrille,BorderLayout.CENTER);
-        panelplateau.add(vueniveau,BorderLayout.EAST);
+
+        
         mainpanel.add(panelplateau,BorderLayout.CENTER);
-//        mainpanel.add(paneljoueurdroite,BorderLayout.EAST);
         window.add(mainpanel);
         panelgrille.setBackground(Parameters.PLATEAU_BG);
         vueniveau.setBackground(Parameters.PLATEAU_BG);
-//        paneljoueurdroite.setBackground(Parameters.PLATEAU_BG);
+         paneljoueurdroite.setBackground(Parameters.PLATEAU_BG);
         paneljoueurgauche.setBackground(Parameters.PLATEAU_BG);
         
         
@@ -90,42 +90,55 @@ public class VuePlateau extends Observable {
         
         
         paneljoueurgauche.removeAll();
-//        paneljoueurdroite.removeAll();
+        paneljoueurdroite.removeAll();
         panelgrille.removeAll();
         
         if(av.isEmpty()==false){
 
+            GridBagConstraints constraints = new GridBagConstraints();
+             constraints.gridheight = 1;
+             constraints.gridwidth = 1;
 
+             constraints.gridx = 0;
+             constraints.gridy = 0;
             vuej1=new VueAventurier(av.get(0));
             setBouton(getVuej1(),av.get(0));
-            paneljoueurgauche.add(getVuej1());
+            paneljoueurgauche.add(getVuej1(), constraints);
+             
             
-            
-            
+            constraints.gridx = 0;
+             constraints.gridy = -1;
             vuej2=new VueAventurier(av.get(1));
             setBouton(getVuej2(),av.get(1));        
-            paneljoueurgauche.add(getVuej2());
+            paneljoueurgauche.add(getVuej2(), constraints);
+
 
             if(av.size()>2){
 
+                constraints.gridx = 0;
+             constraints.gridy = 0;
                 vuej3=new VueAventurier(av.get(2));
                 setBouton(getVuej3(),av.get(2));
-                paneljoueurgauche.add(getVuej3());
-
-                if(av.size()>3){
-
-                    vuej4=new VueAventurier(av.get(3));
-                    setBouton(getVuej4(),av.get(3));
-                    paneljoueurgauche.add(getVuej4());                
-                }else{
-                    vuej4=null;
-                    paneljoueurgauche.add(new JLabel(" ")); 
-                }
+                paneljoueurdroite.add(getVuej3(),constraints);
+                
+               
             }else{
                 vuej3=null;
-                paneljoueurgauche.add(new JLabel(" ")); 
+                paneljoueurdroite.add(new JLabel(" ")); 
                 
             }
+            
+             if(av.size()>3){
+
+                    constraints.gridx = 0;
+                     constraints.gridy = -1;
+                    vuej4=new VueAventurier(av.get(3));
+                    setBouton(getVuej4(),av.get(3));
+                    paneljoueurdroite.add(getVuej4(),constraints);                
+                }else{
+                    vuej4=null;
+                    paneljoueurdroite.add(new JLabel(" ")); 
+                }
             
             this.griserAction();
         }
@@ -134,12 +147,21 @@ public class VuePlateau extends Observable {
             for (int y = 0; y < 6; y++) {
                 if (!(g.getTableau()[x][y].getNom().equals("null"))) {
                     VueTuile vT = new VueTuile(g.getTableau()[x][y]);
-
+                    
                     JPanel panelcase = new JPanel(new BorderLayout());
+                    panelcase.setPreferredSize(new Dimension(150, 170));
                     panelcase.add(vT, BorderLayout.CENTER);
+                    
                     paneljoueur = new JPanel(new GridLayout(1, 4));
                     panelcase.add(paneljoueur, BorderLayout.SOUTH);
-                    panelgrille.add(panelcase);
+                    
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = x;
+                    gbc.gridy = y;
+                    gbc.gridheight = 1;
+                    gbc.gridwidth = 1;
+                    panelgrille.add(panelcase,gbc);
+                    
                     nb = g.getTableau()[x][y].getAventuriers().size();
 
                     JLabel labelvide = new JLabel("");
@@ -160,8 +182,7 @@ public class VuePlateau extends Observable {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             setChanged();
-                            notifyObservers(new Message(derniereaction, vT.getTuile()));
-                            setDerniereaction(null);
+                            notifyObservers(new Message(getDerniereaction(), vT.getTuile()));
                             clearChanged();
                         }
                     });
@@ -173,7 +194,7 @@ public class VuePlateau extends Observable {
         }
         panelgrille.revalidate();
         paneljoueurgauche.revalidate();
-//        paneljoueurdroite.revalidate();
+        paneljoueurdroite.revalidate();
 
     }
 
@@ -257,7 +278,7 @@ public class VuePlateau extends Observable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     setChanged();
-                    notifyObservers(new Message(Commandes.DEMANDE_DEPLACER,av.getNom()));
+                    notifyObservers(new Message(Commandes.DEPLACER,av.getNom()));
                     clearChanged();
                 }
 
@@ -313,6 +334,13 @@ public class VuePlateau extends Observable {
      */
     public VueNiveau getVueniveau() {
         return vueniveau;
+    }
+
+    /**
+     * @return the derniereaction
+     */
+    public Utils.Commandes getDerniereaction() {
+        return derniereaction;
     }
 
 }
