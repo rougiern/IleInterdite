@@ -28,6 +28,37 @@ public class VueTuile extends JPanel {
         this.setLayout(new BorderLayout());
         this.tuile = t;
 
+        raffraichir(t);
+
+    }
+
+    /**
+     * @return the bouton
+     */
+    public JButton getBouton() {
+        return bouton;
+    }
+
+    /**
+     * @return the tuile
+     */
+    public Tuile getTuile() {
+        return tuile;
+    }
+
+    /**
+     * @param tuile the tuile to set
+     */
+    public void setTuile(Tuile tuile) {
+        this.tuile = tuile;
+    }
+    
+    public void raffraichir(Tuile tuile) {
+        
+        this.removeAll();
+        
+        this.setTuile(tuile);
+        
         bouton = new JButton();
         bouton.setVerticalTextPosition(AbstractButton.CENTER);
          this.add(bouton, BorderLayout.CENTER);
@@ -59,22 +90,14 @@ public class VueTuile extends JPanel {
                 }
             }
 
+            
+            
+        }
+       
+            
+    bouton.revalidate();
+    this.revalidate();
         }
 
-    }
-
-    /**
-     * @return the bouton
-     */
-    public JButton getBouton() {
-        return bouton;
-    }
-
-    /**
-     * @return the tuile
-     */
-    public Tuile getTuile() {
-        return tuile;
-    }
 
 }

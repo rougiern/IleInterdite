@@ -41,7 +41,7 @@ public class VuePlateau extends Observable {
     private JPanel panelgrille;
     private Utils.Commandes derniereaction;
     private JPanel paneljoueur;
-    JPanel panelcase;
+    private JPanel panelcase;
     private int nb;
     private JPanel paneljoueurgauche;
     private JPanel paneljoueurdroite;
@@ -87,7 +87,128 @@ public class VuePlateau extends Observable {
         paneltresor.setBackground(Parameters.PLATEAU_BG);
         tuiles = new ArrayList<>();
 
-        raffraichir(g, av, tresorrecup);
+        
+
+        if (av.isEmpty() == false) {
+
+            GridBagConstraints constraints = new GridBagConstraints();
+            constraints.gridheight = 1;
+            constraints.gridwidth = 1;
+
+            constraints.gridx = 0;
+            constraints.gridy = 0;
+            vuej1 = new VueAventurier(av.get(0));
+            setBouton(getVuej1(), av.get(0));
+            paneljoueurgauche.add(getVuej1(), constraints);
+
+            constraints.gridx = 0;
+            constraints.gridy = 1;
+            vuej2 = new VueAventurier(av.get(1));
+            setBouton(getVuej2(), av.get(1));
+            paneljoueurgauche.add(getVuej2(), constraints);
+
+            if (av.size() > 2) {
+
+                constraints.gridx = 0;
+                constraints.gridy = 2;
+                vuej3 = new VueAventurier(av.get(2));
+                setBouton(getVuej3(), av.get(2));
+                paneljoueurgauche.add(getVuej3(), constraints);
+
+            } else {
+                vuej3 = null;
+
+            }
+
+            if (av.size() > 3) {
+                
+                vuej4 = new VueAventurier(av.get(3));
+                setBouton(getVuej4(), av.get(3));
+                paneljoueurdroite.add(getVuej4(), BorderLayout.NORTH);
+            } else {
+                vuej4 = null;
+            }            
+            
+            paneljoueurdroite.add(vueniveau,BorderLayout.CENTER);
+            
+            if(!(tresorrecup.isEmpty())){
+                for(Utils.Tresor t : tresorrecup){
+                    if(t==Utils.Tresor.PIERRE){
+                        constraints.gridx = 0;
+                        constraints.gridy = 0;
+                    }else if(t==Utils.Tresor.ZEPHYR){
+                        constraints.gridx = 1;
+                        constraints.gridy = 0;
+                    }else if(t==Utils.Tresor.CRISTAL){
+                        constraints.gridx = 2;
+                        constraints.gridy = 0;
+                    }else if(t==Utils.Tresor.CALICE){
+                        constraints.gridx = 3;
+                        constraints.gridy = 0;
+                    }
+                    
+                    JLabel icone = new JLabel(new ImageIcon(new ImageIcon(t.getPathPicture()).getImage().getScaledInstance(70, 120, Image.SCALE_DEFAULT)));
+                    paneltresor.add(icone, constraints);
+                }
+            }
+            
+            paneljoueurdroite.add(paneltresor,BorderLayout.SOUTH);
+
+            this.griserAction(av);
+        }
+
+        for (int x = 0; x < 6; x++) {
+            for (int y = 0; y < 6; y++) {
+                if (!(g.getTableau()[x][y].getNom().equals("null"))) {
+                    VueTuile vT = new VueTuile(g.getTableau()[x][y]);
+                    tuiles.add(vT);
+
+                    panelcase = new JPanel(new BorderLayout());
+                    panelcase.setPreferredSize(new Dimension(162, 150));
+                    panelcase.add(vT, BorderLayout.CENTER);
+
+                    paneljoueur = new JPanel(new GridLayout(1, 4));
+                    panelcase.add(paneljoueur, BorderLayout.SOUTH);
+
+                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc.gridx = x;
+                    gbc.gridy = y;
+                    gbc.gridheight = 1;
+                    gbc.gridwidth = 1;
+                    panelgrille.add(panelcase, gbc);
+
+                    nb = g.getTableau()[x][y].getAventuriers().size();
+
+                    JLabel labelvide = new JLabel("");
+
+                    for (int k = 1; k <= 4; k++) {
+                        if (nb > 0) {
+                            JPanel couleur = new JPanel();
+                            couleur.setBackground(g.getTableau()[x][y].getAventuriers().get(nb - 1).getPion().getCouleur());
+                            paneljoueur.add(couleur);
+                            nb--;
+                        } else {
+                            paneljoueur.add(new JPanel());
+                        }
+
+                    }
+
+                    vT.getBouton().addActionListener(new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            setChanged();
+                            notifyObservers(new Message(getDerniereaction(), vT.getTuile()));
+                            clearChanged();
+                        }
+                    });
+                } else {
+                    JLabel vide = new JLabel(" ");
+                    panelgrille.add(vide);
+                }
+            }
+        }
+ 
+        
 
     }
 
@@ -164,16 +285,17 @@ public class VuePlateau extends Observable {
 
             this.griserAction(av);
         }
-
+        
+        int i = 0;
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
                 if (!(g.getTableau()[x][y].getNom().equals("null"))) {
-                    VueTuile vT = new VueTuile(g.getTableau()[x][y]);
-                    tuiles.add(vT);
-
-                    JPanel panelcase = new JPanel(new BorderLayout());
+                    tuiles.get(i).raffraichir(g.getTableau()[x][y]);
+                    tuiles.get(i).getBouton().setBorder(null);
+                    
+                    panelcase = new JPanel(new BorderLayout());
                     panelcase.setPreferredSize(new Dimension(162, 150));
-                    panelcase.add(vT, BorderLayout.CENTER);
+                    panelcase.add(tuiles.get(i), BorderLayout.CENTER);
 
                     paneljoueur = new JPanel(new GridLayout(1, 4));
                     panelcase.add(paneljoueur, BorderLayout.SOUTH);
@@ -201,19 +323,22 @@ public class VuePlateau extends Observable {
 
                     }
 
-                    vT.getBouton().addActionListener(new ActionListener() {
+                    int k = i;
+                    tuiles.get(i).getBouton().addActionListener(new ActionListener() {
                         @Override
                         public void actionPerformed(ActionEvent e) {
                             setChanged();
-                            notifyObservers(new Message(getDerniereaction(), vT.getTuile()));
+                            notifyObservers(new Message(getDerniereaction(), tuiles.get(k).getTuile()));
                             clearChanged();
                         }
                     });
+                       i++;
                 } else {
                     JLabel vide = new JLabel(" ");
                     panelgrille.add(vide);
                 }
             }
+
         }
         panelgrille.revalidate();
         paneljoueurgauche.revalidate();
@@ -370,8 +495,6 @@ public class VuePlateau extends Observable {
                 }
             }
         }
-        
-        tuiles.clear();
         
     }
 
