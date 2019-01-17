@@ -278,7 +278,7 @@ public class VuePlateau extends Observable {
                 @Override
                 public void actionPerformed(ActionEvent e) {
                     setChanged();
-                    notifyObservers(new Message(Commandes.DEPLACER,av.getNom()));
+                    notifyObservers(new Message(Commandes.DEMANDE_DEPLACER,av.getNom()));
                     clearChanged();
                 }
 
