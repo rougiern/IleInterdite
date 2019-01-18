@@ -424,6 +424,10 @@ public class VueAventurier extends JPanel {
             this.btnDeplacerJoueur.setEnabled(true);
         }
     }
+    
+    public void degriserUtiliserCarte(){
+        this.btnUtiliserCarte.setEnabled(true);
+    }
 
     /**
      * @return the btnDeplacerJoueur
