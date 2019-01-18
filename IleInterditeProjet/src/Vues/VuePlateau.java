@@ -290,8 +290,9 @@ public class VuePlateau extends Observable {
         
             
         int i = 0;
-        JLabel vide;
+        JLabel vide = new JLabel(" ");
         GridBagConstraints gbc;
+        JPanel couleur ;
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
                 if (!(g.getTableau()[x][y].getNom().equals("null"))) {
@@ -314,9 +315,9 @@ public class VuePlateau extends Observable {
 
                     nb = g.getTableau()[x][y].getAventuriers().size();
 
-                    JPanel couleur ;
+                    
                     for (int k = 1; k <= 4; k++) {
-                        if (nb > 0) {
+                        if (nb > 0) {                           
                             couleur = new JPanel();
                             couleur.setBackground(g.getTableau()[x][y].getAventuriers().get(nb - 1).getPion().getCouleur());
                             paneljoueur.add(couleur);
@@ -338,7 +339,6 @@ public class VuePlateau extends Observable {
                     });
                        i++;
                 } else {
-                     vide = new JLabel(" ");
                     panelgrille.add(vide);
                 }
             }
