@@ -31,7 +31,9 @@ import ileinterditeproj.CarteHelicoptere;
 import ileinterditeproj.CarteTresor;
 import ileinterditeproj.Parameters;
 import ileinterditeproj.Utils;
+import java.awt.Image;
 import java.util.ArrayList;
+import javax.swing.ImageIcon;
  
 public class VueAventurier extends JPanel {
      
@@ -63,7 +65,7 @@ public class VueAventurier extends JPanel {
 //        window.setTitle(a.getNom());
 
         
-        
+        this.setPreferredSize(new Dimension(340,325));
         panelHeader = new JPanel(new GridLayout(2,1));
         mainPanel = new JPanel(new BorderLayout());
                 
@@ -103,12 +105,17 @@ public class VueAventurier extends JPanel {
 
         // =================================================================================
         // SUD : les boutons
-        this.panelBoutons = new JPanel(new GridLayout(3,2));
+        if (!(a instanceof Navigateur)) {
+                this.panelBoutons = new JPanel(new GridLayout(3,2)); } else {
+                 this.panelBoutons = new JPanel(new GridLayout(4,2));
+        }
+        
         this.panelBoutons.setOpaque(false);
         mainPanel.add(this.panelBoutons, BorderLayout.SOUTH);
 
         this.btnBouger = new JButton("Bouger") ;
-        
+        ImageIcon iconeBouger = new ImageIcon(new ImageIcon(Parameters.ICONS + "iconMove.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        btnBouger.setIcon(iconeBouger);
 //        btnBouger.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -120,7 +127,8 @@ public class VueAventurier extends JPanel {
         
         
         this.btnAssecher = new JButton( "Assecher");
-        
+        ImageIcon iconeAssecher = new ImageIcon(new ImageIcon(Parameters.ICONS + "iconDry.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        btnAssecher.setIcon(iconeAssecher);
 //            btnAssecher.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -131,7 +139,8 @@ public class VueAventurier extends JPanel {
 //        });
         
         this.btnAutreAction = new JButton("Donner carte") ;
-        
+        ImageIcon iconeAutreAction = new ImageIcon(new ImageIcon(Parameters.ICONS + "iconGive.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        btnAutreAction.setIcon(iconeAutreAction);
         
 //        btnAutreAction.addActionListener(new ActionListener() {
 //            @Override
@@ -143,7 +152,8 @@ public class VueAventurier extends JPanel {
 //        });
         
         this.btnTerminerTour = new JButton("Terminer Tour") ;
-        
+        ImageIcon iconeSHIFT = new ImageIcon(new ImageIcon(Parameters.ICONS + "iconShift.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        btnTerminerTour.setIcon(iconeSHIFT);
 //        btnTerminerTour.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -155,7 +165,8 @@ public class VueAventurier extends JPanel {
 //        });
         
         this.btnRecupererTresor = new JButton("Récuperer un trésor") ;
-        
+        ImageIcon iconeGET = new ImageIcon(new ImageIcon(Parameters.ICONS + "iconGet.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        btnRecupererTresor.setIcon(iconeGET);
 //        btnRecupererTresor.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -166,8 +177,9 @@ public class VueAventurier extends JPanel {
 //            
 //        });
         
-        this.btnUtiliserCarte = new JButton("Utiliser une carte spéciale") ;
-        
+        this.btnUtiliserCarte = new JButton("Utiliser une carte") ;
+        ImageIcon iconeCard = new ImageIcon(new ImageIcon(Parameters.ICONS + "iconCard.png").getImage().getScaledInstance(20, 20, Image.SCALE_DEFAULT));
+        btnUtiliserCarte.setIcon(iconeCard);
 //        btnUtiliserCarte.addActionListener(new ActionListener() {
 //            @Override
 //            public void actionPerformed(ActionEvent e) {
@@ -188,7 +200,7 @@ public class VueAventurier extends JPanel {
         this.panelBoutons.add(btnUtiliserCarte);
         
         if(a instanceof Navigateur){
-            this.btnDeplacerJoueur = new JButton("Déplacer un Joueur") ;
+            this.btnDeplacerJoueur = new JButton("Bouger 1 Joueur") ;
         
 //        btnDeplacerJoueur.addActionListener(new ActionListener() {
 //            @Override
@@ -200,6 +212,7 @@ public class VueAventurier extends JPanel {
 //            
 //        });
             this.panelBoutons.add(btnDeplacerJoueur);
+            this.panelBoutons.add(new JLabel(""));
         }else{
             this.btnDeplacerJoueur=null;
         }
@@ -222,7 +235,7 @@ public class VueAventurier extends JPanel {
 
         this.panelFooter = new JPanel(new GridLayout(4,1));
         panelFooter.setBorder(BorderFactory.createLineBorder(a.getPion().getCouleur(), 2)) ;
-        if (a.getMains().size() != 0 ){
+        if (!(a.getMains().isEmpty())){
             for (CarteTirage carteTirage : a.getMains())
                 if (carteTirage instanceof CarteSacDeSable){
                     nbcarteSacDeSable++;
@@ -235,7 +248,7 @@ public class VueAventurier extends JPanel {
                     nbcarteTresor++;
                     les_tresors.add((CarteTresor) carteTirage);
                 }    
-                if (les_tresors.size() !=0){
+                if (!(les_tresors.isEmpty())){
                     for (CarteTresor carteTresor :les_tresors){
                         if (carteTresor.getTypeTresor() == Utils.Tresor.PIERRE){
                             nbcarteTresorPierre++;
@@ -403,6 +416,9 @@ public class VueAventurier extends JPanel {
         this.btnRecupererTresor.setEnabled(false);
         this.btnTerminerTour.setEnabled(false);
         this.btnUtiliserCarte.setEnabled(false);
+        if(this.btnDeplacerJoueur!=null){
+            this.btnDeplacerJoueur.setEnabled(false);
+        }
     }
     
     public void degriserActions(){
@@ -412,6 +428,9 @@ public class VueAventurier extends JPanel {
         this.btnRecupererTresor.setEnabled(true);
         this.btnTerminerTour.setEnabled(true);
         this.btnUtiliserCarte.setEnabled(true);
+        if(this.btnDeplacerJoueur!=null){
+            this.btnDeplacerJoueur.setEnabled(true);
+        }
     }
 
     /**
