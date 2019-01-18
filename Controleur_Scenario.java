@@ -1279,6 +1279,8 @@ public class Controleur implements Observer {
         }
         if (!(tuilesassechables.isEmpty())) {
             affichernomtuiles(tuilesassechables);
+            vplateau.raffraichir(grille, joueurs, tresorsrecupérés);
+            grisebouton(joueurcourant.getPtsaction());
             vplateau.delimiterTuilesAtteignables(tuilesassechables, joueurcourant);
             System.out.println("cliquez sur une case à assecher");
 
@@ -1306,6 +1308,8 @@ public class Controleur implements Observer {
         }
 
         if (tuilesatteignables.isEmpty() == false) {
+            vplateau.raffraichir(grille, joueurs, tresorsrecupérés);
+            grisebouton(joueurcourant.getPtsaction());
             vplateau.delimiterTuilesAtteignables(tuilesatteignables, joueurcourant);
             System.out.println("Ou se déplacer ?");
 
