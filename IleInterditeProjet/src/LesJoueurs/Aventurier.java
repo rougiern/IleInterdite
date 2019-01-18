@@ -200,6 +200,16 @@ public abstract class Aventurier extends ObjetIdentifie{
        }
        return bool ;
     }
+    
+    public boolean possedeSacSable(){
+       boolean bool = false ;
+       for(CarteTirage t : mains){
+           if(t instanceof CarteSacDeSable){
+               bool = true ;      
+           }
+       }
+       return bool ;
+    }
 
     
 
