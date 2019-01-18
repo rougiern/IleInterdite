@@ -223,7 +223,8 @@ public class VuePlateau extends Observable {
             GridBagConstraints constraints = new GridBagConstraints();
             constraints.gridheight = 1;
             constraints.gridwidth = 1;
-
+           
+ 
             constraints.gridx = 0;
             constraints.gridy = 0;
             vuej1 = new VueAventurier(av.get(0));
@@ -235,7 +236,7 @@ public class VuePlateau extends Observable {
             vuej2 = new VueAventurier(av.get(1));
             setBouton(getVuej2(), av.get(1));
             paneljoueurgauche.add(getVuej2(), constraints);
-
+            
             if (av.size() > 2) {
 
                 constraints.gridx = 0;
@@ -256,11 +257,12 @@ public class VuePlateau extends Observable {
                 paneljoueurdroite.add(getVuej4(), BorderLayout.NORTH);
             } else {
                 vuej4 = null;
-            }            
-            
+            }    
+             
             paneljoueurdroite.add(vueniveau,BorderLayout.CENTER);
             
             if(!(tresorrecup.isEmpty())){
+                JLabel icone ;
                 for(Utils.Tresor t : tresorrecup){
                     if(t==Utils.Tresor.PIERRE){
                         constraints.gridx = 0;
@@ -276,7 +278,7 @@ public class VuePlateau extends Observable {
                         constraints.gridy = 0;
                     }
                     
-                    JLabel icone = new JLabel(new ImageIcon(new ImageIcon(t.getPathPicture()).getImage().getScaledInstance(70, 120, Image.SCALE_DEFAULT)));
+                    icone = new JLabel(new ImageIcon(new ImageIcon(t.getPathPicture()).getImage().getScaledInstance(70, 120, Image.SCALE_DEFAULT)));
                     paneltresor.add(icone, constraints);
                 }
             }
@@ -286,8 +288,10 @@ public class VuePlateau extends Observable {
             this.griserAction(av);
         }
         
+            
         int i = 0;
         JLabel vide;
+        GridBagConstraints gbc;
         for (int x = 0; x < 6; x++) {
             for (int y = 0; y < 6; y++) {
                 if (!(g.getTableau()[x][y].getNom().equals("null"))) {
@@ -301,7 +305,7 @@ public class VuePlateau extends Observable {
                     paneljoueur = new JPanel(new GridLayout(1, 4));
                     panelcase.add(paneljoueur, BorderLayout.SOUTH);
 
-                    GridBagConstraints gbc = new GridBagConstraints();
+                    gbc = new GridBagConstraints();
                     gbc.gridx = x;
                     gbc.gridy = y;
                     gbc.gridheight = 1;
@@ -310,10 +314,10 @@ public class VuePlateau extends Observable {
 
                     nb = g.getTableau()[x][y].getAventuriers().size();
 
-                    
+                    JPanel couleur ;
                     for (int k = 1; k <= 4; k++) {
                         if (nb > 0) {
-                            JPanel couleur = new JPanel();
+                            couleur = new JPanel();
                             couleur.setBackground(g.getTableau()[x][y].getAventuriers().get(nb - 1).getPion().getCouleur());
                             paneljoueur.add(couleur);
                             nb--;
