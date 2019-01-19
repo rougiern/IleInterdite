@@ -47,7 +47,7 @@ import java.util.Scanner;
  *
  * @author duttod
  */
-public class Controleur implements Observer {
+public class Controleur_ScenarioDefaiteHeliport implements Observer {
 
     private Grille grille;
     private ArrayList<Aventurier> joueurs;
@@ -69,7 +69,7 @@ public class Controleur implements Observer {
     private VueCarteSpeciale vueutilisercartes;
     private boolean noyadeEnCours = false;
 
-    Controleur() {
+    Controleur_ScenarioDefaiteHeliport() {
 
         joueurcourant = null;
         tuilesatteignables = null;
@@ -187,9 +187,9 @@ public class Controleur implements Observer {
                 tuilesdepart.get(0).addAventurierTuile(ing);
                 joueurs.add(ing);
                 
-                Navigateur n = new Navigateur("nav", tuilesdepart.get(2));
-                tuilesdepart.get(2).addAventurierTuile(n);
-                joueurs.add(n);
+                Navigateur nav = new Navigateur("nav", tuilesdepart.get(2));
+                tuilesdepart.get(2).addAventurierTuile(nav);
+                joueurs.add(nav);
                 
                 Messager m = new Messager("mess", tuilesdepart.get(3));
                 tuilesdepart.get(3).addAventurierTuile(m);
@@ -207,7 +207,7 @@ public class Controleur implements Observer {
                     }
                 }
                 
-     
+                
                 
                 joueurs.get(0).getMains().add(piocheTirage.get(1));
                 joueurs.get(0).getMains().add(piocheTirage.get(2));
@@ -583,10 +583,12 @@ public class Controleur implements Observer {
                     vdon.close();
                     //GESTION DE FIN DE TOUR
                 } else if (message.getAction() == Commandes.TERMINER) {
-                    victoire();
-                    defaite();
-
-                    tirerCarteInondation();
+                    boolean boolD,boolV;
+                    boolV=victoire();
+                    boolD=defaite();
+                    if(!(boolV) && !(boolD)){
+                        tirerCarteInondation();
+                    } 
                     gererNoyade();
                     tirerCartetirage(joueurcourant);
                     compteurtour++;
@@ -677,13 +679,15 @@ public class Controleur implements Observer {
         return bool;
     }
 
-    public void victoire() {
-
+    public boolean victoire() {
+        boolean cond = false ;
         if (tousTresorsObtenus() && tousSurHeliport() && unJoueurPossedeHelico()) {
             Utils.afficherInformation("VOUS AVEZ GAGNEZ !!!");
             vplateau.close();
+            cond = true;
 
         }
+        return cond ;
 
     }
 
@@ -801,12 +805,14 @@ public class Controleur implements Observer {
         return vplateau.getVueniveau().getNiveau() >= 10;
     }
 
-    public void defaite() {
-
+    public boolean defaite() {
+        boolean cond = false;
         if (TresorsCoulee() || hommeAlaMer() || heliportCoulee() || nivEau10()) {
             Utils.afficherInformation("VOUS AVEZ PERDU !!!");
             vplateau.close();
+            cond=true;
         }
+        return cond ;
     }
 
     public void deuxiemeAssechementInge() {
@@ -1118,10 +1124,9 @@ public class Controleur implements Observer {
             }
         }
 
-       /* if (carte1 instanceof CarteMonteedesEaux || carte2 instanceof CarteMonteedesEaux) {
+        if (carte1 instanceof CarteMonteedesEaux || carte2 instanceof CarteMonteedesEaux) {
             this.melangeDefausseCarteInondation();
-
-        }*/
+        }
 
     }
 
@@ -1162,7 +1167,11 @@ public class Controleur implements Observer {
 
     public void tireCarteMonteeDesEaux(int i) {
         // On augmente le niveau de l'eau
+        if(vplateau.getVueniveau().getNiveau()!=10){
         this.vplateau.getVueniveau().setNiveau(vplateau.getVueniveau().getNiveau() + 1);
+        }else{
+            defaite();
+        }
         // On défausse la carte Montée des eaux qui vient d'être tirée
         this.defausserCarteMonteedesEaux(i);
 
@@ -1175,7 +1184,7 @@ public class Controleur implements Observer {
     }
 
     public void melangeDefausseCarteInondation() {
-        Collections.shuffle(this.getDefausseInondation());
+        //Collections.shuffle(this.getDefausseInondation());
         ArrayList<CarteInondation> copie = new ArrayList();
         copie.addAll(this.getDefausseInondation());
         copie.addAll(piocheInondation);
